@@ -1,0 +1,1 @@
+# Kompilatory2023-Translator-Bash-na-Windows-PowerShell
