@@ -35,11 +35,11 @@ Describtion co to kategoria ogólne
 * T_warunek_equal <= (" -eq ")
 * T_warunek_equal_string <= (" == "|" = ")
 * T_warunek_not_equal <= (" -ne "| " != ")
-* T_warunkek_AND_Nie_unarne <= &&
-* T_warunkek_OR_Nie_unarne <= ||
+* T_warunek_AND_Nieunarne <= &&
+* T_warunek_OR_Nieunarne <= ||
 * T_warunek_else <= else
 * T_warunek_else_if <= elif
-* T_switch_case_początek <= "case "                   Trzeba się doedukować w siwtchach....
+* T_switch_case_początek <= "case "                   Trzeba się doedukować w switchach....
 * 
 * 
 
@@ -90,8 +90,64 @@ Describtion co to kategoria ogólne
 
 #### Operatory
 
-* 
 
+# Translacja Bash na PowerShell
+
+#### Ogólne
+
+Describtion co to kategoria ogólne
+
+
+| Element                           | Bash             | PowerShell                              | 
+|-----------------------------------|------------------|-----------------------------------------|
+ | Komentarz                         | #                | #                                       |
+ | Zmiana lokalizacji                | cd               | Set-Location                            |
+ | Wpis na terminal                  | echo             | Write-Output                            |
+| Wpis o błędzie na terminal        | echoerr          | Write-Error                             |
+| Koniec skryptu                    | exit             | Exit                                    |
+| Koniec skryptu i wyrzucenie błędu | exiterr          | throw + $ErrorActionPreference = "Stop" |
+| Przypisanie zmiennej              | export/nic + a=b | Set-Variable z opcją -scope             |
+| Ewaluacja wyrażenia               | expr             | Invoke-Expression                       |
+| Lista obiektów w folderze         | find             | Get-ChildItem + opcje                   |
+| RAM info                          | free             | ???                                     |
+| File info                         | ls               | Get-ChildItem + opcje                   |
+|                                   | kill             |                                         |
+|                                   | set              |                                         |
+|                                   | sleep            |                                         |
+|                                   | sudo             |                                         |
+|                                   | read             |                                         |
+|                                   |                  |                                         |
+|                                   |                  |                                         |
+|                                   |                  |                                         |
+|                                   |                  |                                         |
+|                                   |                  |                                         |
+|                                   |                  |                                         |
+|                                   |                  |                                         |
+|                                   |                  |                                         |
+|                                   |                  |                                         |
+|                                   |                  |                                         |
+
+
+* 
+* T_komenda_Argument <= ????
+* T_while <= "while "
+* T_for_początek <= "for "
+* T_pętla_środek <= (; |\n)do(....)?
+* T_pętla_koniec <= (; |\n)done
+* T_if_początek <= if
+* T_if_środek <= then
+* T_if_koniec <= fi
+* T_warunek <= "[ [^\]]* ]"
+* T_warunek_equal <= (" -eq ")
+* T_warunek_equal_string <= (" == "|" = ")
+* T_warunek_not_equal <= (" -ne "| " != ")
+* T_warunek_AND_Nieunarne <= &&
+* T_warunek_OR_Nieunarne <= ||
+* T_warunek_else <= else
+* T_warunek_else_if <= elif
+* T_switch_case_początek <= "case "                   Trzeba się doedukować w switchach....
+*
+* 
 
 
  
