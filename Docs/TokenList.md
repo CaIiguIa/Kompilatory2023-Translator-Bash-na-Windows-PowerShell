@@ -1,86 +1,80 @@
-# Mapa headerów
-
-
-# Legenda notacji:
-
-#### Treść identyczna jak w notacji używanej podczas przekazywania wyrażń reguralnych w programie GREP:
-
-* []
-* {}
-* "       "  <=====  aby ukazać białe znaki
-
+# Spis treści
 
 
 # Lista tokenów
 
 ### Bash
 
-#### Ogólne
-
-Describtion co to kategoria ogólne
-
-
-* T_Start <= %^                     Znak początku pliku
-* T_Komentarz <= #[^\n]*\n
-* T_Komenda <= "(cd|echo|echoerr|exit|exiterr|export|expr|find|free|ls|kill|set|sleep|sudo|read|...) "
-* T_komenda_Argument <= ????
-* T_while <= "while "
-* T_for_początek <= "for "
-* T_pętla_środek <= (; |\n)do(....)?
-* T_pętla_koniec <= (; |\n)done
-* T_if_początek <= if
-* T_if_środek <= then
-* T_if_koniec <= fi
-* T_warunek <= "[ [^\]]* ]"
-* T_warunek_equal <= (" -eq ")
-* T_warunek_equal_string <= (" == "|" = ")
-* T_warunek_not_equal <= (" -ne "| " != ")
-* T_warunek_AND_Nieunarne <= &&
-* T_warunek_OR_Nieunarne <= ||
-* T_warunek_else <= else
-* T_warunek_else_if <= elif
-* T_switch_case_początek <= "case "                   Trzeba się doedukować w switchach....
-* 
-* 
-
-#### Literały
-
-* T_String <= \".*\"
-* T_ciagi_znaków <= \'.*\'
-* T_zmienna_początek <= $[^#]
+* T_Start <= "%^"                     Znak początku pliku
+* T_Komentarz <= "#[^\n]+\n"
+* T_identyfikator <= "[a-zA-Z][a-zA-Z0-9_]*"
+* T_while_początek <= "while"
+* T_until_początek <= "until"
+* T_for_początek <= "for"
+* T_pętla_środek <= "do"
+* T_pętla_koniec <= "done"
+* T_if_początek <= "if"
+* T_if_środek <= "then"
+* T_if_koniec <= "fi"
+* T_warunek_początek_pojedyńczy <= "["
+* T_warunek_początek_podwójny <= "[["
+* T_warunek_koniec_pojedyńczy <= "]"
+* T_warunke_koniec_podwójny <= "]]"
+* T_warunek_equal <= ("-eq")
+* T_warunek_equal_string <= ("=="|"=")
+* T_warunek_not_equal <= ("-ne"|"!=")
+* T_warunek_AND_Nieunarne <= "&&"
+* T_warunek_OR_Nieunarne <= "||"
+* T_warunek_else <= "else"
+* T_warunek_else_if <= "elif"
+* T_switch_case_początek <= "case"
+* T_switch_break_absolutny <= ";;"
+* T_switch_break_z_kontynuacją <= ";&"
+* T_switch_break_z_egzekucją_następnego <= ";;&"
+* T_switch_case_koniec <= "esac"
+* T_String <= "\".*\""
+* T_ciagi_znaków <= "\'.*\'"
+* T_zmienna_początek <= "$[^#\n;0-9][^#\n;]*"
 * T_liczba_argumentów_skryptu <= "$#"
-* T_bool <= (true|false)
-* T_liczba_calkowita_bez_znaku <= [0-9]+
-* T_liczba_hexagonalna_bez_znaku <= (Ox|16#)[0-9A-Fa-f]+
-* T-liczba_ósemkaowa_bez_znaku <= O[0-7]+
-* 
-* 
-
-#### Znaki specjalne
-
-* T_blank <= ( |\t)
-* T_Średnik <= (;|\n)
-* T_pipe <= " | "
-* T_lewy_nawias_otwierający_półokrągły <= "("
-* T_prawy_nawias_otwierający_półokrągły <= ")"
-* T_lewy_nawias_otwierający_wąsaty <= "{"
-* T_prawy_nawias_otwierający_wąsaty <= "}"
-* T_lewy_nawias_otwierający_kwadratowy <= "["
-* T_prawy_nawias_otwierający_kwadratowy <= "]"
+* T_kolejny_argument_skryptu <= "$[0-9]"
+* T_bool <= ("true"|"false")
+* T_liczba_calkowita_bez_znaku <= "[0-9]+"
+* T_liczba_hexagonalna_bez_znaku <= "(Ox|16#)[0-9A-Fa-f]+"
+* T-liczba_ósemkaowa_bez_znaku <= "(O|8#)[0-7]+"
+* T_rozdzielacz_identyfikatorów <= (" "|"\t")
+* T_rozdzielacz_koniec_komend <= (";"|"\n")
+* T_pipe <= "|"
+* T_pipe_z_błędami <= "|&"
+* T_plus <= "+"
+* T_razy_lub_wildcard <= "*"
+* T_wildcard_1 <= "?"
+* T_minus <= "-"
+* T_dziel <= "/"
+* T_zabice_asynchronicznej_komendy <= "&"
+* T_nawias_otwierający_półokrągły <= "("
+* T_nawias_otwierający_półokrągły <= ")"
+* T_nawias_otwierający_wąsaty <= "{"
+* T_nawias_otwierający_wąsaty <= "}"
+* T_nawias_otwierający_kwadratowy <= "["
+* T_nawias_otwierający_kwadratowy <= "]"
 * T_Przekaż_do_pliku_w_prawo_i_nadpisz_go <= ">"
 * T_Przekaż_do_pilku_w_prawo_i_dopisz_do_końca <= ">>"
 * T_Przekaż_do_pliku_w_lewo_i_nadpisz_go <= "<"
 * T_Przekaż_do_pilku_w_lewo_i_dopisz_do_końca <= "<<"
-* T_Negacja wyrażeń_boolowskich <= "!"
-* 
-
-#### operatory
-
+* T_Negacja_wyrażeń_boolowskich <= "!"
 * T_operator_przypisania <= "="
+* T_początek funkcji <= "function"
+* T_wymienianie <= "in"
+* T_wybranie <= "select"
+* T_asynchronizacja <= "coproc"
+* T_czas <= "time"
+* T_tworzenie_zmiennych <= "declare"
+* T_home_folder <= "~"
+* T_ten_folder <= "."
+* T_poprzedni_folder <= ".."
 
 ### WindowsPowerShell
 
-### Ogólne
 
 1. Spis:
     * T_Function_starter <= function
@@ -126,37 +120,4 @@ Describtion co to kategoria ogólne
 |                                   |                  |                                         |
 |                                   |                  |                                         |
 |                                   |                  |                                         |
-
-
-* 
-* T_komenda_Argument <= ????
-* T_while <= "while "
-* T_for_początek <= "for "
-* T_pętla_środek <= (; |\n)do(....)?
-* T_pętla_koniec <= (; |\n)done
-* T_if_początek <= if
-* T_if_środek <= then
-* T_if_koniec <= fi
-* T_warunek <= "[ [^\]]* ]"
-* T_warunek_equal <= (" -eq ")
-* T_warunek_equal_string <= (" == "|" = ")
-* T_warunek_not_equal <= (" -ne "| " != ")
-* T_warunek_AND_Nieunarne <= &&
-* T_warunek_OR_Nieunarne <= ||
-* T_warunek_else <= else
-* T_warunek_else_if <= elif
-* T_switch_case_początek <= "case "                   Trzeba się doedukować w switchach....
-*
-* 
-
-
- 
-
-
-
-
-
-
-
-
 
