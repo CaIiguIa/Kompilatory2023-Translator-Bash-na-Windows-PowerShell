@@ -1,13 +1,9 @@
-# Spis treści
-
-
 ## Lista tokenów
 
-### Bash
+### Symbole terminalne
 
-* T_Start <= "%^"                                       /////Znak początku pliku
 * T_Komentarz <= "#[^\n]+\n"
-* T_identyfikator <= "[a-zA-Z][a-zA-Z0-9_]*"
+* T_identyfikator <= "[a-zA-Z-][a-zA-Z0-9_]*"
 * T_while_początek <= "while"
 * T_until_początek <= "until"
 * T_for_początek <= "for"
@@ -22,7 +18,7 @@
 * T_warunke_koniec_podwójny <= "]]"
 * T_warunek_equal <= ("-eq")
 * T_warunek_equal_string <= ("=="|"=")
-* T_warunek_not_equal <= ("-ne"|"!=")
+* T_warunek_no* t_equal <= ("-ne"|"!=")
 * T_warunek_gt <= "-gt"
 * T_warunek_ge <= ("-ge"|">=")
 * T_warunek_lt <= "-lt"
@@ -36,15 +32,15 @@
 * T_switch_break_z_kontynuacją <= ";&"
 * T_switch_break_z_egzekucją_następnego <= ";;&"
 * T_switch_case_koniec <= "esac"
-* T_String <= "\".*\""
-* T_ciagi_znaków <= "\'.*\'"
+* T_String <= "".*""
+* T_ciagi_znaków <= "'.*'"
 * T_zmienna <= "$[^$#\n;0-9][^$#\n;]*"
 * T_liczba_argumentów_skryptu <= "$#"
-* T_kolejny_argument_skryptu <= "$[0-9]"
+* T_kolejny_argumen* t_skryptu <= "$[0-9]"
 * T_bool <= ("true"|"false")
 * T_liczba_calkowita_bez_znaku <= "[0-9]+"
 * T_liczba_hexagonalna_bez_znaku <= "(Ox|16#)[0-9A-Fa-f]+"
-* T-liczba_ósemkaowa_bez_znaku <= "(O|8#)[0-7]+"
+T-liczba_ósemkaowa_bez_znaku <= "(O|8#)[0-7]+"
 * T_rozdzielacz_identyfikatorów <= (" "|"\t")
 * T_rozdzielacz_koniec_komend <= (";"|"\n")
 * T_pipe <= "|"
@@ -56,9 +52,9 @@
 * T_dziel <= "/"
 * T_zabice_asynchronicznej_komendy <= "&"
 * T_nawias_otwierający_półokrągły <= "("
-* T_nawias_otwierający_półokrągły <= ")"
+* T_nawias_zamykający_półokrągły <= ")"
 * T_nawias_otwierający_wąsaty <= "{"
-* T_nawias_otwierający_wąsaty <= "}"
+* T_nawias_zamykający_wąsaty <= "}"
 * T_Przekaż_do_pliku_w_prawo_i_nadpisz_go <= ">"
 * T_Przekaż_do_pilku_w_prawo_i_dopisz_do_końca <= ">>"
 * T_Przekaż_do_pliku_w_lewo_i_nadpisz_go <= "<"
@@ -66,7 +62,6 @@
 * T_Negacja_wyrażeń_boolowskich <= "!"
 * T_operator_przypisania <= "="
 * T_początek funkcji <= "function"
-* T_wymienianie <= "in"
 * T_wybranie <= "select"
 * T_asynchronizacja <= "coproc"
 * T_czas <= "time"
@@ -74,3 +69,6 @@
 * T_home_folder <= "~"
 * T_ten_folder <= "."
 * T_poprzedni_folder <= ".."
+* T_loop_in <= “in”
+* T_DIGIT <= “0|1|2|3|4|5|6|7|8|9”
+
