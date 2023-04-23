@@ -2,11 +2,11 @@
 
 ### Symbole terminalne
 
-* T_Komentarz <= "#[^\n]+\n"
+// * T_Komentarz <= "#[^\n]+\n"
 * T_identyfikator <= "[a-zA-Z-][a-zA-Z0-9_]*"
-* T_while_początek <= "while"
-* T_until_początek <= "until"
-* T_for_początek <= "for"
+// * T_while_początek <= "while"
+// * T_until_początek <= "until"
+// * T_for_początek <= "for"
 * T_pętla_środek <= "do"
 * T_pętla_koniec <= "done"
 * T_if_początek <= "if"
@@ -18,7 +18,7 @@
 * T_warunke_koniec_podwójny <= "]]"
 * T_warunek_equal <= ("-eq")
 * T_warunek_equal_string <= ("=="|"=")
-* T_warunek_no* t_equal <= ("-ne"|"!=")
+* T_warunek_not_equal <= ("-ne"|"!=")
 * T_warunek_gt <= "-gt"
 * T_warunek_ge <= ("-ge"|">=")
 * T_warunek_lt <= "-lt"
@@ -70,5 +70,4 @@ T-liczba_ósemkaowa_bez_znaku <= "(O|8#)[0-7]+"
 * T_ten_folder <= "."
 * T_poprzedni_folder <= ".."
 * T_loop_in <= “in”
-* T_DIGIT <= “0|1|2|3|4|5|6|7|8|9”
-
+//* T_DIGIT <= “0|1|2|3|4|5|6|7|8|9”
