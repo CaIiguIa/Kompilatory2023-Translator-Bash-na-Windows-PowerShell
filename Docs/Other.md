@@ -22,13 +22,13 @@
 | Lista obiektów w folderze         | find             | Get-ChildItem + opcje                   |
 | RAM info                          | free             | ???                                     |
 | File info                         | ls               | Get-ChildItem + opcje                   |
-|                                   | kill             |                                         |
-|                                   | set              |                                         |
-|                                   | sleep            |                                         |
-|                                   | sudo             |                                         |
-|                                   | read             |                                         |
-|                                   |                  |                                         |
-|                                   |                  |                                         |
+| Zabicie procesu                   | kill             | Stop-Process                            |
+| Zmiana wartości zmiennej          | set              | Set-Variable                            |
+| Spanko                            | sleep            | Start-Sleep                             |
+|                                   | sudo             | ????                                    |
+| Czytaj plik                       | read             | Get-Content                             |
+| Wyszukiwanie                      | grep             | Select-String                           |
+| Zliczanie                         | wc               | Measure-Object                          |
 |                                   |                  |                                         |
 |                                   |                  |                                         |
 |                                   |                  |                                         |
