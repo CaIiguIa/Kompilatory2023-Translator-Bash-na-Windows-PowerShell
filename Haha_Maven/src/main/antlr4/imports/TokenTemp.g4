@@ -39,7 +39,7 @@ for:    FOR_LOOP_BEGIN SPLITTER_ID L_PARENTH_ROUND L_PARENTH_ROUND SPLITTER_ID e
     |   FOR_LOOP_BEGIN SPLITTER_ID ALPHANUMERIC ((LOOP_IN (CHAR_CHAIN SPLITTER_ID)+)+ SPLITTER_END_COMMAND)* SPLITTER_ID LOOP_MIDDLE SPLITTER_ID list SPLITTER_ID SPLITTER_END_COMMAND SPLITTER_ID LOOP_END
     ;
 
-while:  WHILE_LOOP_BEGIN list SPLITTER_END_COMMAND LOOP_MIDDLE list SPLITTER_END_COMMAND LOOP_END SPLITTER_END_COMMAND
+/* done */while:  WHILE_LOOP_BEGIN list SPLITTER_END_COMMAND LOOP_MIDDLE list SPLITTER_END_COMMAND LOOP_END SPLITTER_END_COMMAND
     ;
 //  TODO::: MAKE ; do list ; done ; esparate productions
 until:  UNTIL_LOOP_BEGIN list SPLITTER_END_COMMAND LOOP_MIDDLE list SPLITTER_END_COMMAND LOOP_END SPLITTER_END_COMMAND
@@ -72,7 +72,7 @@ numbers_list : (signed_number)+ ('..' signed_number)?
     | '{' signed_number '..' signed_number ('..' signed_number)?  '}'
     ; //git
 
-// {1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}
+    // {1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}
 
 signed_number : ('+' | '-') number
     ; //git
@@ -125,10 +125,10 @@ pipeline_separator: SPLITTER_END_COMMAND
 list:   (pipeline pipeline_separator)+
     ;
 
-case_statement: CASE_START VARIABLE single_case+ ( '*)' instruction ';;' )? CASE_END
-    ;
+/* done */case_statement: CASE_START VARIABLE single_case+ ( '*)' instruction ';;' )? CASE_END
+   ;
 
-single_case:    ( ( ALPHANUMERIC ( PIPE ALPHANUMERIC)* ) | STRING ) ')' instruction ';;'
+/* done */single_case:    ( ( ALPHANUMERIC ( PIPE ALPHANUMERIC)* ) | STRING ) ')' instruction ';;'
     ;
 
 select:     SELECT ALPHANUMERIC (LOOP_IN )

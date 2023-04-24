@@ -5,12 +5,12 @@ program
 
 instruction
     : COMMENT
-//    |   SPLITTER_ID
+    | SPLITTER_END_COMMAND
 //    |   EPSILON
 //    |(SPLITTER_END_COMMAND instruction)+ //TODO:
 //    |   if
 //    |   for
-//    |   while
+    |   while_loop
 //    |   until
     |   case_statement
 //    |   select
@@ -28,11 +28,48 @@ single_case
     :    ( ( ALPHANUMERIC ( PIPE ALPHANUMERIC)* ) | STRING ) R_PARENTH_ROUND instruction* BRAKE_ABSOLUTE
     ;
 
+while_loop
+    :  WHILE_LOOP_BEGIN /*TODO ( list |  )*/ SPLITTER_END_COMMAND LOOP_MIDDLE instruction* LOOP_END SPLITTER_END_COMMAND
+    ;
+
+for_loop
+    :    FOR_LOOP_BEGIN for_loop_argument LOOP_MIDDLE instruction*  SPLITTER_END_COMMAND  LOOP_END SPLITTER_END_COMMAND
+    ;
+
+for_loop_argument //argument pętli for znajdujący się między "for", a ""
+    : L_PARENTH_ROUND L_PARENTH_ROUND  /*TODO: expr*/  SINGLE_SEMICOLON  /*TODO: bool_condition*/  SINGLE_SEMICOLON  /*TODO: expr*/  L_PARENTH_ROUND L_PARENTH_ROUND SPLITTER_END_COMMAND//(( i=0 ; i<10 ; i++ ))
+    | ALPHANUMERIC (LOOP_IN (CHAR_CHAIN )+)* SPLITTER_END_COMMAND // ???
+    | VARIABLE LOOP_IN numbers_list // {1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}
+    | // TODO: $(command)
+    ;
+
+numbers_list // {1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}
+    : (signed_number)+ ('..' signed_number)?
+    | '{' signed_number '..' signed_number ('..' signed_number)?  '}'
+    ;
+
+signed_number
+    : ('+' | '-') number
+    ;
+
+number
+    : number_integer
+    | number_float
+    ;
+
+number_float
+    : number_integer ('.'|',') (DIGIT)*
+    ;
+
+number_integer
+    : NON_ZERO_DIGIT DIGIT*
+    ;
 COMMENT                     :   '#'~[\n]+'\n';
 //EPSILON                     :   ;
 //WORD                        :   ~[\n|&;()<> \t];         //  word, bo character chain zajęte
 
 //ID                          :   [a-zA-Z][a-zA-Z0-9_]*;
+SINGLE_SEMICOLON            :   ';';
 WHILE_LOOP_BEGIN            :   'while';
 UNTIL_LOOP_BEGIN            :   'until';
 FOR_LOOP_BEGIN              :   'for';
@@ -102,6 +139,6 @@ CREATE_VARABLE              :   'declare';
 HOMEFOLDER                  :   '~';
 THIS_FOLDER                 :   '.';
 LAST_FOLDER                 :   '..';
+NON_ZERO_DIGIT              :   [1-9];
 DIGIT                       :   [0-9];
-NON_ZERO_DIGIT              :   [0-9];      //  What's the difference???
 ALPHANUMERIC                :   [a-zA-Z0-9_]+;           //  name          //  name
