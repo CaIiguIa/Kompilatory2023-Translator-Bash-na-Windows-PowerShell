@@ -78,15 +78,11 @@ number_float
 
 variable_from_command
 
-    :	COMMENT instruction* EOF
-    ;
     : DOLLAR_SIGN L_PARENTH_ROUND pipeline_list R_PARENTH_ROUND
     ;
 
 variable
 
-    :	COMMENT instruction* EOF
-    ;
     : VARIABLE
     | SCRIPT_ARGUMENT_NUMBER
     | SCRIPT_ARGUMENT
@@ -113,8 +109,6 @@ string
 
 block
 
-    :	COMMENT instruction* EOF
-    ;
     :	L_PARENTH_ROUND (splitter_end_command|white_symbol)* pipeline_list (splitter_end_command|white_symbol)* R_PARENTH_ROUND
     |	L_PARENTH_CURLY (splitter_end_command|white_symbol)* pipeline_list (splitter_end_command|white_symbol)* R_PARENTH_CURLY
     |   DOUBLE_L_PARENTH_ROUND white_symbol* expr_maker white_symbol* DOUBLE_R_PARENTH_ROUND
@@ -141,7 +135,7 @@ expr
 
 
 
-math_expr // boolowa wartość bez nawiasów / && / ||
+math_expr 
 
     :	math_expr white_symbol* (PLUS | MINUS | WILDCARD_OR_MULTIPLY | DIVIDE | MODULO | WILDCARD_OR_MULTIPLY WILDCARD_OR_MULTIPLY ) white_symbol* math_expr
     |   L_PARENTH_ROUND white_symbol+ math_expr white_symbol+ R_PARENTH_ROUND
@@ -208,8 +202,6 @@ coprocess
 
 splitter_end_command
 
-    :	COMMENT instruction* EOF
-    ;
     : SINGLE_SEMICOLON
     | NEW_LINE
     ;
