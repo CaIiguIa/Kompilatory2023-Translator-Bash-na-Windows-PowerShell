@@ -1,136 +1,221 @@
-## Gramatyka
+# Gramatyka 
 
-"" - oznaczenia na znak pusty - epsilon
+program
+    
+    :	COMMENT instruction* EOF
+    ;
+
+instruction
+
+    :	COMMENT
+    |   function
+    |   if_statement
+    |   for_loop
+    |   while_loop 
+    |   until_loop
+    |   case_statement
+    |   select
+    |   coprocess
+    |   white_symbol+
+    |	pipeline_list
+    |	splitter_end_command
+    ;
+
+## Pętle, case, if
+
+case_statement
+
+    :	CASE_START white_symbol+ (variable | APOSTROPHE variable APOSTROPHE) white_symbol+ LOOP_IN (white_symbol | splitter_end_command)* single_case+ ( CASE_DEFAULT instruction* BREAK_ABSOLUTE)? (splitter_end_command | white_symbol)* CASE_END splitter_end_command
+    ;
+
+single_case
+
+    :	(white_symbol | splitter_end_command)* ( ( ( ALPHANUMERIC+ | string ) (white_symbol+ PIPE white_symbol+ ( ALPHANUMERIC+ | string ) )* )  ) white_symbol* R_PARENTH_ROUND white_symbol* splitter_end_command instruction* BREAK_ABSOLUTE white_symbol* splitter_end_command
+    ;
+
+until_loop
+
+    :	UNTIL_LOOP_BEGIN (variable| variable_from_command block) splitter_end_command LOOP_MIDDLE instruction* LOOP_END splitter_end_command
+    ;
+
+if_statement
+
+    :	IF_START white_symbol* block white_symbol* splitter_end_command white_symbol*  IF_MIDDLE instruction* (ELSE_IF white_symbol* block splitter_end_command+ white_symbol* IF_MIDDLE white_symbol* instruction* )* (ELSE (white_symbol* | splitter_end_command) instruction* )? IF_END white_symbol* splitter_end_command
+    ;
+
+while_loop
+
+    :	WHILE_LOOP_BEGIN white_symbol* block white_symbol* splitter_end_command white_symbol* LOOP_MIDDLE white_symbol* instruction* LOOP_END splitter_end_command
+    ;
+
+for_loop
+
+    :	FOR_LOOP_BEGIN white_symbol* for_loop_argument white_symbol* LOOP_MIDDLE (splitter_end_command | white_symbol)+ instruction*  (splitter_end_command| white_symbol)*  LOOP_END splitter_end_command
+    ;
+
+for_loop_argument
+
+    :	ALPHANUMERIC+ white_symbol+ LOOP_IN white_symbol numbers_pipeline_list_for_loop splitter_end_command // zmienna in [{1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}]
+    ;
+
+numbers_pipeline_list_for_loop 
+
+    :	(signed_number white_symbol)+ ('..' white_symbol signed_number)?
+    |   '{' signed_number white_symbol '..' white_symbol signed_number (white_symbol '..' white_symbol signed_number)?  '}'
+    ;
+
+## Zmienne i wartości
+
+signed_number
+
+    :	('+' | '-')? number_float
+    ;
+
+number_float
+
+    :	NUMBER (('.'|',') (DIGIT)*)?
+    ;
+
+variable_from_command
+
+    :	COMMENT instruction* EOF
+    ;
+    : DOLLAR_SIGN L_PARENTH_ROUND pipeline_list R_PARENTH_ROUND
+    ;
+
+variable
+
+    :	COMMENT instruction* EOF
+    ;
+    : VARIABLE
+    | SCRIPT_ARGUMENT_NUMBER
+    | SCRIPT_ARGUMENT
+    ;
+
+variable_or_number /*zmienna, liczba*/
+
+    :	variable
+    |   id
+    |   signed_number
+    ;
+
+id
+
+    :	ALPHA ALPHANUMERIC*
+    ;
+
+string
+
+    :	APOSTROPHE ~(APOSTROPHE)* APOSTROPHE
+    ;   
+
+## Wyrażenia zwracające bool
+
+block
+
+    :	COMMENT instruction* EOF
+    ;
+    :	L_PARENTH_ROUND (splitter_end_command|white_symbol)* pipeline_list (splitter_end_command|white_symbol)* R_PARENTH_ROUND
+    |	L_PARENTH_CURLY (splitter_end_command|white_symbol)* pipeline_list (splitter_end_command|white_symbol)* R_PARENTH_CURLY
+    |   DOUBLE_L_PARENTH_ROUND white_symbol* expr_maker white_symbol* DOUBLE_R_PARENTH_ROUND
+    |   CONDITION_LEFT_SINGLE white_symbol* expr_maker white_symbol* CONDITION_RIGHT_SINGLE
+    |   CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE white_symbol expr_maker white_symbol CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE
+    |   block white_symbol* ( CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE ) white_symbol* block
+    ;
+
+expr_maker
+
+    :	expr
+    |   expr white_symbol* (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAND) white_symbol* expr_maker
+    ;
+
+expr 
+
+    :	variable_or_number white_symbol* compare white_symbol* variable_or_number
+    |   math_expr white_symbol* compare white_symbol* math_expr
+    |   BOOL
+    |   variable_or_number ( PLUS PLUS | MINUS MINUS ) 
+    |   ( PLUS PLUS | MINUS MINUS ) variable_or_number 
+    |   string white_symbol* CONDITION_EQ CONDITION_EQ? white_symbol* string
+    ;
 
 
-### Symbole nieterminalne
 
+math_expr // boolowa wartość bez nawiasów / && / ||
 
-START <= "#!/bin/bash"  INSTRUCTION;
+    :	math_expr white_symbol* (PLUS | MINUS | WILDCARD_OR_MULTIPLY | DIVIDE | MODULO | WILDCARD_OR_MULTIPLY WILDCARD_OR_MULTIPLY ) white_symbol* math_expr
+    |   L_PARENTH_ROUND white_symbol+ math_expr white_symbol+ R_PARENTH_ROUND
+    |   variable_or_number
+    ;
 
+compare
 
-INSTRUCTION <= INSTRUCTION INSTRUCTION
-|| Comment
-|| White_Space
-|| “”
-|| IF_INSTRUCTION
-|| FOR_LOOP
-|| WHILE_LOOP
-|| UNTIL_LOOP
-|| SWITCH
-|| SELECT
-|| COPROCESS
-|| LIST
+    :	CONDITION_EQ
+    |   CONDITION_GT
+    |   CONDITION_NEQ
+    |   CONDITION_GE
+    |   CONDITION_LT
+    |   CONDITION_LE
+    |   POINTER_LEFT
+    |   POINTER_RIGHT
+    ;
 
-IF_INSTRUCTION <= T_if_początek BOOL_CONDITION_PARENTHESIS T_if_środek
-INSTRUCTION (T_warunek_else_if BOOL_CONDITION_PARENTHESIS T_if_środek
-INSTRUCTION)* (T_warunek_else T_if_środek INSTRUCTION) T_if_koniec
+# Komendy i pipeline'y
 
-BOOL_CONDITION_PARENTHESIS <= T_warunek_początek_pojedyńczy BOOL_CONDITION T_warunek_koniec_pojedyńczy
-|| T_warunek_początek_podwójny BOOL_CONDITION_STRING T_warunek_koniec_podwójny;
+word
 
-BOOL_CONDITION <= VARIABLE BOOL_OPERATOR VARIABLE
-BOOL_CONDITION_STRING <= VARIABLE (BOOL_OPERATOR | T_warunek_equal_string) VARIABLE
+    :	~(PIPE|AMPERSAND|SINGLE_SEMICOLON|L_PARENTH_ROUND|R_PARENTH_ROUND|POINTER_LEFT|POINTER_RIGHT|SPACE|TAB|NEW_LINE|WHILE_LOOP_BEGIN|UNTIL_LOOP_BEGIN|FOR_LOOP_BEGIN|LOOP_MIDDLE|IF_START|IF_MIDDLE|IF_END|LOOP_IN|ELSE|ELSE_IF|CASE_START|CASE_END|FUNCTION_START|SELECT|COPROCESS_START|TIME|CREATE_VARABLE)+
+    ;
 
-BOOL_OPERATOR <= T_warunek_equal
-|| T_warunek_gt
-|| T_warunek_ge
-|| T_warunek_lt
-|| T_warunek_le                                                                                         
-|| T_warunek_not_equal
+command
 
-FOR_LOOP <= T_for_początek VARIABLE T_loop_in FOR_LOOP_ARG T_pętla_środek INSTRUCTION T_pętla_koniec
+    :	white_symbol* word white_symbol*
+    ;
 
-FOR_LOOP_ARG <= C_STYLE_CONDITION
-|| NUMBERS_LIST
-|| VARIABLE_LIST
-|| VARIABLE_FROM_COMMAND
+pipe_symbol
 
-C_STYLE_CONDITION <= “((”  EXPRESSION_ASSIGN_VALUE “;” BOOLEAN_CONDITION   “;”    EXPRESSION  “))”
-|| “((”  “;”  “;”  “))”
+    :	PIPE
+    |	PIPE AMPERSAND
+    ;
 
-//(( c=1; c<=5; c++ )), Użyte do for
+pipeline
 
-NUMBERS_LIST <= SIGNED_NUMBER (SIGNED_NUMBER)* (“..” SIGNED_NUMBER)
-|| “{“ SIGNED_NUMBER “..” SIGNED_NUMBER (“..” SIGNED_NUMBER)?  “}”
+    :	(TIME ('-p')?)? (BOOL_NEGATION)? command ((pipe_symbol)? command)+
+    ;
 
-// {1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}
+pipeline_list
 
+    :	(pipeline (SINGLE_SEMICOLON|NEW_LINE))+ splitter_end_command?
+    ;
 
-SIGNED_NUMBER <= “+” NUMBER 
-|| “-” NUMBER
+function
 
-NUMBER <= NUMBER_INTEGER 
-|| NUMBER_FLOAT
+    :	white_symbol* (ALPHANUMERIC)+ white_symbol* L_PARENTH_ROUND R_PARENTH_ROUND white_symbol* block /*(return_output)?*/
+    |   FUNCTION_START white_symbol* (ALPHANUMERIC)+ white_symbol* (L_PARENTH_ROUND R_PARENTH_ROUND white_symbol*)? block /*(return_output)?*/
+    ;
 
-NUMBER_FLOAT <= NUMBER_INTEGER “.|,” NUMBER*
+select
 
-NUMBER_INTEGER <= NON_ZERO_DIGIT 
-|| T_DIGIT T_DIGIT
+    :	SELECT white_symbol* ALPHANUMERIC+ white_symbol* (LOOP_IN white_symbol* word)? white_symbol* splitter_end_command white_symbol* LOOP_MIDDLE pipeline_list white_symbol* LOOP_END
+    ;
 
-NON_ZERO_DIGIT <= “1|2|3|4|5|6|7|8|9”
+coprocess
 
-VARIABLE_LIST <= ARGUMENT 
-|| ARGUMENT VARIABLE_LIST
+    :	COPROCESS_START (ALPHANUMERIC)* command 
+    ;
 
-//lista argumentów, uzyte do for
+# Znaki specjalne
 
-ARGUMENT_
-//plików (pliki, zmienne, katalog)
+splitter_end_command
 
-VARIABLE_FROM_COMMAND $(Linux-Or-Unix-Command-Here)
+    :	COMMENT instruction* EOF
+    ;
+    : SINGLE_SEMICOLON
+    | NEW_LINE
+    ;
 
-EXPRESSION_ASSIGN_VALUE <= T_identyfikator “=”
+white_symbol
 
-// przypisanie zmienna = wartość
-COMMAND <= T_identyfikator T_rozdzielacz_komend
-
-
-EXPRESSION <= EXPRESSION_ASSIGN_VALUE
-
-// zmiana wartości zmiennej
-
-VALUE <= T_String ||
-
-// cat plik.txt | grep -e “[0-9]+”
-
-PIPLINE_BEGIN_1 <= “”
-|| PIPLINE_BEGIN_2
-|| PIPLINE_BEGIN_2 T_Negacja_wyrażeń_boolowskich
-
-PIPLINE_BEGIN_2 <= T_czas
-||  T_czas -p
-
-PILPLINE <= PIPLINE_BEGIN COMMAND PIPLINE_POWTÓRZENIE
-
-PIPLINE_POWTÓRZENIE <= COMMAND PIPLINE_POWTÓRZENIE
-|| T_pipe COMMAND PIPLINE_POWTÓRZENIE
-|| T_pipe_z_błędami COMMAND PIPLINE_POWTÓRZENIE
-|| “”
-
-// cat plik.txt | grep -e “[0-9]+”; * kilka
-
-LISTA_RODZIELACZ <= T_rozdzielacz_koniec_komend
-|| T_zabice_asynchronicznej_komendy
-|| T_warunek_AND_Nieunarne
-|| T_warunek_OR_Nieunarne
-|| LISTA_RODZIELACZ_MN
-
-LISTA_RODZIELACZ_MN <= T_rozdzielacz_koniec_komend LISTA_RODZIELACZ_MN
-|| “”
-
-LIST <= PIPLINE LISTA_RODZIELACZ LIST
-|| PIPLINE LISTA_RODZIELACZ
-|| INSTRUCTION
-
-WHILE_LOOP <= T_while_początek BOOL_CONDITION_PARENTHESIS T_rozdzielacz_koniec_komend T_pętla_środek_ LIST T_rozdzielacz_koniec_komend T_pętla_koniec
-
-UNTIL_LOOP <= T_until_początek BOOL_CONDITION_PARENTHESIS T_rozdzielacz_koniec_komend T_pętla_środek_ LIST T_rozdzielacz_koniec_komend T_pętla_koniec
-
-SWITCH_
-
-SELECT_
-
-FUNCTIONS_
-
-COPROCESSES_
+    :	SPACE
+    |	TAB
+    ;
