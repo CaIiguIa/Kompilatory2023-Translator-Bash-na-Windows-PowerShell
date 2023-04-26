@@ -13,7 +13,7 @@ instruction
     |   while_loop
     |   until_loop
     |   case_statement
-//    |   select
+    |   select
 //    |   COPROCESS   //  TODO:::
     |	pipeline_list
     |	splitter_end_command
@@ -171,6 +171,13 @@ function:   white_symbol* (ALPHANUMERIC)+ white_symbol* L_PARENTH_ROUND R_PARENT
     |   FUNCTION_START white_symbol+ (ALPHANUMERIC)+ white_symbol* (L_PARENTH_ROUND R_PARENTH_ROUND white_symbol*)? block /*(return_output)?*/
     ;
 
+select
+	:	SELECT white_symbol* ALPHANUMERIC+ white_symbol* (LOOP_IN white_symbol* word)? white_symbol* splitter_end_command white_symbol* LOOP_MIDDLE pipeline_list white_symbol* LOOP_END
+    ;
+
+
+
+
 //
 
 //           * / %  multiplication, division, remainder
@@ -191,10 +198,6 @@ id
 string
     : APOSTROPHE ~(APOSTROPHE|APOSTROPHE)* APOSTROPHE
     ;   //  TODO: Make sure that: " dsdadad\" " is whole string( " dsdadad\" " ) not a " dsdadad\" ????
-
-char_chain
-	:	SINGLE_APOSTROPHE ~SINGLE_APOSTROPHE* SINGLE_APOSTROPHE
-	;
 
 
 //EPSILON                     :   ;
@@ -268,6 +271,6 @@ TILDA                       :   '~';
 LAST_FOLDER                 :   '..';
 THIS_FOLDER                 :   '.';
 NUMBER                      :   [1-9][0-9]*;
-ALPHANUMERIC                :   [a-zA-Z0-9_];           //  name
+ALPHANUMERIC                :   [a-zA-Z0-9_];
 ALPHA                       :   [A-Za-z];
 DIGIT                       :   [0-9];
