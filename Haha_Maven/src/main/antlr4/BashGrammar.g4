@@ -17,7 +17,7 @@ instruction
     |   case_statement
 //    |   select
 //    |   COPROCESS   //  TODO:::
-//    |   list
+    |   list
 //    |   function
 //    |   //  TODO: ADD missing ones
     ;
@@ -87,21 +87,21 @@ expr_maker
     : BOOL_NEGATION expr_maker   //logical negation
 //    : L_PARENTH_ROUND expr_maker R_PARENTH_ROUND
     | TILDA expr  //bitwise negation
-    | expr_maker (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | KILL_ASYNCH_COMMAND) expr_maker // list (|| albo | albo & albo &&) list ;
+    | expr_maker (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) expr_maker // list (|| albo | albo & albo &&) list ;
     | L_PARENTH_ROUND L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND R_PARENTH_ROUND // (()) condition - && == string arithmetic
 //    | CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE d_square_expr_maker  CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE// [[]] condition
 // TODO    | CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE s_square_expr CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE//
     | /*TODO: list*/
     ;
 //d_square_expr_maker
-//    : d_round_expr (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | KILL_ASYNCH_COMMAND) d_round_expr_maker
+//    : d_round_expr (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) d_round_expr_maker
 //    | L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND
 //    |d_round_expr
 //    ;
 //
 //d_square_expr // dodać -eq itp
-//    : expr  (EQ EQ? /*==-porównanie, =-przypisanie*/|  OVERWRITE_FILE_ON_THE_RIGHT | OVERWRITE_FILE_ON_THE_RIGHT OVERWRITE_FILE_ON_THE_RIGHT | OVERWRITE_FILE_ON_THE_LEFT | OVERWRITE_FILE_ON_THE_LEFT OVERWRITE_FILE_ON_THE_LEFT) expr
-//    | expr ( OVERWRITE_FILE_ON_THE_LEFT EQ | OVERWRITE_FILE_ON_THE_RIGHT EQ | BOOL_NEGATION EQ )  expr
+//    : expr  (EQ EQ? /*==-porównanie, =-przypisanie*/|  POINTER_RIGHT | POINTER_RIGHT POINTER_RIGHT | POINTER_LEFT | POINTER_LEFT POINTER_LEFT) expr
+//    | expr ( POINTER_LEFT EQ | POINTER_RIGHT EQ | BOOL_NEGATION EQ )  expr
 //    | BOOL
 //    | variable_or_number ( PLUS PLUS | MINUS MINUS ) //id++ id-- -- teoretycznie dziala w bashu dla id, zmiennej i liczby
 //    | ( PLUS PLUS | MINUS MINUS ) variable_or_number //++id --id
@@ -109,14 +109,14 @@ expr_maker
 //    ;
 
 d_round_expr_maker
-    : d_round_expr (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | KILL_ASYNCH_COMMAND) d_round_expr_maker
+    : d_round_expr (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) d_round_expr_maker
     | L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND
     |d_round_expr
     ;
 
 d_round_expr // single, atomic  epression returning bool
-    : expr  (EQ EQ? /*==-porównanie, =-przypisanie*/|  OVERWRITE_FILE_ON_THE_RIGHT | OVERWRITE_FILE_ON_THE_RIGHT OVERWRITE_FILE_ON_THE_RIGHT | OVERWRITE_FILE_ON_THE_LEFT | OVERWRITE_FILE_ON_THE_LEFT OVERWRITE_FILE_ON_THE_LEFT) expr
-    | expr ( OVERWRITE_FILE_ON_THE_LEFT EQ | OVERWRITE_FILE_ON_THE_RIGHT EQ | BOOL_NEGATION EQ )  expr
+    : expr  (EQ EQ? /*==-porównanie, =-przypisanie*/|  POINTER_RIGHT | POINTER_RIGHT POINTER_RIGHT | POINTER_LEFT | POINTER_LEFT POINTER_LEFT) expr
+    | expr ( POINTER_LEFT EQ | POINTER_RIGHT EQ | BOOL_NEGATION EQ )  expr
     | BOOL
     | variable_or_number ( PLUS PLUS | MINUS MINUS ) //id++ id-- -- teoretycznie dziala w bashu dla id, zmiennej i liczby
     | ( PLUS PLUS | MINUS MINUS ) variable_or_number //++id --id
@@ -136,14 +136,38 @@ expr // boolowa wartość bez nawiasów / && / ||
     | variable_or_number
     ;
 
-numeric_expression_maker
-    :
+//numeric_expression_maker
+//    :
+//    ;
+
+//numeric_expression
+//    :	signed_number
+//    ;
+
+white_symbol
+	:	SPACE
+	|	TAB
+	;
+
+word
+	:	~(PIPE|AMPERSAN|SINGLE_SEMICOLON|L_PARENTH_ROUND|R_PARENTH_ROUND|POINTER_LEFT|POINTER_RIGHT|SPACE|TAB|NEW_LINE)+
+	;
+
+command
+	:	white_symbol* word white_symbol*
     ;
 
-numeric_expression
-    :
-    | signed_number
+pipe_symbol
+	:	PIPE
+	|	PIPE AMPERSAN
+	;
 
+pipeline
+	:	(TIME ('-p')?)? (BOOL_NEGATION)? command ((pipe_symbol)? command)+
+    ;
+
+list
+	:   (pipeline (SINGLE_SEMICOLON|NEW_LINE))+
     ;
 
 
@@ -168,10 +192,18 @@ string
     : APOSTROPHE ~APOSTROPHE* APOSTROPHE
     ;   //  TODO: Make sure that: " dsdadad\" " is whole string( " dsdadad\" " ) not a " dsdadad\" ????
 
+char_chain
+	:	SINGLE_APOSTROPHE ~SINGLE_APOSTROPHE* SINGLE_APOSTROPHE
+	;
+
+
 //EPSILON                     :   ;
 //WORD                        :   ~[\n|&;()<> \t];         //  word, bo character chain zajęte
 
+SPACE						:	' ';
+TAB							:	[\t];
 COMMENT                     :   '#'~[\n]+'\n';
+SINGLE_APOSTROPHE			:	['];
 APOSTROPHE                  :   '"';
 SINGLE_SEMICOLON            :   ';';
 WHILE_LOOP_BEGIN            :   'while';
@@ -211,30 +243,27 @@ SCRIPT_ARGUMENT             :   '$'[0-9];
 BOOL                        :   ('true'|'false');
 HEX_NUMBER_WITHOUT_SIGN     :   ('Ox'|'16#')[0-9A-Fa-f]+;
 OCTAL_NUMBER_WITHOUT_SIGN   :   ('O'|'8#')[0-7]+;
-SPLITTER_ID                 :   (' '|'\t')->skip;
-
 NEW_LINE                    :   '\n';
-PIPE_WITH_ERRORS            :   '|&'; // //może być wyłapywane przez ten niżej
 PIPE                        :   '|';
 PLUS                        :   '+';
 WILDCARD_OR_MULTIPLY        :   '*';
 WILDCARD                    :   '?';
 MINUS                       :   '-';
 DIVIDE                      :   '/';
-KILL_ASYNCH_COMMAND         :   '&';
+AMPERSAN					:   '&';
 L_PARENTH_ROUND             :   '(';
 R_PARENTH_ROUND             :   ')';
 L_PARENTH_CURLY             :   '{';
 R_PARENTH_CURLY             :   '}';
-OVERWRITE_FILE_ON_THE_RIGHT :   '>';
-OVERWRITE_FILE_ON_THE_LEFT  :   '<';
+POINTER_RIGHT				:   '>';
+POINTER_LEFT				:   '<';
 BOOL_NEGATION               :   '!';
 FUNCTION_START              :   'function';
 SELECT                      :   'select';
 ASYNCHRONIZATION            :   'coproc';
 TIME                        :   'time';
 CREATE_VARABLE              :   'declare';
-TILDA                       :   '~'; //previously homefolder
+TILDA                       :   '~';
 LAST_FOLDER                 :   '..';
 THIS_FOLDER                 :   '.';
 NUMBER                      :   [1-9][0-9]*;
