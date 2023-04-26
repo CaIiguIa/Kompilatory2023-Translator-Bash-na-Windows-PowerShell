@@ -14,7 +14,7 @@ instruction
     |   until_loop
     |   case_statement
     |   select
-//    |   COPROCESS   //  TODO:::
+    |   coprocess
     |	pipeline_list
     |	splitter_end_command
 //    |   //  TODO: ADD missing ones
@@ -175,7 +175,9 @@ select
 	:	SELECT white_symbol* ALPHANUMERIC+ white_symbol* (LOOP_IN white_symbol* word)? white_symbol* splitter_end_command white_symbol* LOOP_MIDDLE pipeline_list white_symbol* LOOP_END
     ;
 
-
+coprocess
+	:	COPROCESS_START (ALPHANUMERIC)* command //redirections
+	;
 
 
 //
@@ -264,7 +266,7 @@ POINTER_LEFT				:   '<';
 BOOL_NEGATION               :   '!';
 FUNCTION_START              :   'function';
 SELECT                      :   'select';
-ASYNCHRONIZATION            :   'coproc';
+COPROCESS_START				:   'coproc';
 TIME                        :   'time';
 CREATE_VARABLE              :   'declare';
 TILDA                       :   '~';
