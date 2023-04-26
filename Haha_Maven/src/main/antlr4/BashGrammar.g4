@@ -7,7 +7,7 @@ program
 
 instruction
     :	COMMENT
-//    |   function
+    |   function
     |   if_statement
     |   for_loop
     |   while_loop
@@ -15,7 +15,7 @@ instruction
     |   case_statement
 //    |   select
 //    |   COPROCESS   //  TODO:::
-    |	block
+    |	pipeline_list
     |	splitter_end_command
 //    |   //  TODO: ADD missing ones
     ;
@@ -147,7 +147,7 @@ white_symbol
 	;
 
 word
-	:	~(PIPE|AMPERSAN|SINGLE_SEMICOLON|L_PARENTH_ROUND|R_PARENTH_ROUND|POINTER_LEFT|POINTER_RIGHT|SPACE|TAB|NEW_LINE)+
+	:	~(PIPE|AMPERSAN|SINGLE_SEMICOLON|L_PARENTH_ROUND|R_PARENTH_ROUND|POINTER_LEFT|POINTER_RIGHT|SPACE|TAB|NEW_LINE|WHILE_LOOP_BEGIN|UNTIL_LOOP_BEGIN|FOR_LOOP_BEGIN|LOOP_MIDDLE|IF_START|IF_MIDDLE|IF_END|LOOP_IN|ELSE|ELSE_IF|CASE_START|CASE_END|FUNCTION_START|SELECT|ASYNCHRONIZATION|TIME|CREATE_VARABLE)+
 	;
 
 command
@@ -167,8 +167,8 @@ pipeline_list
 	:   (pipeline (SINGLE_SEMICOLON|NEW_LINE))+
     ;
 
-function:   id white_symbol L_PARENTH_ROUND R_PARENTH_ROUND block /*(return_output)?*/
-    |   FUNCTION_START id (L_PARENTH_ROUND R_PARENTH_ROUND)? block /*(return_output)?*/
+function:   white_symbol* (ALPHANUMERIC)+ white_symbol* L_PARENTH_ROUND R_PARENTH_ROUND white_symbol* block /*(return_output)?*/
+    |   FUNCTION_START white_symbol+ (ALPHANUMERIC)+ white_symbol* (L_PARENTH_ROUND R_PARENTH_ROUND white_symbol*)? block /*(return_output)?*/
     ;
 
 //
