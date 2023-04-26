@@ -1,6 +1,6 @@
 # Gramatyka 
 
-program
+Symbol startowy: program
     
     :	COMMENT instruction* EOF
     ;
