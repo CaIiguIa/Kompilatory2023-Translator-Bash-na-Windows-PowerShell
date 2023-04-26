@@ -103,7 +103,7 @@ EXPRESSION_ASSIGN_VALUE : ID '='
     ;
 
 //  Every possible command like cat , grep , man , ls , ....
-command : ID SPLITTER_ID
+/* done */command : ID SPLITTER_ID
     ;
 
 
@@ -112,17 +112,17 @@ command : ID SPLITTER_ID
 //VALUE : STR ||
 
 // cat plik.txt | grep -e '[0-9]+'
-pipeline: (TIME ('-p')?)? (BOOL_NEGATION)? command ((PIPE|PIPE_WITH_ERRORS)? (command)+)?
+/* done */pipeline: (TIME ('-p')?)? (BOOL_NEGATION)? command ((PIPE|PIPE_WITH_ERRORS)? (command)+)?
     ;
 
-pipeline_separator: SPLITTER_END_COMMAND
+/* done */pipeline_separator: SPLITTER_END_COMMAND
     |   KILL_ASYNCH_COMMAND
     |   CONDITION_DOUBLE_AMPERSAND
     |   CONDITION_DOUBLE_PIPE
     ;
 
 // cat plik.txt | grep -e '[0-9]+'; * kilka lini
-list:   (pipeline pipeline_separator)+
+/* done */list:   (pipeline pipeline_separator)+
     ;
 
 /* done */case_statement: CASE_START VARIABLE single_case+ ( '*)' instruction ';;' )? CASE_END

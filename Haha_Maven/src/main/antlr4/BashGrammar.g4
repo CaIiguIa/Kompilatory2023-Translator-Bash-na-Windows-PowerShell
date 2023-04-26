@@ -1,5 +1,4 @@
 grammar BashGrammar;
-//TODO: Reintrodukcja list
 
 //TODO: (NA KOŃCU) Poprawić for, while, if ,itp żeby było jak w man bash -u
 program
@@ -7,9 +6,8 @@ program
     ;
 
 instruction
-    : COMMENT
-    | splitter_end_command
-//    |   EPSILON
+    :	COMMENT
+//    |   function
     |   if_statement
     |   for_loop
     |   while_loop
@@ -17,8 +15,8 @@ instruction
     |   case_statement
 //    |   select
 //    |   COPROCESS   //  TODO:::
-    |   list
-//    |   function
+    |	block
+    |	splitter_end_command
 //    |   //  TODO: ADD missing ones
     ;
 
@@ -48,11 +46,11 @@ for_loop
 for_loop_argument //argument pętli for znajdujący się między "for", a ""
     : L_PARENTH_ROUND L_PARENTH_ROUND  /*TODO: expr*/  SINGLE_SEMICOLON  expr_maker  SINGLE_SEMICOLON  /*TODO: expr*/  R_PARENTH_ROUND R_PARENTH_ROUND splitter_end_command//(( i=0 ; i<10 ; i++ ))
 // TODO: (ocochodzi)    | ALPHANUMERIC+ (LOOP_IN (CHAR_CHAIN )+)* splitter_end_command // ???
-    | ALPHANUMERIC+ LOOP_IN numbers_list_for_loop splitter_end_command // {1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}
+    | ALPHANUMERIC+ LOOP_IN numbers_pipeline_list_for_loop splitter_end_command // {1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}
     | ALPHANUMERIC+ LOOP_IN variable_from_command splitter_end_command// $(command)
     ;
 
-numbers_list_for_loop // {1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}
+numbers_pipeline_list_for_loop // {1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}
     : (signed_number)+ ('..' signed_number)?
     | '{' signed_number '..' signed_number ('..' signed_number)?  '}'
     ;
@@ -66,7 +64,7 @@ number_float
     ;
 
 variable_from_command
-    : DOLLAR_SIGN L_PARENTH_ROUND /*TODO:list*/ R_PARENTH_ROUND
+    : DOLLAR_SIGN L_PARENTH_ROUND pipeline_list R_PARENTH_ROUND
     ;
 
 splitter_end_command        
@@ -75,23 +73,22 @@ splitter_end_command
     ;
 
 block
-    :  L_PARENTH_ROUND /*TODO::list*/ R_PARENTH_ROUND
-    |   L_PARENTH_CURLY  /*TODO::list*/ splitter_end_command  R_PARENTH_CURLY
+    :	L_PARENTH_ROUND (splitter_end_command|white_symbol)* pipeline_list (splitter_end_command|white_symbol)* R_PARENTH_ROUND
+    |	L_PARENTH_CURLY (splitter_end_command|white_symbol)* pipeline_list (splitter_end_command|white_symbol)* R_PARENTH_CURLY
     |   L_PARENTH_ROUND L_PARENTH_ROUND expr R_PARENTH_ROUND R_PARENTH_ROUND
     |   CONDITION_LEFT_SINGLE  expr  CONDITION_RIGHT_SINGLE
-    |   CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE  expr  CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE
-    |   // TODO::: FINISH or check if all are listed here // chyba wszystkie, co były w man bash -u
+    |   CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE white_symbol expr white_symbol CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE
     ;
 
 expr_maker
     : BOOL_NEGATION expr_maker   //logical negation
 //    : L_PARENTH_ROUND expr_maker R_PARENTH_ROUND
     | TILDA expr  //bitwise negation
-    | expr_maker (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) expr_maker // list (|| albo | albo & albo &&) list ;
+    | expr_maker (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) expr_maker // pipeline_list (|| albo | albo & albo &&) pipeline_list ;
     | L_PARENTH_ROUND L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND R_PARENTH_ROUND // (()) condition - && == string arithmetic
 //    | CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE d_square_expr_maker  CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE// [[]] condition
 // TODO    | CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE s_square_expr CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE//
-    | /*TODO: list*/
+    | /*TODO: pipeline_list*/
     ;
 //d_square_expr_maker
 //    : d_round_expr (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) d_round_expr_maker
@@ -166,10 +163,13 @@ pipeline
 	:	(TIME ('-p')?)? (BOOL_NEGATION)? command ((pipe_symbol)? command)+
     ;
 
-list
+pipeline_list
 	:   (pipeline (SINGLE_SEMICOLON|NEW_LINE))+
     ;
 
+function:   id white_symbol L_PARENTH_ROUND R_PARENTH_ROUND block /*(return_output)?*/
+    |   FUNCTION_START id (L_PARENTH_ROUND R_PARENTH_ROUND)? block /*(return_output)?*/
+    ;
 
 //
 
@@ -189,7 +189,7 @@ id
     ;
 
 string
-    : APOSTROPHE ~APOSTROPHE* APOSTROPHE
+    : APOSTROPHE ~(APOSTROPHE|APOSTROPHE)* APOSTROPHE
     ;   //  TODO: Make sure that: " dsdadad\" " is whole string( " dsdadad\" " ) not a " dsdadad\" ????
 
 char_chain
@@ -250,6 +250,7 @@ WILDCARD_OR_MULTIPLY        :   '*';
 WILDCARD                    :   '?';
 MINUS                       :   '-';
 DIVIDE                      :   '/';
+LEFT_SLASH					:	'\\';
 AMPERSAN					:   '&';
 L_PARENTH_ROUND             :   '(';
 R_PARENTH_ROUND             :   ')';
