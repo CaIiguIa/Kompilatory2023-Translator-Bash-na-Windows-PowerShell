@@ -5,8 +5,8 @@
 | CASE_END                   | 'esac'                                |
 | COMMA                      | ','                                   |
 | MINUS_P                    | '-p'                                  |
-| SPACE                      | ' '                                   |
-| TAB                        | [\t]                                  |
+| SPACE                      | ' '->skip                             |
+| TAB                        | [\t]->skip                            |
 | COMMENT                    | '#'~[\n]+'\n'                         |
 | SINGLE_APOSTROPHE          | [']                                   |
 | APOSTROPHE                 | '"'                                   |
