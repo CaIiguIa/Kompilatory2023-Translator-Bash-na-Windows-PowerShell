@@ -1,5 +1,5 @@
 grammar BashGrammar;
-
+// !Note: Do not change production names or order unless you also change DashToPowershell class
 //TODO: (NA KOŃCU) Poprawić for, while, if ,itp żeby było jak w man bash -u
 program
     :	COMMENT instruction* EOF
