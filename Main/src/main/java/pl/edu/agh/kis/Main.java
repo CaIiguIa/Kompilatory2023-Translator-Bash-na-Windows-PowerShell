@@ -10,23 +10,26 @@ import pl.edu.agh.kis.parser.BashGrammarParser;
 //! NOTE: when /target/generated-sources/antlr4 files are updated, move them to pl.edu.agh.kis.Parser
 public class Main {
     public static void main(String[] args) {
-        System.out.println(1);
-        String inputString = "#!/bin/bash\necho 1\n";
-        String outputPath = "Main/target/generated-sources/out.ps1";
+        //  Lambda performed on each file in the given directory, returns a string written in each output file in Docs/ExampleOutput
+        FileOperation run = (x) -> {
+            try {
+                //lexer
+                CharStream textToParse = CharStreams.fromString(x);
+                BashGrammarLexer lexer = new BashGrammarLexer(textToParse);
 
-        CharStream textToParse = CharStreams.fromString(inputString);
-        //lexer
-        //na później: BashGrammarLexer lexer = new BashGrammarLexer(Charstreams.fromFileName(args[0]));
-        BashGrammarLexer lexer = new BashGrammarLexer(textToParse);
-
-        //parser
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        BashGrammarParser parser = new BashGrammarParser(tokens);
-        BashGrammarParser.ProgramContext tree = parser.program();
-        BashToPowershell translator = new BashToPowershell(outputPath);
-        translator.enterProgram(tree);
-
-//        ParseTreeWalker walker = new ParseTreeWalker();
-//        UppercaseMethodListener listener= new UppercaseMethodListener();
+                //parser
+                CommonTokenStream tokens = new CommonTokenStream(lexer);
+                BashGrammarParser parser = new BashGrammarParser(tokens);
+                BashGrammarParser.ProgramContext tree = parser.program();
+                BashToPowershell translator = new BashToPowershell();
+                translator.enterProgram(tree);
+                translator.exitProgram(tree);
+                return translator.getOutputString();
+            } catch (Exception err) {
+               return err.toString();
+            }
+        };
+        InputOutputFileManager manager = new InputOutputFileManager("Main\\src\\test\\input", "Docs\\Examples\\Output", run);
+        manager.process();
     }
 }

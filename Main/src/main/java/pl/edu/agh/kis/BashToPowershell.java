@@ -3,17 +3,13 @@ package pl.edu.agh.kis;
 import pl.edu.agh.kis.parser.BashGrammarBaseListener;
 import pl.edu.agh.kis.parser.BashGrammarParser;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
 public class BashToPowershell extends BashGrammarBaseListener {
-    public String outputPath;
-    public StringBuilder outputString = new StringBuilder();
+    private StringBuilder outputString = new StringBuilder();
 
-    BashToPowershell(String path) {
-        this.outputPath = path;
+    BashToPowershell() {}
+
+    public String getOutputString() {
+        return outputString.toString();
     }
 
     @Override
@@ -24,24 +20,10 @@ public class BashToPowershell extends BashGrammarBaseListener {
         {
             enterInstruction((BashGrammarParser.InstructionContext) ctx.getChild(childID));
         }
-        exitProgram(ctx);
     }
 
     @Override
-    public void exitProgram(BashGrammarParser.ProgramContext ctx) {
-        try {
-            File outputFile = new File(this.outputPath);
-            BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
-
-            String out = String.valueOf(this.outputString);
-            System.out.println(out);
-            writer.write(out);
-            writer.close();
-        } catch (IOException e) {
-            throw new RuntimeException("Something is wrong with the file: " + e.toString());
-        }
-
-    }
+    public void exitProgram(BashGrammarParser.ProgramContext ctx) {}
 
     @Override
     public void enterInstruction(BashGrammarParser.InstructionContext ctx) {

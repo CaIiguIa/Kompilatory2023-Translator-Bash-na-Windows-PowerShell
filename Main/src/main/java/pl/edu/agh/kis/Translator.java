@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class Translator {
     private static Translator INSTANCE;
-    private Map<String, String> translator_dispatcher = new HashMap<>();
+    private final Map<String, String> translator_dispatcher = new HashMap<>();
     public final String inputFilePath = "Main\\src\\main\\config\\TranslatorConfig.csv.in";
     private Translator() {
         try (Reader in = new FileReader(inputFilePath)) {
