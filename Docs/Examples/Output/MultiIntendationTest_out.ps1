@@ -1,0 +1,1 @@
+java.lang.NullPointerException: Cannot invoke "pl.edu.agh.kis.parser.BashGrammarParser$WordContext.getText()" because "ctx" is null
