@@ -1,2 +1,1 @@
-#!/bin/bash
-fruit="apple "
+"apple" 

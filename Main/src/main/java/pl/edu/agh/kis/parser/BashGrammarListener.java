@@ -208,6 +208,26 @@ public interface BashGrammarListener extends ParseTreeListener {
 	 */
 	void exitExpr(BashGrammarParser.ExprContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#symbols}.
+	 * @param ctx the parse tree
+	 */
+	void enterSymbols(BashGrammarParser.SymbolsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#symbols}.
+	 * @param ctx the parse tree
+	 */
+	void exitSymbols(BashGrammarParser.SymbolsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#argument}.
+	 * @param ctx the parse tree
+	 */
+	void enterArgument(BashGrammarParser.ArgumentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#argument}.
+	 * @param ctx the parse tree
+	 */
+	void exitArgument(BashGrammarParser.ArgumentContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link BashGrammarParser#word}.
 	 * @param ctx the parse tree
 	 */
@@ -297,4 +317,14 @@ public interface BashGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitString(BashGrammarParser.StringContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#character_chain}.
+	 * @param ctx the parse tree
+	 */
+	void enterCharacter_chain(BashGrammarParser.Character_chainContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#character_chain}.
+	 * @param ctx the parse tree
+	 */
+	void exitCharacter_chain(BashGrammarParser.Character_chainContext ctx);
 }

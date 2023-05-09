@@ -14,9 +14,10 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterProgram(BashGrammarParser.ProgramContext ctx) {
-        outputString.append(ctx.COMMENT().toString()); //COMMENT
+        //  This append is not needed for a windows power shell program
+        //outputString.append(ctx.COMMENT().toString()); //COMMENT
         // !TODO: Instrucion*
-        for (int childID = 1; childID < ctx.getChildCount() - 1; childID++) { //Instruction*
+        for (int childID = 1; childID < ctx.getChildCount() - 1; childID++) {   //  Instruction*
             enterInstruction((BashGrammarParser.InstructionContext) ctx.getChild(childID));
         }
     }
@@ -48,13 +49,23 @@ public class BashToPowershell extends BashGrammarBaseListener {
     public void enterPipeline(BashGrammarParser.PipelineContext ctx) {
         //!TODO: a lot more
         for (int i = 0; i < ctx.getChildCount() ; i++) {
-            enterWord(ctx.word(i));
-            if (i<ctx.getChildCount()-1) outputString.append(" ");
+            //System.out.println(ctx.word(i).getText());
+            outputString.append(Translator.translate(ctx.word(i).getText()));
+            outputString.append(' ');
         }
 
     }
     @Override
     public void enterWord(BashGrammarParser.WordContext ctx) {
+    }
+
+    @Override
+    public void enterSymbols(BashGrammarParser.SymbolsContext ctx) {
+        outputString.append(Translator.translate(ctx.getText()));
+    }
+
+    @Override
+    public void enterString(BashGrammarParser.StringContext ctx) {
         outputString.append(Translator.translate(ctx.getText()));
     }
 }

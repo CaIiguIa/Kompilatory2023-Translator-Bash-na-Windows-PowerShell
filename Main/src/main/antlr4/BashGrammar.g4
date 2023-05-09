@@ -142,8 +142,16 @@ expr // boolowa wartość bez nawiasów / && / ||
 //    :	signed_number
 //    ;
 
+symbols
+	:	ALPHANUMERIC+
+	;
+
+argument
+	:	(MINUS|(MINUS MINUS)) ALPHANUMERIC+
+	;
+
 word
-	:	~(PIPE|AMPERSAN|SINGLE_SEMICOLON|L_PARENTH_ROUND|R_PARENTH_ROUND|POINTER_LEFT|POINTER_RIGHT|SPACE|TAB|NEW_LINE|WHILE_LOOP_BEGIN|UNTIL_LOOP_BEGIN|FOR_LOOP_BEGIN|LOOP_MIDDLE|IF_START|IF_MIDDLE|IF_END|LOOP_IN|ELSE|ELSE_IF|CASE_START|CASE_END|FUNCTION_START|SELECT|COPROCESS_START|TIME|CREATE_VARABLE)+
+	:	(symbols|string|character_chain|variable_from_command|argument)+
 	;
 
 pipe_symbol
@@ -156,7 +164,7 @@ pipeline
     ;
 
 pipeline_list
-	:   ((SINGLE_SEMICOLON|NEW_LINE)? pipeline (SINGLE_SEMICOLON|NEW_LINE))+
+	:   (pipeline (SINGLE_SEMICOLON|NEW_LINE))+
     ;
 
 function:   (ALPHANUMERIC)+ L_PARENTH_ROUND R_PARENTH_ROUND block /*(return_output)?*/
@@ -186,16 +194,17 @@ coprocess
 //           expr1 , expr2
 //                  comma
 id
-    : ALPHA ALPHANUMERIC*
+    :	ALPHA ALPHANUMERIC*
     ;
 
 string
-    : APOSTROPHE ~(APOSTROPHE|APOSTROPHE)* APOSTROPHE
+    :	APOSTROPHE ~(APOSTROPHE)* APOSTROPHE
     ;   //  TODO: Make sure that: " dsdadad\" " is whole string( " dsdadad\" " ) not a " dsdadad\" ????
 
+character_chain
+	:	SINGLE_APOSTROPHE ~(SINGLE_APOSTROPHE)* SINGLE_APOSTROPHE
+	;
 
-//EPSILON                     :   ;
-//WORD                        :   ~[\n|&;()<> \t];         //  word, bo character chain zajęte
 
 SPACE						:	' '->skip;
 TAB							:	[\t]->skip;
@@ -239,7 +248,7 @@ SCRIPT_ARGUMENT             :   '$'[0-9];
 BOOL                        :   ('true'|'false');
 HEX_NUMBER_WITHOUT_SIGN     :   ('Ox'|'16#')[0-9A-Fa-f]+;
 OCTAL_NUMBER_WITHOUT_SIGN   :   ('O'|'8#')[0-7]+;
-NEW_LINE                    :   '\n';
+NEW_LINE                    :   [\n];
 PIPE                        :   '|';
 PLUS                        :   '+';
 WILDCARD_OR_MULTIPLY        :   '*';
