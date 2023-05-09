@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class BashToPowershell extends BashGrammarBaseListener {
     public String outputPath;
-    public StringBuilder outputString = new StringBuilder("");
+    public StringBuilder outputString = new StringBuilder();
 
     BashToPowershell(String path) {
         this.outputPath = path;
@@ -31,7 +31,6 @@ public class BashToPowershell extends BashGrammarBaseListener {
     public void exitProgram(BashGrammarParser.ProgramContext ctx) {
         try {
             File outputFile = new File(this.outputPath);
-            outputFile.createNewFile();
             BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
 
             String out = String.valueOf(this.outputString);

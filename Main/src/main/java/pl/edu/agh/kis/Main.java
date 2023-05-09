@@ -10,6 +10,7 @@ import pl.edu.agh.kis.parser.BashGrammarParser;
 //! NOTE: when /target/generated-sources/antlr4 files are updated, move them to pl.edu.agh.kis.Parser
 public class Main {
     public static void main(String[] args) {
+        System.out.println(1);
         String inputString = "#!/bin/bash\necho 1\n";
         String outputPath = "Main/target/generated-sources/out.ps1";
 
