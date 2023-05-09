@@ -16,8 +16,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
     public void enterProgram(BashGrammarParser.ProgramContext ctx) {
         outputString.append(ctx.COMMENT().toString()); //COMMENT
         // !TODO: Instrucion*
-        for (int childID = 1; childID < ctx.getChildCount() - 1; childID++) //Instruction*
-        {
+        for (int childID = 1; childID < ctx.getChildCount() - 1; childID++) { //Instruction*
             enterInstruction((BashGrammarParser.InstructionContext) ctx.getChild(childID));
         }
     }
@@ -40,16 +39,17 @@ public class BashToPowershell extends BashGrammarBaseListener {
     @Override
     public void enterPipeline_list(BashGrammarParser.Pipeline_listContext ctx) {
         //!TODO: A lot more
-        enterPipeline(ctx.pipeline(0));
+        for (int childID = 0; childID < ctx.getChildCount() - 1; ++childID) {
+            enterPipeline(ctx.pipeline(childID));
+        }
     }
 
     @Override
     public void enterPipeline(BashGrammarParser.PipelineContext ctx) {
         //!TODO: a lot more
-        for (int i = 0; i < ctx.getChildCount(); i++) {
+        for (int i = 0; i < ctx.getChildCount() ; i++) {
             enterWord(ctx.word(i));
             if (i<ctx.getChildCount()-1) outputString.append(" ");
-
         }
 
     }

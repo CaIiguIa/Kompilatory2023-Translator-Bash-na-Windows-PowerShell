@@ -1,2 +1,1 @@
-#!/bin/bash
-echo"Firstargument:$1 "
+java.lang.NullPointerException: Cannot invoke "pl.edu.agh.kis.parser.BashGrammarParser$PipelineContext.getChildCount()" because "ctx" is null

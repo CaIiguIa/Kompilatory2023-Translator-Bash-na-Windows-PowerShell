@@ -43,6 +43,7 @@ public class InputOutputFileManager {
         if (inFiles != null) {
             for (File inFile : inFiles) {
                 if (inFile.isFile()) {
+                    System.out.println("Entered file: " + inFile.getName());
                     File file = new File(this.OutputDirectory.getAbsolutePath() + "\\" + getOutputFileName(inFile.getName()));
 
                     StringBuilder stringBuilder = new StringBuilder();
