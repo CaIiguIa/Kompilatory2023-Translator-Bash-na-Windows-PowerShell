@@ -33,7 +33,8 @@ public class Translator {
 
         return INSTANCE;
     }
-    public String translate(String command) {
-        return getInstance().translator_dispatcher.get(command);
+    public static String translate(String command) {
+        String output = getInstance().translator_dispatcher.get(command);
+        return output == null ? command : output;
     }
 }

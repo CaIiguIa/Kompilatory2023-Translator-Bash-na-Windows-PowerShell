@@ -22,18 +22,16 @@ public class InputOutputFileManager {
             throw new RuntimeException(inputDirectoryPath + " is not a directory!");
         }
         if (!OutputDirectory.isDirectory()) {
-            throw new RuntimeException(OutputDirectory + " is not a directory!");
+            throw new RuntimeException(outputDirectoryPath + " is not a directory!");
         }
     }
     public String getOutputFileName(String in) {
         String substring = ".sh";
         String replacement = "_out.ps1";
 
-        int lastIndex = in.lastIndexOf(substring);
-
         StringBuilder builder = new StringBuilder(in);
 
-        builder.replace(in.length() - 3, in.length() - 3 + substring.length(), replacement);
+        builder.replace(in.length() - substring.length(), in.length(), replacement);
 
         return builder.toString();
     }

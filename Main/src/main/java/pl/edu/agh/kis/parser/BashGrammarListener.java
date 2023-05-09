@@ -1,4 +1,4 @@
-package pl.edu.agh.kis.parser;// Generated from BashGrammar.g4 by ANTLR 4.12.0
+// Generated from BashGrammar.g4 by ANTLR 4.12.0
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**

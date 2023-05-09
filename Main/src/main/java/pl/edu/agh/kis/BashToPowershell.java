@@ -55,8 +55,6 @@ public class BashToPowershell extends BashGrammarBaseListener {
     }
     @Override
     public void enterWord(BashGrammarParser.WordContext ctx) {
-        String output = Translator.getInstance().translate(ctx.getText());
-        if (output == null) output = ctx.getText();
-        outputString.append(output);
+        outputString.append(Translator.translate(ctx.getText()));
     }
 }

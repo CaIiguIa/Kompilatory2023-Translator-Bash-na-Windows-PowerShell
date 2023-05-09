@@ -27,6 +27,7 @@ public class Main {
 
                 return translator.getOutputString();
             } catch (Exception err) {
+                err.printStackTrace();
                return err.toString();
             }
         };
