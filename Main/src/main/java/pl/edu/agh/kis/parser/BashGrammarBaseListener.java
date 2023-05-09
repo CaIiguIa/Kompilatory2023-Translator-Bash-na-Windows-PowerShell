@@ -1,4 +1,5 @@
 // Generated from BashGrammar.g4 by ANTLR 4.12.0
+package pl.edu.agh.kis.parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
