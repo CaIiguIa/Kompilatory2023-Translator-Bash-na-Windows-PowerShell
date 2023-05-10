@@ -24,7 +24,6 @@ public class Main {
                 BashToPowershell translator = new BashToPowershell();
                 translator.enterProgram(tree);
                 translator.exitProgram(tree);
-
                 return translator.getOutputString();
             } catch (Exception err) {
                 err.printStackTrace();

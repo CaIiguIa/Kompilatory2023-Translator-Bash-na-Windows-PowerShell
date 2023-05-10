@@ -238,6 +238,16 @@ public interface BashGrammarListener extends ParseTreeListener {
 	 */
 	void exitWord(BashGrammarParser.WordContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#command}.
+	 * @param ctx the parse tree
+	 */
+	void enterCommand(BashGrammarParser.CommandContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#command}.
+	 * @param ctx the parse tree
+	 */
+	void exitCommand(BashGrammarParser.CommandContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link BashGrammarParser#pipe_symbol}.
 	 * @param ctx the parse tree
 	 */

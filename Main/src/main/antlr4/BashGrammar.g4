@@ -151,7 +151,15 @@ argument
 	;
 
 word
-	:	(symbols|string|character_chain|variable_from_command|argument)+
+	:	(command)+
+	;
+
+command
+	:	symbols
+	|	string
+	|	character_chain
+	|	variable_from_command
+	|	argument
 	;
 
 pipe_symbol
@@ -160,11 +168,11 @@ pipe_symbol
 	;
 
 pipeline
-	:	(TIME ('-p')?)? (BOOL_NEGATION)? word ((pipe_symbol)? word)+
+	:	(TIME MINUSP?)? (BOOL_NEGATION)? word (pipe_symbol word)* (SINGLE_SEMICOLON|NEW_LINE)
     ;
 
 pipeline_list
-	:   (pipeline (SINGLE_SEMICOLON|NEW_LINE))+
+	:   (pipeline)+
     ;
 
 function:   (ALPHANUMERIC)+ L_PARENTH_ROUND R_PARENTH_ROUND block /*(return_output)?*/
@@ -276,3 +284,4 @@ NUMBER                      :   [1-9][0-9]*;
 ALPHANUMERIC                :   [a-zA-Z0-9_];
 ALPHA                       :   [A-Za-z];
 DIGIT                       :   [0-9];
+MINUSP						:	'-p';

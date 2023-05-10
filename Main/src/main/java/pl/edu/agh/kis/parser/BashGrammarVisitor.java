@@ -149,6 +149,12 @@ public interface BashGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitWord(BashGrammarParser.WordContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link BashGrammarParser#command}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCommand(BashGrammarParser.CommandContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link BashGrammarParser#pipe_symbol}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

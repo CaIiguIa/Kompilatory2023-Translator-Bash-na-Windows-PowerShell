@@ -1,1 +1,1 @@
-java.lang.NullPointerException: Cannot invoke "pl.edu.agh.kis.parser.BashGrammarParser$WordContext.getText()" because the return value of "pl.edu.agh.kis.parser.BashGrammarParser$PipelineContext.word(int)" is null
+manbash -u | Select-String "betweenxandy" | cat 

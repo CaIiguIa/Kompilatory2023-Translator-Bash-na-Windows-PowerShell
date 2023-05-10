@@ -1,5 +1,6 @@
 package pl.edu.agh.kis;
 
+import org.antlr.v4.runtime.tree.ParseTree;
 import pl.edu.agh.kis.parser.BashGrammarBaseListener;
 import pl.edu.agh.kis.parser.BashGrammarParser;
 
@@ -40,25 +41,58 @@ public class BashToPowershell extends BashGrammarBaseListener {
     @Override
     public void enterPipeline_list(BashGrammarParser.Pipeline_listContext ctx) {
         //!TODO: A lot more
-        for (int childID = 0; childID < ctx.getChildCount() - 1; ++childID) {
+        for (int childID = 0; childID < ctx.getChildCount(); ++childID) {
             enterPipeline(ctx.pipeline(childID));
         }
     }
 
     @Override
     public void enterPipeline(BashGrammarParser.PipelineContext ctx) {
-        //!TODO: a lot more
-        for (int i = 0; i < ctx.getChildCount() ; i++) {
-            //System.out.println(ctx.word(i).getText());
-            outputString.append(Translator.translate(ctx.word(i).getText()));
+        //(TIME MINUSP?)? (BOOL_NEGATION)? word (pipe_symbol word)* (SINGLE_SEMICOLON|NEW_LINE)
+        //!TODO: argumenty do time,przenieść measure-command do csv
+
+        if (ctx.TIME()!=null){
+            outputString.append( "Measure-Command { " );
+        }
+
+
+        enterWord((BashGrammarParser.WordContext) ctx.getChild(0));
+        for (int childID=1; childID<ctx.word().size(); childID++)
+        {
+            outputString.append("| ");
+            enterWord((BashGrammarParser.WordContext) ctx.word(childID));
+        }
+
+
+        if (ctx.TIME()!=null){
+            outputString.append( "}" );
+        }
+        outputString.append( ctx.NEW_LINE() != null ? "\n" : "; " );
+    }
+    @Override
+    public void enterWord(BashGrammarParser.WordContext ctx) {
+        for (int i = 0; i < ctx.getChildCount(); i++) {
+            enterCommand(ctx.command(i));
             outputString.append(' ');
         }
 
     }
-    @Override
-    public void enterWord(BashGrammarParser.WordContext ctx) {
-    }
 
+    @Override
+    public void enterCommand(BashGrammarParser.CommandContext ctx) {
+        if (ctx.symbols() != null) {
+            enterSymbols(ctx.symbols());
+        } else if (ctx.argument() != null) {
+            enterArgument(ctx.argument());
+        } else if (ctx.string() != null) {
+            enterString(ctx.string());
+        } else if (ctx.character_chain() != null) {
+            enterCharacter_chain(ctx.character_chain());
+        } else if (ctx.variable_from_command() != null) {
+            enterVariable_from_command(ctx.variable_from_command());
+        }
+    }
+    
     @Override
     public void enterSymbols(BashGrammarParser.SymbolsContext ctx) {
         outputString.append(Translator.translate(ctx.getText()));
@@ -66,6 +100,21 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterString(BashGrammarParser.StringContext ctx) {
+        outputString.append(Translator.translate(ctx.getText()));
+    }
+
+    @Override
+    public void enterArgument(BashGrammarParser.ArgumentContext ctx) {
+        outputString.append(Translator.translate(ctx.getText()));
+    }
+
+    @Override
+    public void enterCharacter_chain(BashGrammarParser.Character_chainContext ctx) {
+        outputString.append(Translator.translate(ctx.getText()));
+    }
+
+    @Override
+    public void enterVariable_from_command(BashGrammarParser.Variable_from_commandContext ctx) {
         outputString.append(Translator.translate(ctx.getText()));
     }
 }
