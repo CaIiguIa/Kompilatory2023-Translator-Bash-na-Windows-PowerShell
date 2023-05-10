@@ -28,12 +28,16 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterInstruction(BashGrammarParser.InstructionContext ctx) {
-        //iteujemy po produkcjach i porównujemy z nullem - jeśli nie jest nullem to to jest ta produkcja - nie znalazłem lepszego sposobu
+        //iterujemy po produkcjach i porównujemy z nullem - jeśli nie jest nullem to to jest ta produkcja - nie znalazłem lepszego sposobu
         if (ctx.pipeline_list() != null) {
             enterPipeline_list(ctx.pipeline_list());
         } else if (ctx.for_loop() != null) {
 
-        }//i tak dalej....
+        }
+//        else if (ctx.assign()!=null){
+//            enterAssign(ctx.assign());
+//        }
+        //i tak dalej....
 
 
     }
@@ -59,8 +63,9 @@ public class BashToPowershell extends BashGrammarBaseListener {
         enterWord((BashGrammarParser.WordContext) ctx.getChild(0));
         for (int childID=1; childID<ctx.word().size(); childID++)
         {
-            outputString.append("| ");
-            enterWord((BashGrammarParser.WordContext) ctx.word(childID));
+            outputString.append(ctx.pipe_symbol(childID-1).getText());
+            outputString.append(' ');
+            enterWord(ctx.word(childID));
         }
 
 
@@ -70,7 +75,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
         outputString.append( ctx.NEW_LINE() != null ? "\n" : "; " );
     }
     @Override
-    public void enterWord(BashGrammarParser.WordContext ctx) {
+    public void enterWord(BashGrammarParser.WordContext ctx) /*done*/{
         for (int i = 0; i < ctx.getChildCount(); i++) {
             enterCommand(ctx.command(i));
             outputString.append(' ');
@@ -79,7 +84,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
     }
 
     @Override
-    public void enterCommand(BashGrammarParser.CommandContext ctx) {
+    public void enterCommand(BashGrammarParser.CommandContext ctx) /*done*/{
         if (ctx.symbols() != null) {
             enterSymbols(ctx.symbols());
         } else if (ctx.argument() != null) {
@@ -117,4 +122,20 @@ public class BashToPowershell extends BashGrammarBaseListener {
     public void enterVariable_from_command(BashGrammarParser.Variable_from_commandContext ctx) {
         outputString.append(Translator.translate(ctx.getText()));
     }
+
+//    @Override
+//    public void enterAssign(BashGrammarParser.AssignContext ctx){
+//        if (ctx.VARIABLE()!=null){
+//            outputString.append(ctx.VARIABLE().getText());
+//        }
+//        else outputString.append(ctx.NEW_VARIABLE().getText());
+//
+//        outputString.append("= ");
+//        if (ctx.pipeline()!=null)
+//        {
+//            enterPipeline(ctx.pipeline());
+//        }
+//        else outputString.append(ctx.number_float().getText());
+//
+//    }
 }

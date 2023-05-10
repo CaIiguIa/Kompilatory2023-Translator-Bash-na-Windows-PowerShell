@@ -1,4 +1,4 @@
 #!/bin/bash
 echo "What is your name?"
-read -r name
+read name
 echo "Hello, $name!"

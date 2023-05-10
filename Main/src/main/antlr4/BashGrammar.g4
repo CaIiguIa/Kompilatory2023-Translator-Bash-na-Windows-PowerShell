@@ -16,9 +16,14 @@ instruction
     |   select
     |   coprocess
     |	pipeline_list
+//    |   assign
     |	splitter_end_command
 //    |   //  TODO: ADD missing ones
     ;
+
+//assign
+//    : (NEW_VARIABLE|VARIABLE) EQ (pipeline|(number_float splitter_end_command))
+//    ;
 
 case_statement
     : CASE_START VARIABLE LOOP_IN  splitter_end_command? single_case+ ( CASE_DEFAULT instruction* BRAKE_ABSOLUTE)? splitter_end_command? CASE_END splitter_end_command
@@ -285,3 +290,4 @@ ALPHANUMERIC                :   [a-zA-Z0-9_];
 ALPHA                       :   [A-Za-z];
 DIGIT                       :   [0-9];
 MINUSP						:	'-p';
+//NEW_VARIABLE                :   ~[$#\n;0-9 =]~[$#\n; =]*;
