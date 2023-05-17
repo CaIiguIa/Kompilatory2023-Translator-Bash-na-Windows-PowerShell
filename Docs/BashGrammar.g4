@@ -25,7 +25,7 @@ assign
 
 var
 //    :   DOLLAR_SIGN? ~(EQ | DOLLAR_SIGN | NEW_LINE | SINGLE_SEMICOLON | '#' | SPACE | DIGIT | CONDITION_RIGHT_SINGLE | CONDITION_LEFT_SINGLE) ~(EQ | DOLLAR_SIGN | NEW_LINE | SINGLE_SEMICOLON | '#' | SPACE | CONDITION_RIGHT_SINGLE | CONDITION_LEFT_SINGLE)*
-    : DOLLAR_SIGN? ALPHA ALPHANUMERIC+
+    : DOLLAR_SIGN? ALPHA alphanumeric+
     ;
 
 
@@ -35,7 +35,7 @@ case_statement
     ;
 
 single_case
-    :    ( ( ( ALPHANUMERIC+ | string ) ( PIPE ( ALPHANUMERIC+ | string ) )* )  ) R_PARENTH_ROUND splitter_end_command? instruction* BRAKE_ABSOLUTE splitter_end_command?
+    :    ( ( ( alphanumeric+ | string ) ( PIPE ( alphanumeric+ | string ) )* )  ) R_PARENTH_ROUND splitter_end_command? instruction* BRAKE_ABSOLUTE splitter_end_command?
     ;
 
 until_loop
@@ -56,9 +56,9 @@ for_loop
 
 for_loop_argument //argument pętli for znajdujący się między "for", a ""
     : L_PARENTH_ROUND L_PARENTH_ROUND  /*TODO: expr*/  SINGLE_SEMICOLON  expr_maker  SINGLE_SEMICOLON  /*TODO: expr*/  R_PARENTH_ROUND R_PARENTH_ROUND splitter_end_command//(( i=0 ; i<10 ; i++ ))
-// TODO: (ocochodzi)    | ALPHANUMERIC+ (LOOP_IN (CHAR_CHAIN )+)* splitter_end_command // ???
-    | ALPHANUMERIC+ LOOP_IN numbers_pipeline_list_for_loop splitter_end_command // {1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}
-    | ALPHANUMERIC+ LOOP_IN variable_from_command splitter_end_command// $(command)
+// TODO: (ocochodzi)    | alphanumeric+ (LOOP_IN (CHAR_CHAIN )+)* splitter_end_command // ???
+    | alphanumeric+ LOOP_IN numbers_pipeline_list_for_loop splitter_end_command // {1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}
+    | alphanumeric+ LOOP_IN variable_from_command splitter_end_command// $(command)
     ;
 
 numbers_pipeline_list_for_loop // {1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}
@@ -98,7 +98,7 @@ expr_maker
     | expr_maker (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) expr_maker // pipeline_list (|| albo | albo & albo &&) pipeline_list ;
     | L_PARENTH_ROUND L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND R_PARENTH_ROUND // (()) condition - && == string arithmetic
 //    | CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE d_square_expr_maker  CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE// [[]] condition
-// TODO    | CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE s_square_expr CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE//
+// TODO    | CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE s_square_expr CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE//
     | /*TODO: pipeline_list*/
     ;
 //d_square_expr_maker
@@ -153,11 +153,11 @@ expr // boolowa wartość bez nawiasów / && / ||
 //    ;
 
 symbols
-	:	ALPHANUMERIC+
+	:	alphanumeric+
 	;
 
 argument
-	:	(MINUS|(MINUS MINUS)) ALPHANUMERIC+
+	:	(MINUS|(MINUS MINUS)) alphanumeric+
 	;
 
 word
@@ -185,17 +185,21 @@ pipeline_list
 	:   (pipeline)+
     ;
 
-function:   (ALPHANUMERIC)+ L_PARENTH_ROUND R_PARENTH_ROUND block /*(return_output)?*/
-    |   FUNCTION_START (ALPHANUMERIC)+ (L_PARENTH_ROUND R_PARENTH_ROUND)? block /*(return_output)?*/
+function:   (alphanumeric)+ L_PARENTH_ROUND R_PARENTH_ROUND block /*(return_output)?*/
+    |   FUNCTION_START (alphanumeric)+ (L_PARENTH_ROUND R_PARENTH_ROUND)? block /*(return_output)?*/
     ;
 
 select
-	:	SELECT ALPHANUMERIC+ (LOOP_IN word)? splitter_end_command LOOP_MIDDLE pipeline_list LOOP_END
+	:	SELECT alphanumeric+ (LOOP_IN word)? splitter_end_command LOOP_MIDDLE pipeline_list LOOP_END
     ;
 
 coprocess
-	:	COPROCESS_START (ALPHANUMERIC)* word //redirections
+	:	COPROCESS_START (alphanumeric)* word //redirections
 	;
+
+alphanumeric
+    :   (ALPHA | NUMERIC | ' ')
+    ;
 
 
 //
@@ -212,11 +216,11 @@ coprocess
 //           expr1 , expr2
 //                  comma
 id
-    :	ALPHA ALPHANUMERIC*
+    :	ALPHA alphanumeric*
     ;
 
 string
-    :	APOSTROPHE ~(APOSTROPHE)* APOSTROPHE
+    :	APOSTROPHE (' ' | ~(APOSTROPHE)*) APOSTROPHE
     ;   //  TODO: Make sure that: " dsdadad\" " is whole string( " dsdadad\" " ) not a " dsdadad\" ????
 
 character_chain
@@ -294,6 +298,7 @@ THIS_FOLDER                 :   '.';
 NUMBER                      :   [1-9][0-9]*;
 DIGIT                       :   [0-9];
 ALPHA                       :   [A-Za-z];
-ALPHANUMERIC                :   [a-zA-Z0-9_];
+NUMERIC                     :   [0-9];
+//ALPHANUMERIC                :   [a-zA-Z0-9_];
 //NEW_VARIABLE                :   ~[$#\n;0-9 =]~[$#\n; =]*;
 MINUSP						:	'-p';
