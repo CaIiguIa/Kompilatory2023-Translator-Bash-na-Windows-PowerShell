@@ -1,1 +1,1 @@
-manbash -u | Select-String "betweenxandy" | cat 
+manbash -u|Select-String "between x and y"|cat

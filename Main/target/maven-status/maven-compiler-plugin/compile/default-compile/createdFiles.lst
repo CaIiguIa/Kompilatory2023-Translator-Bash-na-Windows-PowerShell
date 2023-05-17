@@ -4,8 +4,10 @@ pl\edu\agh\kis\parser\BashGrammarLexer.class
 pl\edu\agh\kis\Main.class
 pl\edu\agh\kis\parser\BashGrammarParser$Splitter_end_commandContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$D_round_expr_makerContext.class
+pl\edu\agh\kis\parser\BashGrammarParser$VarContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$Character_chainContext.class
 pl\edu\agh\kis\BashToPowershell.class
+pl\edu\agh\kis\parser\BashGrammarParser$AssignContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$BlockContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$PipelineContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$Pipe_symbolContext.class
@@ -31,6 +33,7 @@ pl\edu\agh\kis\parser\BashGrammarParser$CoprocessContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$WordContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$Expr_makerContext.class
 pl\edu\agh\kis\parser\BashGrammarParser.class
+pl\edu\agh\kis\parser\BashGrammarParser$AlphanumericContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$Signed_numberContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$Case_statementContext.class
 pl\edu\agh\kis\parser\BashGrammarListener.class

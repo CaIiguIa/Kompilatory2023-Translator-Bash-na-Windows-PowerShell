@@ -41,6 +41,30 @@ public class BashGrammarBaseListener implements BashGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterAssign(BashGrammarParser.AssignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAssign(BashGrammarParser.AssignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterVar(BashGrammarParser.VarContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVar(BashGrammarParser.VarContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterCase_statement(BashGrammarParser.Case_statementContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -372,6 +396,18 @@ public class BashGrammarBaseListener implements BashGrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCoprocess(BashGrammarParser.CoprocessContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAlphanumeric(BashGrammarParser.AlphanumericContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAlphanumeric(BashGrammarParser.AlphanumericContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

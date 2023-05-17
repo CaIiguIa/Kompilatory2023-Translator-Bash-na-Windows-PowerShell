@@ -23,6 +23,18 @@ public interface BashGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitInstruction(BashGrammarParser.InstructionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link BashGrammarParser#assign}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssign(BashGrammarParser.AssignContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BashGrammarParser#var}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVar(BashGrammarParser.VarContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link BashGrammarParser#case_statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -190,6 +202,12 @@ public interface BashGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitCoprocess(BashGrammarParser.CoprocessContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BashGrammarParser#alphanumeric}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAlphanumeric(BashGrammarParser.AlphanumericContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link BashGrammarParser#id}.
 	 * @param ctx the parse tree

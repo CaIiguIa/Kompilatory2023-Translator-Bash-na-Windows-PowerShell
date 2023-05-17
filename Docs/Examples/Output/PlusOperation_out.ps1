@@ -1,2 +1,1 @@
-Write-Output ; "Sum:$sum"
- ; 
+Write-Output "Sum: $sum"

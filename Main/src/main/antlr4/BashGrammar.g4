@@ -1,6 +1,10 @@
 grammar BashGrammar;
 // !Note: Do not change production names or order unless you also change DashToPowershell class
 //TODO: (NA KOŃCU) Poprawić for, while, if ,itp żeby było jak w man bash -u
+// TODO: błędy w gramatyce: pipeline_list można usunąć, wprowadza niedeterminizm tworzenia drzewa, lepiej zrobić instriction -> pipeline
+// TODO: błędy w gramatyce: word to niby command+ więc komenda: ("asdasd" echo) jest parsowalna, trzeba sprawić, że pierwszy ciąg znaków to nie string
+
+
 program
     :	COMMENT instruction* EOF
     ;
@@ -16,21 +20,25 @@ instruction
     |   select
     |   coprocess
     |	pipeline_list
-//    |   assign
+    |   assign
     |	splitter_end_command
-//    |   //  TODO: ADD missing ones
     ;
 
-//assign
-//    : (NEW_VARIABLE|VARIABLE) EQ (pipeline|(number_float splitter_end_command))
-//    ;
+assign
+    :   var EQ (pipeline|(number_float splitter_end_command))
+    ;
+
+var
+//    :   DOLLAR_SIGN? ~(EQ | DOLLAR_SIGN | NEW_LINE | SINGLE_SEMICOLON | '#' | SPACE | DIGIT | CONDITION_RIGHT_SINGLE | CONDITION_LEFT_SINGLE) ~(EQ | DOLLAR_SIGN | NEW_LINE | SINGLE_SEMICOLON | '#' | SPACE | CONDITION_RIGHT_SINGLE | CONDITION_LEFT_SINGLE)*
+    : DOLLAR_SIGN? ALPHA alphanumeric+
+    ;
 
 case_statement
     : CASE_START VARIABLE LOOP_IN  splitter_end_command? single_case+ ( CASE_DEFAULT instruction* BRAKE_ABSOLUTE)? splitter_end_command? CASE_END splitter_end_command
     ;
 
 single_case
-    :    ( ( ( alphanumeric+ | string ) ( PIPE ( alphanumeric+ | string ) )* )  ) R_PARENTH_ROUND splitter_end_command? instruction* BRAKE_ABSOLUTE splitter_end_command?
+    :    ( ( ( alphanumeric+ | STRING ) ( PIPE ( alphanumeric+ | STRING ) )* )  ) R_PARENTH_ROUND splitter_end_command? instruction* BRAKE_ABSOLUTE splitter_end_command?
     ;
 
 until_loop
@@ -66,7 +74,7 @@ signed_number
     ;
 
 number_float
-    : NUMBER (('.'|',') (DIGIT)*)?
+    : NUMBER (('.'|',') (NUMERIC)*)?
     ;
 
 variable_from_command
@@ -91,7 +99,7 @@ expr_maker
 //    : L_PARENTH_ROUND expr_maker R_PARENTH_ROUND
     | TILDA expr  //bitwise negation
     | expr_maker (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) expr_maker // pipeline_list (|| albo | albo & albo &&) pipeline_list ;
-    | L_PARENTH_ROUND  d_round_expr_maker  R_PARENTH_ROUND // (()) condition - && == string arithmetic
+    | L_PARENTH_ROUND  d_round_expr_maker  R_PARENTH_ROUND // (()) condition - && == STRING arithmetic
     | L_PARENTH_ROUND L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND R_PARENTH_ROUND
     | CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE d_round_expr_maker CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE
     | CONDITION_LEFT_SINGLE d_round_expr_maker CONDITION_RIGHT_SINGLE
@@ -126,7 +134,7 @@ d_round_expr // single, atomic  epression returning bool
     | BOOL
     | variable_or_number ( PLUS PLUS | MINUS MINUS ) //id++ id-- -- teoretycznie dziala w bashu dla id, zmiennej i liczby
     | ( PLUS PLUS | MINUS MINUS ) variable_or_number //++id --id
-    | string EQ EQ? string
+    | STRING EQ EQ? STRING
     ;
 
 variable_or_number /*zmienna, liczba*/
@@ -151,7 +159,7 @@ expr // boolowa wartość bez nawiasów / && / ||
 //    ;
 
 symbols
-	:	alphanumeric+
+	:	(alphanumeric)+
 	;
 
 argument
@@ -159,15 +167,18 @@ argument
 	;
 
 word
-	:	(command)+
+	:	command+/* (SPACE command)**/
 	;
 
 command
-	:	symbols
-	|	string
-	|	character_chain
+//	|	string
+//	|	character_chain
+    :   STRING
+    |   CHARACTER_CHAIN
 	|	variable_from_command
 	|	argument
+	|	symbols
+//	|   SPACE
 	;
 
 pipe_symbol
@@ -196,8 +207,10 @@ coprocess
 	;
 
 alphanumeric
-    :   (ALPHA | NUMERIC | ' ')
+    :   (ALPHA | NUMERIC)
     ;
+
+
 //
 
 //           * / %  multiplication, division, remainder
@@ -215,17 +228,9 @@ id
     :	ALPHA alphanumeric*
     ;
 
-string
-    :	APOSTROPHE ~(APOSTROPHE)* APOSTROPHE
-    ;   //  TODO: Make sure that: " dsdadad\" " is whole string( " dsdadad\" " ) not a " dsdadad\" ????
 
-character_chain
-	:	SINGLE_APOSTROPHE ~(SINGLE_APOSTROPHE)* SINGLE_APOSTROPHE
-	;
-
-
-SPACE						:	' '->skip;
-TAB							:	[\t]->skip;
+STRING						:	["](~["]|' ')*["];
+CHARACTER_CHAIN				:	['](~[']|' ')*['];
 COMMENT                     :   '#'~[\n]+'\n';
 SINGLE_APOSTROPHE			:	['];
 APOSTROPHE                  :   '"';
@@ -294,6 +299,7 @@ NUMBER                      :   [1-9][0-9]*;
 ALPHA                       :   [A-Za-z];
 NUMERIC                     :   [0-9];
 //ALPHANUMERIC                :   [a-zA-Z0-9_];
-DIGIT                       :   [0-9];
-MINUSP						:	'-p';
 //NEW_VARIABLE                :   ~[$#\n;0-9 =]~[$#\n; =]*;
+MINUSP						:	'-p';
+SPACE						:	' '->skip;
+TAB							:	[\t]->skip;

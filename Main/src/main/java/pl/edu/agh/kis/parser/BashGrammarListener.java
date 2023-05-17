@@ -28,6 +28,26 @@ public interface BashGrammarListener extends ParseTreeListener {
 	 */
 	void exitInstruction(BashGrammarParser.InstructionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#assign}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssign(BashGrammarParser.AssignContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#assign}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssign(BashGrammarParser.AssignContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#var}.
+	 * @param ctx the parse tree
+	 */
+	void enterVar(BashGrammarParser.VarContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#var}.
+	 * @param ctx the parse tree
+	 */
+	void exitVar(BashGrammarParser.VarContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link BashGrammarParser#case_statement}.
 	 * @param ctx the parse tree
 	 */
@@ -307,6 +327,16 @@ public interface BashGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCoprocess(BashGrammarParser.CoprocessContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#alphanumeric}.
+	 * @param ctx the parse tree
+	 */
+	void enterAlphanumeric(BashGrammarParser.AlphanumericContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#alphanumeric}.
+	 * @param ctx the parse tree
+	 */
+	void exitAlphanumeric(BashGrammarParser.AlphanumericContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link BashGrammarParser#id}.
 	 * @param ctx the parse tree

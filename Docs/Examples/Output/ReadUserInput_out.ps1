@@ -1,4 +1,3 @@
-Write-Output "Whatisyourname?" 
-readname 
-Write-Output ; "Hello,$name!"
- ; 
+Write-Output "What is your name?"
+Get-Content -rname
+Write-Output "Hello, $name!"
