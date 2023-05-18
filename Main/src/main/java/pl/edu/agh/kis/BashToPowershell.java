@@ -8,10 +8,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class BashToPowershell extends BashGrammarBaseListener {
-    private StringBuilder outputString = new StringBuilder();
+    public boolean skipComments;
     public Stack<Boolean> isInFunctionStack = new Stack<>();
+    private StringBuilder outputString = new StringBuilder();
 
-    BashToPowershell() {}
+    BashToPowershell(boolean skipComments) {this.skipComments=skipComments;}
 
     public String getOutputString() {
         return outputString.toString();
@@ -19,16 +20,13 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterProgram(BashGrammarParser.ProgramContext ctx) {
-        //  This append is not needed for a windows power shell program
+        //  This append below is not needed for a windows power shell program
         //outputString.append(ctx.COMMENT().toString()); //COMMENT
-        // !TODO: Instrucion*
-        for (int childID = 1; childID < ctx.getChildCount() - 1; childID++) {   //  Instruction*
-            enterInstruction((BashGrammarParser.InstructionContext) ctx.getChild(childID));
+
+        for (var instruct: ctx.instruction()) {   //  Instruction*
+            enterInstruction(instruct);
         }
     }
-
-    @Override
-    public void exitProgram(BashGrammarParser.ProgramContext ctx) {}
 
     @Override
     public void enterFunction(BashGrammarParser.FunctionContext ctx) {
@@ -45,25 +43,62 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterInstruction(BashGrammarParser.InstructionContext ctx) {
-        //iterujemy po produkcjach i porównujemy z nullem - jeśli nie jest nullem to to jest ta produkcja - nie znalazłem lepszego sposobu
-        if (ctx.pipeline_list() != null) {
-            enterPipeline_list(ctx.pipeline_list());
-        } else if (ctx.for_loop() != null) {
-
+//                :	COMMENT
+        if (!skipComments && ctx.COMMENT() != null) {
+            outputString.append(ctx.COMMENT().getText());
         }
-//        else if (ctx.assign()!=null){
-//            enterAssign(ctx.assign());
-//        }
-        //i tak dalej....
+//                |   function
+        else if (ctx.function() != null) {
+            enterFunction(ctx.function());
+        }
+//                |   if_statement
+        else if (ctx.if_statement() != null) {
+            enterIf_statement(ctx.if_statement());
+        }
+//                |   for_loop
+        else if (ctx.for_loop() != null) {
+            enterFor_loop(ctx.for_loop());
+        }
+//                |   while_loop
+        else if (ctx.while_loop() != null) {
+            enterWhile_loop(ctx.while_loop());
+        }
+//                |   until_loop
+        else if (ctx.until_loop() != null) {
+            enterUntil_loop(ctx.until_loop());
+        }
+//                |   case_statement
+        else if (ctx.case_statement() != null) {
+            enterCase_statement(ctx.case_statement());
+        }
+//                |   select
+        else if (ctx.select() != null) {
+            enterSelect(ctx.select());
+        }
+//                |   coprocess
+        else if (ctx.coprocess() != null) {
+            enterCoprocess(ctx.coprocess());
+        }
+//                |	pipeline_list
+        else if (ctx.pipeline_list() != null) {
+            enterPipeline_list(ctx.pipeline_list());
+        }
+//                |   assign
+        else if (ctx.assign() != null) {
+            enterAssign(ctx.assign());
+        }
+//                |	splitter_end_command
+        else if (ctx.splitter_end_command() != null) {
+            enterSplitter_end_command(ctx.splitter_end_command());
+        }
 
 
     }
 
     @Override
     public void enterPipeline_list(BashGrammarParser.Pipeline_listContext ctx) {
-        //!TODO: A lot more
-        for (int childID = 0; childID < ctx.getChildCount(); ++childID) {
-            enterPipeline(ctx.pipeline(childID));
+        for (var pipe: ctx.pipeline()) {
+            enterPipeline(pipe);
         }
     }
 
@@ -91,7 +126,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
         outputString.append( ctx.NEW_LINE() != null ? "\n" : ";" );
     }
     @Override
-    public void enterWord(BashGrammarParser.WordContext ctx) /*done*/{
+    public void enterWord(BashGrammarParser.WordContext ctx) {
         enterCommand(ctx.command(0));
         for (int i = 1; i < ctx.getChildCount(); i++) {
             outputString.append(' ');
@@ -100,14 +135,17 @@ public class BashToPowershell extends BashGrammarBaseListener {
     }
 
     @Override
-    public void enterCommand(BashGrammarParser.CommandContext ctx) /*done*/{
+    public void enterCommand(BashGrammarParser.CommandContext ctx) {
         if (ctx.symbols() != null) {
             enterSymbols(ctx.symbols());
-        } else if (ctx.argument() != null) {
+        }
+        else if (ctx.argument() != null) {
             enterArgument(ctx.argument());
-        } else if (ctx.variable_from_command() != null) {
+        }
+        else if (ctx.variable_from_command() != null) {
             enterVariable_from_command(ctx.variable_from_command());
-        } else if (ctx.STRING() != null) {
+        }
+        else { //either string or char_chain
             if (isInFunction()) {
                 Pattern pattern = Pattern.compile("$[0-9]");
                 Matcher matcher = pattern.matcher(ctx.getText());
@@ -150,7 +188,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
         }
         else {
             outputString.append(ctx.number_float().getText());
-            outputString.append(ctx.splitter_end_command().getText());
+            enterSplitter_end_command(ctx.splitter_end_command());
         }
 
     }
@@ -176,6 +214,96 @@ public class BashToPowershell extends BashGrammarBaseListener {
     @Override
     public void enterWhile_loop(BashGrammarParser.While_loopContext ctx) {
 //        :  WHILE_LOOP_BEGIN expr_maker splitter_end_command LOOP_MIDDLE instruction* LOOP_END splitter_end_command
-//todo
+        outputString.append(ctx.WHILE_LOOP_BEGIN().getText());
+
+        enterExpr_maker(ctx.expr_maker());
+
+        enterSplitter_end_command(ctx.splitter_end_command(0));
+        outputString.append(ctx.LOOP_MIDDLE().getText());
+
+        for (var intruct:ctx.instruction()){
+            enterInstruction(intruct);
+        }
+
+        outputString.append(ctx.LOOP_END().getText());
+        enterSplitter_end_command(ctx.splitter_end_command(1));
+    }
+
+    @Override
+    public void enterExpr_maker(BashGrammarParser.Expr_makerContext ctx) {
+        //* w powershellu nie ma rozróżnienia na nawiasy - są tylko (), nie ma też ==, <, > itd.
+        //expr_maker
+        //    : BOOL_NEGATION expr_maker   //logical negation
+        if (ctx.BOOL_NEGATION()!=null){
+            outputString.append("!(");
+            enterExpr_maker(ctx.expr_maker(0));
+            outputString.append(")");
+        }
+        //    | TILDA expr  //bitwise negation
+        else if (ctx.TILDA()!=null){
+            outputString.append("-bnot (");
+            enterExpr_maker(ctx.expr_maker(0));
+            outputString.append(")");
+        }
+        //    | expr_maker (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) expr_maker
+        else if (ctx.expr_maker().size()==2){
+            enterExpr_maker(ctx.expr_maker(0));
+
+            if (ctx.CONDITION_DOUBLE_AMPERSAND()!=null) outputString.append(ctx.CONDITION_DOUBLE_AMPERSAND().getText());
+            else if (ctx.CONDITION_DOUBLE_PIPE()!=null) outputString.append(ctx.CONDITION_DOUBLE_PIPE().getText());
+            else if (ctx.PIPE()!=null) outputString.append(ctx.PIPE().getText());
+            else if (ctx.AMPERSAN()!=null) outputString.append(ctx.AMPERSAN().getText());
+
+            enterExpr_maker(ctx.expr_maker(1));
+        }
+        //    | L_PARENTH_ROUND  d_round_expr_maker  R_PARENTH_ROUND
+        //    | L_PARENTH_ROUND L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND R_PARENTH_ROUND
+        //    | CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE d_round_expr_maker CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE
+        //    | CONDITION_LEFT_SINGLE d_round_expr_maker CONDITION_RIGHT_SINGLE
+        else {
+            outputString.append("(");
+            enterD_round_expr_maker(ctx.d_round_expr_maker());
+            outputString.append(")");
+        }
+    }
+
+    @Override
+    public void enterD_round_expr_maker(BashGrammarParser.D_round_expr_makerContext ctx) {
+//    | L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND
+        if (ctx.d_round_expr()==null){
+            outputString.append("(");
+            enterD_round_expr_maker(ctx.d_round_expr_maker());
+            outputString.append(")");
+        }
+//    |d_round_expr
+
+        else if (ctx.d_round_expr_maker()==null) enterD_round_expr(ctx.d_round_expr());
+
+//    : d_round_expr (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) d_round_expr_maker
+        else {
+            enterD_round_expr(ctx.d_round_expr());
+            if (ctx.CONDITION_DOUBLE_AMPERSAND()!=null) outputString.append(ctx.CONDITION_DOUBLE_AMPERSAND().getText());
+            else if (ctx.CONDITION_DOUBLE_PIPE()!=null) outputString.append(ctx.CONDITION_DOUBLE_PIPE().getText());
+            else if (ctx.PIPE()!=null) outputString.append("-bor");
+            else if (ctx.AMPERSAN()!=null) outputString.append("-band");
+            enterD_round_expr_maker(ctx.d_round_expr_maker());
+        }
+    }
+
+    @Override
+    public void enterD_round_expr(BashGrammarParser.D_round_exprContext ctx) {
+        //TODO: trzeba będzie ==, <, << itd. zamienić na -eq, -lt, -shl
+        //     https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_arithmetic_operators?view=powershell-7.3
+        //    : expr  (EQ EQ? /*==-porównanie, =-przypisanie*/|  POINTER_RIGHT | POINTER_RIGHT POINTER_RIGHT | POINTER_LEFT | POINTER_LEFT POINTER_LEFT | CONDITION_LE | CONDITION_EQ | CONDITION_GE | CONDITION_GT | CONDITION_LT | CONDITION_NEQ) expr
+        //    | expr ( POINTER_LEFT EQ | POINTER_RIGHT EQ | BOOL_NEGATION EQ )  expr
+        //    | BOOL
+        //    | variable_or_number ( PLUS PLUS | MINUS MINUS ) //id++ id-- -- teoretycznie dziala w bashu dla id, zmiennej i liczby
+        //    | ( PLUS PLUS | MINUS MINUS ) variable_or_number //++id --id
+        //    | STRING EQ EQ? STRING
+    }
+
+    @Override
+    public void enterSplitter_end_command(BashGrammarParser.Splitter_end_commandContext ctx) {
+        outputString.append(ctx.getText());
     }
 }

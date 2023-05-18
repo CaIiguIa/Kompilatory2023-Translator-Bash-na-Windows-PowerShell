@@ -21,7 +21,7 @@ public class Main {
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             BashGrammarParser parser = new BashGrammarParser(tokens);
             BashGrammarParser.ProgramContext tree = parser.program();
-            BashToPowershell translator = new BashToPowershell();
+            BashToPowershell translator = new BashToPowershell(true);
             translator.enterProgram(tree);
             translator.exitProgram(tree);
             return translator.getOutputString();
