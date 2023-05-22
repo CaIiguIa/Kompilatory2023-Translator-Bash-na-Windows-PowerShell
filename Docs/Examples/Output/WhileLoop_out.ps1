@@ -1,6 +1,6 @@
 counter=1
-while(); do
-    echo  "Counter: $counter"
-    man bash  -u | grep  "cos" | cat
+while( $counter -le  5) {
+    Write-Output  "Counter: $counter"
+    man bash -u | Select-String  "cos" | cat
 
-done
+}

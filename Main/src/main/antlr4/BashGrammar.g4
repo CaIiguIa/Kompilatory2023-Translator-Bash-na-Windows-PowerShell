@@ -230,7 +230,7 @@ CONDITION_NEQ               :   ('-ne'|'!=');
 CONDITION_GT                :   '-gt';
 CONDITION_GE                :   ('-ge'|'>=');
 CONDITION_LT                :   '-lt';
-CONDITION_LE                :   ('-le'|':');
+CONDITION_LE                :   ('-le'|'<=');
 MODULO                      :   '%';
 CONDITION_DOUBLE_AMPERSAND  :   '&&';
 CONDITION_DOUBLE_PIPE       :   '||';
