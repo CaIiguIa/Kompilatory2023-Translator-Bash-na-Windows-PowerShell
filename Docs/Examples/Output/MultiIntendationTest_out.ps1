@@ -1,1 +1,1 @@
-manbash -u|Select-String "between x and y"|cat
+java.lang.NullPointerException: Cannot invoke "pl.edu.agh.kis.parser.BashGrammarParser$D_round_expr_makerContext.d_round_expr()" because "ctx" is null

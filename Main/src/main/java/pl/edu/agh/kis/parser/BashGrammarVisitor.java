@@ -23,6 +23,48 @@ public interface BashGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitInstruction(BashGrammarParser.InstructionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link BashGrammarParser#symbols}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSymbols(BashGrammarParser.SymbolsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BashGrammarParser#argument}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArgument(BashGrammarParser.ArgumentContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BashGrammarParser#word}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWord(BashGrammarParser.WordContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BashGrammarParser#command}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCommand(BashGrammarParser.CommandContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BashGrammarParser#pipe_symbol}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPipe_symbol(BashGrammarParser.Pipe_symbolContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BashGrammarParser#pipeline}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPipeline(BashGrammarParser.PipelineContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BashGrammarParser#pipeline_list}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPipeline_list(BashGrammarParser.Pipeline_listContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link BashGrammarParser#assign}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -143,48 +185,6 @@ public interface BashGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExpr(BashGrammarParser.ExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link BashGrammarParser#symbols}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSymbols(BashGrammarParser.SymbolsContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link BashGrammarParser#argument}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArgument(BashGrammarParser.ArgumentContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link BashGrammarParser#word}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitWord(BashGrammarParser.WordContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link BashGrammarParser#command}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCommand(BashGrammarParser.CommandContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link BashGrammarParser#pipe_symbol}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPipe_symbol(BashGrammarParser.Pipe_symbolContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link BashGrammarParser#pipeline}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPipeline(BashGrammarParser.PipelineContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link BashGrammarParser#pipeline_list}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPipeline_list(BashGrammarParser.Pipeline_listContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link BashGrammarParser#function}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -214,16 +214,4 @@ public interface BashGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitId(BashGrammarParser.IdContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link BashGrammarParser#string}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitString(BashGrammarParser.StringContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link BashGrammarParser#character_chain}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCharacter_chain(BashGrammarParser.Character_chainContext ctx);
 }

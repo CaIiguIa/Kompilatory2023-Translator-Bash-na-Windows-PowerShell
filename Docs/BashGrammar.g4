@@ -1,4 +1,9 @@
 grammar BashGrammar;
+// !Note: Do not change production names or order unless you also change DashToPowershell class
+//TODO: (NA KOŃCU) Poprawić for, while, if ,itp żeby było jak w man bash -u
+// TODO: błędy w gramatyce: pipeline_list można usunąć, wprowadza niedeterminizm tworzenia drzewa, lepiej zrobić instriction -> pipeline
+// TODO: błędy w gramatyce: word to niby command+ więc komenda: ("asdasd" echo) jest parsowalna, trzeba sprawić, że pierwszy ciąg znaków to nie string
+
 
 program
     :	COMMENT instruction* EOF
@@ -15,8 +20,43 @@ instruction
     |   select
     |   coprocess
     |	pipeline_list
+//    |   pipeline
     |   assign
     |	splitter_end_command
+    ;
+
+symbols
+	:	(alphanumeric)+
+//	: (ALPHANUMSPACE)+
+	;
+
+argument
+	:	(MINUS|(MINUS MINUS)) symbols
+	;
+
+word
+	:	command+/* (SPACE command)**/
+	;
+
+command
+    :   STRING
+    |   CHARACTER_CHAIN
+	|	variable_from_command
+	|	argument
+	|	symbols
+	;
+
+pipe_symbol
+	:	PIPE
+	|	PIPE AMPERSAN
+	;
+
+pipeline
+	:	(TIME MINUSP?)? (BOOL_NEGATION)? word (pipe_symbol word)* (SINGLE_SEMICOLON|NEW_LINE)
+    ;
+
+pipeline_list
+	:   (pipeline)+
     ;
 
 assign
@@ -28,14 +68,12 @@ var
     : DOLLAR_SIGN? ALPHA alphanumeric+
     ;
 
-
-
 case_statement
     : CASE_START VARIABLE LOOP_IN  splitter_end_command? single_case+ ( CASE_DEFAULT instruction* BRAKE_ABSOLUTE)? splitter_end_command? CASE_END splitter_end_command
     ;
 
 single_case
-    :    ( ( ( alphanumeric+ | string ) ( PIPE ( alphanumeric+ | string ) )* )  ) R_PARENTH_ROUND splitter_end_command? instruction* BRAKE_ABSOLUTE splitter_end_command?
+    :    ( ( ( alphanumeric+ | STRING ) ( PIPE ( alphanumeric+ | STRING ) )* )  ) R_PARENTH_ROUND splitter_end_command? instruction* BRAKE_ABSOLUTE splitter_end_command?
     ;
 
 until_loop
@@ -71,7 +109,7 @@ signed_number
     ;
 
 number_float
-    : NUMBER (('.'|',') (DIGIT)*)?
+    : NUMBER (('.'|',') (NUMERIC)*)?
     ;
 
 variable_from_command
@@ -96,25 +134,15 @@ expr_maker
 //    : L_PARENTH_ROUND expr_maker R_PARENTH_ROUND
     | TILDA expr  //bitwise negation
     | expr_maker (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) expr_maker // pipeline_list (|| albo | albo & albo &&) pipeline_list ;
-    | L_PARENTH_ROUND L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND R_PARENTH_ROUND // (()) condition - && == string arithmetic
+    | L_PARENTH_ROUND  d_round_expr_maker  R_PARENTH_ROUND // (()) condition - && == STRING arithmetic
+    | L_PARENTH_ROUND L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND R_PARENTH_ROUND
+    | CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE d_round_expr_maker CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE
+    | CONDITION_LEFT_SINGLE d_round_expr_maker CONDITION_RIGHT_SINGLE
 //    | CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE d_square_expr_maker  CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE// [[]] condition
-// TODO    | CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE s_square_expr CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE//
-    | /*TODO: pipeline_list*/
+// TODO    | CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE s_square_expr CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE//
+//    | /*TODO: pipeline_list*/
     ;
-//d_square_expr_maker
-//    : d_round_expr (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) d_round_expr_maker
-//    | L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND
-//    |d_round_expr
-//    ;
-//
-//d_square_expr // dodać -eq itp
-//    : expr  (EQ EQ? /*==-porównanie, =-przypisanie*/|  POINTER_RIGHT | POINTER_RIGHT POINTER_RIGHT | POINTER_LEFT | POINTER_LEFT POINTER_LEFT) expr
-//    | expr ( POINTER_LEFT EQ | POINTER_RIGHT EQ | BOOL_NEGATION EQ )  expr
-//    | BOOL
-//    | variable_or_number ( PLUS PLUS | MINUS MINUS ) //id++ id-- -- teoretycznie dziala w bashu dla id, zmiennej i liczby
-//    | ( PLUS PLUS | MINUS MINUS ) variable_or_number //++id --id
-//    | string EQ EQ? string
-//    ;
+
 
 d_round_expr_maker
     : d_round_expr (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) d_round_expr_maker
@@ -123,12 +151,12 @@ d_round_expr_maker
     ;
 
 d_round_expr // single, atomic  epression returning bool
-    : expr  (EQ EQ? /*==-porównanie, =-przypisanie*/|  POINTER_RIGHT | POINTER_RIGHT POINTER_RIGHT | POINTER_LEFT | POINTER_LEFT POINTER_LEFT) expr
+    : expr  (EQ EQ? /*==-porównanie, =-przypisanie*/|  POINTER_RIGHT | POINTER_RIGHT POINTER_RIGHT | POINTER_LEFT | POINTER_LEFT POINTER_LEFT | CONDITION_LE | CONDITION_EQ | CONDITION_GE | CONDITION_GT | CONDITION_LT | CONDITION_NEQ) expr
     | expr ( POINTER_LEFT EQ | POINTER_RIGHT EQ | BOOL_NEGATION EQ )  expr
     | BOOL
     | variable_or_number ( PLUS PLUS | MINUS MINUS ) //id++ id-- -- teoretycznie dziala w bashu dla id, zmiennej i liczby
     | ( PLUS PLUS | MINUS MINUS ) variable_or_number //++id --id
-    | string EQ EQ? string
+    | STRING EQ EQ? STRING
     ;
 
 variable_or_number /*zmienna, liczba*/
@@ -144,47 +172,6 @@ expr // boolowa wartość bez nawiasów / && / ||
     | variable_or_number
     ;
 
-//numeric_expression_maker
-//    :
-//    ;
-
-//numeric_expression
-//    :	signed_number
-//    ;
-
-symbols
-	:	alphanumeric+
-	;
-
-argument
-	:	(MINUS|(MINUS MINUS)) alphanumeric+
-	;
-
-word
-	:	(command)+
-	;
-
-command
-	:	symbols
-	|	string
-	|	character_chain
-	|	variable_from_command
-	|	argument
-	;
-
-pipe_symbol
-	:	PIPE
-	|	PIPE AMPERSAN
-	;
-
-pipeline
-	:	(TIME MINUSP?)? (BOOL_NEGATION)? word (pipe_symbol word)* (SINGLE_SEMICOLON|NEW_LINE)
-    ;
-
-pipeline_list
-	:   (pipeline)+
-    ;
-
 function:   (alphanumeric)+ L_PARENTH_ROUND R_PARENTH_ROUND block /*(return_output)?*/
     |   FUNCTION_START (alphanumeric)+ (L_PARENTH_ROUND R_PARENTH_ROUND)? block /*(return_output)?*/
     ;
@@ -198,7 +185,7 @@ coprocess
 	;
 
 alphanumeric
-    :   (ALPHA | NUMERIC | ' ')
+    :   (ALPHA | NUMERIC)
     ;
 
 
@@ -219,18 +206,9 @@ id
     :	ALPHA alphanumeric*
     ;
 
-string
-    :	APOSTROPHE (' ' | ~(APOSTROPHE)*) APOSTROPHE
-    ;   //  TODO: Make sure that: " dsdadad\" " is whole string( " dsdadad\" " ) not a " dsdadad\" ????
 
-character_chain
-	:	SINGLE_APOSTROPHE ~(SINGLE_APOSTROPHE)* SINGLE_APOSTROPHE
-	;
-
-
-
-SPACE						:	' '->skip;
-TAB							:	[\t]->skip;
+STRING						:	["](~["]|' ')*["];
+CHARACTER_CHAIN				:	['](~[']|' ')*['];
 COMMENT                     :   '#'~[\n]+'\n';
 SINGLE_APOSTROPHE			:	['];
 APOSTROPHE                  :   '"';
@@ -296,9 +274,10 @@ TILDA                       :   '~';
 LAST_FOLDER                 :   '..';
 THIS_FOLDER                 :   '.';
 NUMBER                      :   [1-9][0-9]*;
-DIGIT                       :   [0-9];
 ALPHA                       :   [A-Za-z];
 NUMERIC                     :   [0-9];
 //ALPHANUMERIC                :   [a-zA-Z0-9_];
 //NEW_VARIABLE                :   ~[$#\n;0-9 =]~[$#\n; =]*;
 MINUSP						:	'-p';
+SPACE						:	' '->more;
+TAB							:	[\t]->skip;

@@ -1,3 +1,3 @@
 Get-ChildItem
-Set-Location "../"
+Set-Location  "../"
 Get-ChildItem

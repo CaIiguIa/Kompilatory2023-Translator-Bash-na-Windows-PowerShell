@@ -1,1 +1,1 @@
-Write-Output "Sum: $sum"
+java.lang.NullPointerException: Cannot invoke "pl.edu.agh.kis.parser.BashGrammarParser$Number_floatContext.getText()" because the return value of "pl.edu.agh.kis.parser.BashGrammarParser$AssignContext.number_float()" is null

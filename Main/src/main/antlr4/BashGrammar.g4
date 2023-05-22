@@ -20,8 +20,43 @@ instruction
     |   select
     |   coprocess
     |	pipeline_list
+//    |   pipeline
     |   assign
     |	splitter_end_command
+    ;
+
+symbols
+	:	(alphanumeric)+
+//	: (ALPHANUMSPACE)+
+	;
+
+argument
+	:	(MINUS|(MINUS MINUS)) symbols
+	;
+
+word
+	:	command+/* (SPACE command)**/
+	;
+
+command
+    :   STRING
+    |   CHARACTER_CHAIN
+	|	variable_from_command
+	|	argument
+	|	symbols
+	;
+
+pipe_symbol
+	:	PIPE
+	|	PIPE AMPERSAN
+	;
+
+pipeline
+	:	(TIME MINUSP?)? (BOOL_NEGATION)? word (pipe_symbol word)* (SINGLE_SEMICOLON|NEW_LINE)
+    ;
+
+pipeline_list
+	:   (pipeline)+
     ;
 
 assign
@@ -107,20 +142,7 @@ expr_maker
 // TODO    | CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE s_square_expr CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE//
 //    | /*TODO: pipeline_list*/
     ;
-//d_square_expr_maker
-//    : d_round_expr (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) d_round_expr_maker
-//    | L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND
-//    |d_round_expr
-//    ;
-//
-//d_square_expr // dodać -eq itp
-//    : expr  (EQ EQ? /*==-porównanie, =-przypisanie*/|  POINTER_RIGHT | POINTER_RIGHT POINTER_RIGHT | POINTER_LEFT | POINTER_LEFT POINTER_LEFT) expr
-//    | expr ( POINTER_LEFT EQ | POINTER_RIGHT EQ | BOOL_NEGATION EQ )  expr
-//    | BOOL
-//    | variable_or_number ( PLUS PLUS | MINUS MINUS ) //id++ id-- -- teoretycznie dziala w bashu dla id, zmiennej i liczby
-//    | ( PLUS PLUS | MINUS MINUS ) variable_or_number //++id --id
-//    | string EQ EQ? string
-//    ;
+
 
 d_round_expr_maker
     : d_round_expr (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) d_round_expr_maker
@@ -148,50 +170,6 @@ expr // boolowa wartość bez nawiasów / && / ||
     : expr (PLUS | MINUS | WILDCARD_OR_MULTIPLY | DIVIDE | MODULO | WILDCARD_OR_MULTIPLY WILDCARD_OR_MULTIPLY ) expr
     | L_PARENTH_ROUND expr R_PARENTH_ROUND
     | variable_or_number
-    ;
-
-//numeric_expression_maker
-//    :
-//    ;
-
-//numeric_expression
-//    :	signed_number
-//    ;
-
-symbols
-	:	(alphanumeric)+
-	;
-
-argument
-	:	(MINUS|(MINUS MINUS)) alphanumeric+
-	;
-
-word
-	:	command+/* (SPACE command)**/
-	;
-
-command
-//	|	string
-//	|	character_chain
-    :   STRING
-    |   CHARACTER_CHAIN
-	|	variable_from_command
-	|	argument
-	|	symbols
-//	|   SPACE
-	;
-
-pipe_symbol
-	:	PIPE
-	|	PIPE AMPERSAN
-	;
-
-pipeline
-	:	(TIME MINUSP?)? (BOOL_NEGATION)? word (pipe_symbol word)* (SINGLE_SEMICOLON|NEW_LINE)
-    ;
-
-pipeline_list
-	:   (pipeline)+
     ;
 
 function:   (alphanumeric)+ L_PARENTH_ROUND R_PARENTH_ROUND block /*(return_output)?*/
@@ -301,5 +279,5 @@ NUMERIC                     :   [0-9];
 //ALPHANUMERIC                :   [a-zA-Z0-9_];
 //NEW_VARIABLE                :   ~[$#\n;0-9 =]~[$#\n; =]*;
 MINUSP						:	'-p';
-SPACE						:	' '->skip;
+SPACE						:	' '->more;
 TAB							:	[\t]->skip;

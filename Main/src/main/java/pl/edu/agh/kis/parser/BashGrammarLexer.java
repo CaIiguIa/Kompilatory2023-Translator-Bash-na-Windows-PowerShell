@@ -31,7 +31,7 @@ public class BashGrammarLexer extends Lexer {
 		R_PARENTH_ROUND=54, L_PARENTH_CURLY=55, R_PARENTH_CURLY=56, POINTER_RIGHT=57, 
 		POINTER_LEFT=58, BOOL_NEGATION=59, FUNCTION_START=60, SELECT=61, COPROCESS_START=62, 
 		TIME=63, CREATE_VARABLE=64, TILDA=65, LAST_FOLDER=66, THIS_FOLDER=67, 
-		NUMBER=68, ALPHA=69, NUMERIC=70, MINUSP=71, SPACE=72, TAB=73;
+		NUMBER=68, ALPHA=69, NUMERIC=70, MINUSP=71, TAB=72, SPACE=73;
 	public static String[] channelNames = {
 		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
 	};
@@ -71,7 +71,7 @@ public class BashGrammarLexer extends Lexer {
 			"'$'", null, "'$#'", null, null, null, null, null, "'|'", "'+'", "'*'", 
 			"'?'", "'-'", "'/'", "'\\'", "'&'", "'('", "')'", "'{'", "'}'", "'>'", 
 			"'<'", "'!'", "'function'", "'select'", "'coproc'", "'time'", "'declare'", 
-			"'~'", "'..'", "'.'", null, null, null, "'-p'", "' '"
+			"'~'", "'..'", "'.'", null, null, null, "'-p'", null, "' '"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -92,7 +92,7 @@ public class BashGrammarLexer extends Lexer {
 			"R_PARENTH_CURLY", "POINTER_RIGHT", "POINTER_LEFT", "BOOL_NEGATION", 
 			"FUNCTION_START", "SELECT", "COPROCESS_START", "TIME", "CREATE_VARABLE", 
 			"TILDA", "LAST_FOLDER", "THIS_FOLDER", "NUMBER", "ALPHA", "NUMERIC", 
-			"MINUSP", "SPACE", "TAB"
+			"MINUSP", "TAB", "SPACE"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -216,7 +216,7 @@ public class BashGrammarLexer extends Lexer {
 		"\u000f\u001f\u0010!\u0011#\u0012%\u0013\'\u0014)\u0015+\u0016-\u0017/"+
 		"\u00181\u00193\u001a5\u001b7\u001c9\u001d;\u001e=\u001f? A!C\"E#G$I%K"+
 		"&M\'O(Q)S*U+W,Y-[.]/_0a1c2e3g4i5k6m7o8q9s:u;w<y={>}?\u007f@\u0081A\u0083"+
-		"B\u0085C\u0087D\u0089E\u008bF\u008dG\u008fH\u0091I\u0001\u0000\u000b\u0001"+
+		"B\u0085C\u0087D\u0089E\u008bF\u008dG\u008fI\u0091H\u0001\u0000\u000b\u0001"+
 		"\u0000\"\"\u0001\u0000\'\'\u0001\u0000\n\n\u0005\u0000\n\n  #$09;;\u0004"+
 		"\u0000\n\n  #$;;\u0001\u000009\u0003\u000009AFaf\u0001\u000007\u0001\u0000"+
 		"19\u0002\u0000AZaz\u0001\u0000\t\t\u01cc\u0000\u0001\u0001\u0000\u0000"+
@@ -426,9 +426,9 @@ public class BashGrammarLexer extends Lexer {
 		"\u01b7\u0005 \u0000\u0000\u01b7\u01b8\u0001\u0000\u0000\u0000\u01b8\u01b9"+
 		"\u0006G\u0000\u0000\u01b9\u0090\u0001\u0000\u0000\u0000\u01ba\u01bb\u0007"+
 		"\n\u0000\u0000\u01bb\u01bc\u0001\u0000\u0000\u0000\u01bc\u01bd\u0006H"+
-		"\u0000\u0000\u01bd\u0092\u0001\u0000\u0000\u0000\u0010\u0000\u0098\u009a"+
+		"\u0001\u0000\u01bd\u0092\u0001\u0000\u0000\u0000\u0010\u0000\u0098\u009a"+
 		"\u00a2\u00a4\u00ad\u00ec\u00f7\u0101\u0133\u0145\u014c\u0151\u0156\u015b"+
-		"\u01ac\u0001\u0006\u0000\u0000";
+		"\u01ac\u0002\u0003\u0000\u0000\u0006\u0000\u0000";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
