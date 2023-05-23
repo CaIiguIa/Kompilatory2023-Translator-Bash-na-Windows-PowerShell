@@ -1,0 +1,987 @@
+{
+	"NoTranslation" : "XXXXXX",
+	"DeletNextArgument" : "AAAAAA",
+	"Translations" : [
+		{
+			"Bash_Command" : "echo",
+			"WindowsPowerShell_Command" : "Write-Host",
+			"Description" : "Print text at the console.",
+			"arguments" : {
+				"-n" : "-NoNewline",
+				"-e" : "XXXXXX",
+				"-E" : "XXXXXX",
+				"--help" : "XXXXXX",
+				"--version" : "XXXXXX"
+			}
+		},
+		{
+			"Bash_Command" : "cd",
+			"WindowsPowerShell_Command" : "Set-Location",
+			"Description" : "Change current directory",
+			"arguments" : {
+				"-L" : "XXXXXX",
+				"-P" : "XXXXXX",
+				"-e" : "XXXXXX",
+				"-@" : "XXXXXX"
+			}
+		},
+		{
+			"Bash_Command" : "exit",
+			"WindowsPowerShell_Command" : "Exit",
+			"Description" : "Exit the script. Use of exit([0-9])!",
+			"arguments" : {
+
+			}
+		},
+		{
+			"Bash_Command" : "find",
+			"WindowsPowerShell_Command" : "Find-ChildItem",
+			"Description" : "",
+			"arguments" : {
+				"-P" : "XXXXXX",
+				"-H" : "XXXXXX",
+				"-D" : "XXXXXX",
+				"-Olevel" : "XXXXXX",
+				"-maxdepth" : "-Depth",
+				"-mindepth" : "XXXXXX",
+				"-L" : "-FollowSymlink",
+				"-path" : "-Path"
+				//	TODO: END THIS
+			}
+		},
+		{
+			"Bash_Command" : "ls",
+			"WindowsPowerShell_Command" : "Get-Childitem",
+			"Description" : "",
+			"arguments" : {
+				"-a" : "-",
+				"-A" : "-",
+				"--author" : "-",
+				"-b" : "-",
+				"-B" : "-",
+				"-c" : "-",
+				"-C" : "-",
+				"-c" : "-",
+				"-D" : "-",
+				"-f" : "-",
+				"-F" : "-",
+				"-r" : "",
+				"-R" : "-Recurse",
+
+				"--time-style=" : "AAAAAA",
+				"-t" : "",
+				"--tabsize=" : "AAAAAA",
+				"-T" : "AAAAAA",
+				"-u" : "",
+				"-U" : "",
+				"-v" : "",
+				"--width=" : "AAAAAA",
+				"-w" : "AAAAAA",
+				"-x" : "",
+				"-X" : "",
+				"--context" : "",
+				"-Z" : "",
+				"-l" : "-",
+				"--help" : "",
+				"--version" : ""
+			}
+		},
+		{
+			"Bash_Command" : "kill",
+			"WindowsPowerShell_Command" : "taskkill",
+			"Description" : "",
+			"arguments" : {
+				"-s" : "-",
+				"-" : "-",
+				"-q" : "-",
+				"-queue" : "-",
+				"-l" : "-",
+				"-list" : "-",
+				"-L" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "set",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "sleep",
+			"WindowsPowerShell_Command" : "Start-Sleep",
+			"Description" : "",
+			"arguments" : {
+			}
+		},
+		{
+			"Bash_Command" : "read",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "grep",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "wc",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "ssh",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "apropos",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "date",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "pwd",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "rm",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "cp",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "less",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "more",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "alias",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "touch",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "mkdir",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "cat",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "rev",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "cut",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "whatis",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "info",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "tac",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "tr",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "head",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "tail",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "sort",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "uniq",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "expr",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "pr",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "tee",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "cal",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "xargs",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "stty",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "fg",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "bg",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "jobs",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "top",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "free",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "load",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "ps",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "tty",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "kill",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "killall",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "nohup",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "nice",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "renice",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "uptime",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "watch",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "time",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "at",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "atq",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "atrm",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "chmod",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "set",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "unset",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "export",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "env",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "wait",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "trap",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "scp",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "stat",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "tar",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "gzip",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "id",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "du",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "ln",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "users",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "w",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "who",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "last",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "basename",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "dirname",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "egrep",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		},
+		{
+			"Bash_Command" : "wget",
+			"WindowsPowerShell_Command" : "",
+			"Description" : "",
+			"arguments" : {
+				"-n" : "-",
+				"-a" : "-",
+				"-b" : "-",
+				"-c" : "-",
+				"-d" : "-"
+			}
+		}
+	]
+}
