@@ -11,6 +11,7 @@ public class FullFileReader {
         try {
             this.contents = readEntireFile(new BufferedReader(new FileReader(path)));
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
@@ -28,6 +29,7 @@ public class FullFileReader {
 
             return stringBuilder.toString();
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

@@ -1,3 +1,3 @@
-echo  "What is your name?"
-Get-Content -rname
-echo  "Hello, $name!"
+Write-Host  "What is your name?"
+ -rname
+Write-Host  "Hello, $name!"

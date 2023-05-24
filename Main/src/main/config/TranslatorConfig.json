@@ -46,7 +46,6 @@
 				"-mindepth" : "XXXXXX",
 				"-L" : "-FollowSymlink",
 				"-path" : "-Path"
-				//	TODO: END THIS
 			}
 		},
 		{
@@ -61,7 +60,6 @@
 				"-B" : "-",
 				"-c" : "-",
 				"-C" : "-",
-				"-c" : "-",
 				"-D" : "-",
 				"-f" : "-",
 				"-F" : "-",

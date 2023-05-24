@@ -1,15 +1,11 @@
 -------------------------------------------------------------------------------
 Test set: pl.edu.agh.kis.MainTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.119 sec <<< FAILURE!
-testMain(pl.edu.agh.kis.MainTest)  Time elapsed: 0.119 sec  <<< FAILURE!
-junit.framework.ComparisonFailure: expected:<[Write-Output] "Hello, World!"
-> but was:<[echo] "Hello, World!"
->
-	at junit.framework.Assert.assertEquals(Assert.java:100)
-	at junit.framework.Assert.assertEquals(Assert.java:107)
-	at junit.framework.TestCase.assertEquals(TestCase.java:260)
-	at pl.edu.agh.kis.MainTest.testMain(MainTest.java:20)
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.073 sec <<< FAILURE!
+testMain(pl.edu.agh.kis.MainTest)  Time elapsed: 0.073 sec  <<< ERROR!
+java.lang.ExceptionInInitializerError
+	at pl.edu.agh.kis.Main.lambda$static$0(Main.java:27)
+	at pl.edu.agh.kis.MainTest.testMain(MainTest.java:19)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -35,4 +31,18 @@ junit.framework.ComparisonFailure: expected:<[Write-Output] "Hello, World!"
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+Caused by: java.lang.RuntimeException: java.io.FileNotFoundException: Main\src\main\config\TranslatorConfig.json (System nie może odnaleźć określonej ścieżki)
+	at pl.edu.agh.kis.files.FullFileReader.<init>(FullFileReader.java:14)
+	at pl.edu.agh.kis.translations.Translator.<init>(Translator.java:28)
+	at pl.edu.agh.kis.translations.Translator.getInstance(Translator.java:40)
+	at pl.edu.agh.kis.BashToPowershell.<clinit>(BashToPowershell.java:11)
+	... 27 more
+Caused by: java.io.FileNotFoundException: Main\src\main\config\TranslatorConfig.json (System nie może odnaleźć określonej ścieżki)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:216)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:157)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:111)
+	at java.base/java.io.FileReader.<init>(FileReader.java:60)
+	at pl.edu.agh.kis.files.FullFileReader.<init>(FullFileReader.java:12)
+	... 30 more
 

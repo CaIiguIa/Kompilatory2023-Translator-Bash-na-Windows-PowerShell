@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="1" failures="0" name="pl.edu.agh.kis.AppTest" time="0.002" errors="0" skipped="0">
+<testsuite tests="1" failures="0" name="pl.edu.agh.kis.AppTest" time="0.001" errors="0" skipped="0">
   <properties>
     <property name="idea.version" value="2022.3.3"/>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
@@ -29,7 +29,7 @@
     <property name="maven.ext.class.path" value="C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.3.1\plugins\maven\lib\maven-event-listener.jar"/>
     <property name="classworlds.conf" value="C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.3.1\plugins\maven\lib\maven3\bin\m2.conf"/>
     <property name="sun.jnu.encoding" value="Cp1250"/>
-    <property name="java.library.path" value="C:\Program Files\Java\jdk-17\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Python311\;C:\Python311\Scripts\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Program Files\Git\cmd;C:\Program Files\SonarQube\jdk-11.0.1\bin;C:\Program Files\SonarQube\sonarqube-9.8.0.63668\bin\windows-x86-64;C:\Program Files\dotnet\;C:\Program Files\SDK\MinGW_Boost\bin;C:\Program Files\VideoLAN\VLC\;C:\ProgramData\anaconda3\Library\bin;C:\ProgramData\anaconda3\Scripts;C:\ProgramData\anaconda3;C:\Users\domin\Programs\Papyrus;C:\Program Files\PostgreSQL\15\bin;C:\Program Files\MySQL\MySQL Server 8.0\bin;C:\Program Files\Graphviz\bin;C:\Program Files\MiKTeX\miktex\bin\x64\;C:\Program Files\qemu;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\domin\AppData\Local\Microsoft\WindowsApps;C:\Users\domin\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\domin\AppData\Roaming\npm;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.3.1\bin;;C:\Program Files\JetBrains\CLion 2022.3.2\bin;;C:\Users\domin\.dotnet\tools;C:\Program Files\JetBrains\PyCharm Community Edition 2023.1\bin;;C:\Users\domin\AppData\Local\Programs\MiKTeX\miktex\bin\x64\;."/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk-17\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Python311\;C:\Python311\Scripts\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Program Files\Git\cmd;C:\Program Files\SonarQube\jdk-11.0.1\bin;C:\Program Files\SonarQube\sonarqube-9.8.0.63668\bin\windows-x86-64;C:\Program Files\dotnet\;C:\Program Files\SDK\MinGW_Boost\bin;C:\Program Files\VideoLAN\VLC\;C:\ProgramData\anaconda3\Library\bin;C:\ProgramData\anaconda3\Scripts;C:\ProgramData\anaconda3;C:\Users\domin\Programs\Papyrus;C:\Program Files\PostgreSQL\15\bin;C:\Program Files\MySQL\MySQL Server 8.0\bin;C:\Program Files\Graphviz\bin;C:\Program Files\MiKTeX\miktex\bin\x64\;C:\Program Files\qemu;;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;%SYSTEMROOT%\System32\OpenSSH\;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\domin\AppData\Local\Microsoft\WindowsApps;C:\Users\domin\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\domin\AppData\Roaming\npm;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.3.1\bin;;C:\Program Files\JetBrains\CLion 2022.3.2\bin;;C:\Users\domin\.dotnet\tools;C:\Program Files\JetBrains\PyCharm Community Edition 2023.1\bin;;C:\Users\domin\AppData\Local\Programs\MiKTeX\miktex\bin\x64\;;."/>
     <property name="jansi.passthrough" value="true"/>
     <property name="maven.conf" value="C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.3.1\plugins\maven\lib\maven3/conf"/>
     <property name="jdk.debug" value="release"/>
@@ -61,5 +61,5 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="pl.edu.agh.kis.AppTest" name="testApp" time="0.002"/>
+  <testcase classname="pl.edu.agh.kis.AppTest" name="testApp" time="0.001"/>
 </testsuite>

@@ -34,6 +34,7 @@ public class Translator {
         this.translations = new ArrayList<>(translationsArray.length());
         for (int i = 0; i < translationsArray.length(); i++)
             translations.add(new TranslationUnit(translationsArray.getJSONObject(i)));
+
     }
     public static Translator getInstance() {
         if(Translator.INSTANCE == null) {

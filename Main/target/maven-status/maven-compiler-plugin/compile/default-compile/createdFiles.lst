@@ -18,7 +18,6 @@ pl\edu\agh\kis\parser\BashGrammarParser$Single_caseContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$Number_floatContext.class
 pl\edu\agh\kis\parser\BashGrammarVisitor.class
 pl\edu\agh\kis\parser\BashGrammarParser$For_loop_argumentContext.class
-pl\edu\agh\kis\Translator.class
 pl\edu\agh\kis\parser\BashGrammarParser$FunctionContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$ProgramContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$Variable_from_commandContext.class
