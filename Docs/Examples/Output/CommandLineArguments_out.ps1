@@ -1,4 +1,4 @@
-Write-Output  "First argument: $1"
-Write-Output -n  "Second argument: $2"
-Write-Output  "help"
-Write-Output  "BA AB BA AB"
+echo  "First argument: $1"
+echo -n  "Second argument: $2"
+echo  "help"
+echo  "BA AB BA AB"

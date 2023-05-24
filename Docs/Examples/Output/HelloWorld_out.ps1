@@ -1,1 +1,1 @@
-Write-Output  "Hello, World!"
+echo  "Hello, World!"

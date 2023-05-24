@@ -1,3 +1,3 @@
-Write-Output  "What is your name?"
+echo  "What is your name?"
 Get-Content -rname
-Write-Output  "Hello, $name!"
+echo  "Hello, $name!"
