@@ -3,17 +3,18 @@ package pl.edu.agh.kis;
 import pl.edu.agh.kis.parser.BashGrammarBaseListener;
 import pl.edu.agh.kis.parser.BashGrammarParser;
 
-import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class BashToPowershell extends BashGrammarBaseListener {
     public boolean skipComments;
-    public Stack<Boolean> isInFunctionStack = new Stack<>();
-    private StringBuilder outputString = new StringBuilder();
+    public int functionDepth;
+    private StringBuilder outputString;
 
     BashToPowershell(boolean skipComments) {
         this.skipComments = skipComments;
+        this.outputString = new StringBuilder();
+        this.functionDepth = 0;
     }
 
     public String getOutputString() {
@@ -32,16 +33,16 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterFunction(BashGrammarParser.FunctionContext ctx) {
-        isInFunctionStack.push(true);
+        functionDepth++;
     }
 
     @Override
     public void exitFunction(BashGrammarParser.FunctionContext ctx) {
-        isInFunctionStack.pop();
+        functionDepth--;
     }
 
     public boolean isInFunction() {
-        return !isInFunctionStack.empty();
+        return functionDepth != 0;
     }
 
     @Override
@@ -94,8 +95,6 @@ public class BashToPowershell extends BashGrammarBaseListener {
         else if (ctx.splitter_end_command() != null) {
             enterSplitter_end_command(ctx.splitter_end_command());
         }
-
-
     }
 
     @Override

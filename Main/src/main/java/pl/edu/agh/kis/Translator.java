@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,7 +18,12 @@ public class Translator {
     private static Translator INSTANCE;
     private final Map<String, String> translator_dispatcher = new HashMap<>();
     public final String inputFilePath = "Main\\src\\main\\config\\TranslatorConfig.csv.in";
+
+    public final String ErrorFlag;
+    public final String SkipNextArgumentFlag;
     private Translator() {
+        this.SkipNextArgumentFlag = "";
+        this.ErrorFlag = "";
         try (Reader in = new FileReader(inputFilePath)) {
             Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);
             for (CSVRecord record : records)
@@ -36,5 +42,9 @@ public class Translator {
     public static String translate(String command) {
         String output = getInstance().translator_dispatcher.get(command);
         return output == null ? command : output;
+    }
+
+    public static String translateCommand(String command, List<String> arguments) {
+        return "";
     }
 }

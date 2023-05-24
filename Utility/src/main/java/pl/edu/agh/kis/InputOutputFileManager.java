@@ -10,9 +10,9 @@ import java.io.FileReader;
  *
  */
 public class InputOutputFileManager {
-    private File InputDirectory;
-    private File OutputDirectory;
-    private FileOperation fileOperation;
+    private final File InputDirectory;
+    private final File OutputDirectory;
+    private final FileOperation fileOperation;
     InputOutputFileManager(String inputDirectoryPath, String outputDirectoryPath, FileOperation fileOperation) {
         this.InputDirectory = new File(inputDirectoryPath);
         this.OutputDirectory = new File(outputDirectoryPath);
@@ -41,7 +41,7 @@ public class InputOutputFileManager {
         if (inFiles != null) {
             for (File inFile : inFiles) {
                 if (inFile.isFile()) {
-                    System.out.println("Entered file: " + inFile.getName());
+                    Logger.getInstance().addLog("Entered file: " + inFile.getAbsolutePath());
                     File file = new File(this.OutputDirectory.getAbsolutePath() + "\\" + getOutputFileName(inFile.getName()));
 
                     StringBuilder stringBuilder = new StringBuilder();
