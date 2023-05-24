@@ -132,10 +132,8 @@ public class BashToPowershell extends BashGrammarBaseListener {
     @Override
     public void enterWord(BashGrammarParser.WordContext ctx) {
         enterCommand(ctx.command(0));
-        for (int i = 1; i < ctx.getChildCount(); i++) {
-            outputString.append(' ');
+        for (int i = 1; i < ctx.getChildCount(); i++)
             enterCommand(ctx.command(i));
-        }
     }
 
     @Override

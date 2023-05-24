@@ -1,3 +1,3 @@
 Get-Childitem
-Set-Location  "../"
+Set-Location "../"
 Get-Childitem

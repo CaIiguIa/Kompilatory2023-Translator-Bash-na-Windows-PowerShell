@@ -18,12 +18,11 @@ public class Translator {
     private final String noTranslationKey = "NoTranslation";
     private final String deleteNextArgumentKey = "DeleteNextArgument";
     private final String translationsKey = "Translations";
-    private final String delimiter = " ";
     private final List<TranslationUnit> translations;
-
     public final String inputFilePath = "Main\\src\\main\\config\\TranslatorConfig.json";
     public final String noTranslationFlag;
     public final String skipNextArgumentFlag;
+    public String delimiter = " ";
     private Translator() {
         JSONObject jsonObject = new JSONObject(new FullFileReader(inputFilePath).contents);
 
@@ -61,7 +60,7 @@ public class Translator {
         } else {
             TranslationUnit unit = this.translations.get(index);
 
-            stringBuilder.append(unit.translation).append(this.delimiter);
+            stringBuilder.append(unit.translation);
 
             boolean popFlag = false;
 
@@ -79,13 +78,12 @@ public class Translator {
                     popFlag = true;
                     Logger.getInstance().addLog("In command: " + command + ", argument: " + arg + " is not translatable!");
                 } else {
-                    stringBuilder.append(arg).append(this.delimiter);
+                    stringBuilder.append(this.delimiter).append(arg);
                 }
             }
         }
         return stringBuilder.toString();
     }
-
     private int findCommand(String command) {
         for (int i = 0; i < this.translations.size(); ++i)
             if (Objects.equals(this.translations.get(i).command, command))
