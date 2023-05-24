@@ -1,4 +1,6 @@
-package pl.edu.agh.kis;
+package pl.edu.agh.kis.files;
+
+import pl.edu.agh.kis.log.Logger;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -13,7 +15,7 @@ public class InputOutputFileManager {
     private final File InputDirectory;
     private final File OutputDirectory;
     private final FileOperation fileOperation;
-    InputOutputFileManager(String inputDirectoryPath, String outputDirectoryPath, FileOperation fileOperation) {
+    public InputOutputFileManager(String inputDirectoryPath, String outputDirectoryPath, FileOperation fileOperation) {
         this.InputDirectory = new File(inputDirectoryPath);
         this.OutputDirectory = new File(outputDirectoryPath);
         this.fileOperation = fileOperation;
@@ -44,20 +46,10 @@ public class InputOutputFileManager {
                     Logger.getInstance().addLog("Entered file: " + inFile.getAbsolutePath());
                     File file = new File(this.OutputDirectory.getAbsolutePath() + "\\" + getOutputFileName(inFile.getName()));
 
-                    StringBuilder stringBuilder = new StringBuilder();
-
                     try (BufferedReader reader = new BufferedReader(new FileReader(inFile))) {
-                        String line;
-
-                        while ((line = reader.readLine()) != null) {
-                            stringBuilder.append(line).append('\n');
-                        }
-
-                        file.createNewFile();
                         FileWriter writer = new FileWriter(file);
-                        writer.write(fileOperation.operate(stringBuilder.toString()));
+                        writer.write(fileOperation.operate(new FullFileReader(reader).contents));
                         writer.close();
-
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

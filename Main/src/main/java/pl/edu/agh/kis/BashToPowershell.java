@@ -2,14 +2,16 @@ package pl.edu.agh.kis;
 
 import pl.edu.agh.kis.parser.BashGrammarBaseListener;
 import pl.edu.agh.kis.parser.BashGrammarParser;
+import pl.edu.agh.kis.translations.Translator;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class BashToPowershell extends BashGrammarBaseListener {
+    private static final Translator translator = Translator.getInstance();
+    private final StringBuilder outputString;
     public boolean skipComments;
     public int functionDepth;
-    private StringBuilder outputString;
 
     BashToPowershell(boolean skipComments) {
         this.skipComments = skipComments;
@@ -152,10 +154,10 @@ public class BashToPowershell extends BashGrammarBaseListener {
                     char c = matcher.group(1).charAt(1);
                     outputString.append(ctx.getText().replace(matcher.group(1), "$args[" + c + " - 1]"));
                 } else {
-                    outputString.append(Translator.translate(ctx.getText()));
+                    outputString.append(translator.translate(ctx.getText()));
                 }
             } else {
-                outputString.append(Translator.translate(ctx.getText()));
+                outputString.append(translator.translate(ctx.getText()));
             }
         }
     }
@@ -167,19 +169,19 @@ public class BashToPowershell extends BashGrammarBaseListener {
         for (var str : ctx.getText().stripTrailing().split(" ")) {
             if (spaceFlag) outputString.append(" "); //add space only after first word
             spaceFlag = true;
-            outputString.append(Translator.translate(str).replaceAll(" ", ""));//remove redundant spaces
+            outputString.append(translator.translate(str).replaceAll(" ", ""));//remove redundant spaces
 
         }
     }
 
     @Override
     public void enterArgument(BashGrammarParser.ArgumentContext ctx) {
-        outputString.append(Translator.translate(ctx.getText().replaceAll(" ", "")));
+        outputString.append(translator.translate(ctx.getText().replaceAll(" ", "")));
     }
 
     @Override
     public void enterVariable_from_command(BashGrammarParser.Variable_from_commandContext ctx) {
-        outputString.append(Translator.translate(ctx.getText().replaceAll(" ", "")));
+        outputString.append(translator.translate(ctx.getText().replaceAll(" ", "")));
     }
 
     @Override

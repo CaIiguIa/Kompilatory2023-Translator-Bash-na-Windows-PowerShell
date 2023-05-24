@@ -1,4 +1,4 @@
-package pl.edu.agh.kis;
+package pl.edu.agh.kis.log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -15,11 +15,10 @@ public class Logger {
     private Logger() {
         this.originalErrStream = System.err;
         this.logs = new LinkedList<>();
-        this.logSeparator = "\n\n";
+        this.logSeparator = "\n";
         this.outputStream = new ByteArrayOutputStream();
-        PrintStream customErrStream = new PrintStream(outputStream);
 
-        System.setErr(customErrStream);
+        System.setErr(new PrintStream(outputStream));
     }
 
     public static Logger getInstance() {
@@ -32,8 +31,7 @@ public class Logger {
     public void addLog(String log) {
         logs.add(outputStream.toString());
         outputStream = new ByteArrayOutputStream();
-        PrintStream customErrStream = new PrintStream(outputStream);
-        System.setErr(customErrStream);
+        System.setErr(new PrintStream(outputStream));
 
         logs.add(log);
     }

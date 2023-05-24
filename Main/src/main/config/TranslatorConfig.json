@@ -1,6 +1,6 @@
 {
 	"NoTranslation" : "XXXXXX",
-	"DeletNextArgument" : "AAAAAA",
+	"DeleteNextArgument" : "AAAAAA",
 	"Translations" : [
 		{
 			"Bash_Command" : "echo",

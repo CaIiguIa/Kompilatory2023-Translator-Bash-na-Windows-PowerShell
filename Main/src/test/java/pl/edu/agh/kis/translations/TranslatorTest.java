@@ -1,4 +1,4 @@
-package pl.edu.agh.kis;
+package pl.edu.agh.kis.translations;
 
 import junit.framework.TestCase;
 

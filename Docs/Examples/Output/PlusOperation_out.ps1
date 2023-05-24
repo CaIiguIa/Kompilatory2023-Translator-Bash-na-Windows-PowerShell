@@ -2,6 +2,6 @@ java.lang.NullPointerException: Cannot invoke "pl.edu.agh.kis.parser.BashGrammar
 	at pl.edu.agh.kis.BashToPowershell.enterAssign(BashToPowershell.java:194)
 	at pl.edu.agh.kis.BashToPowershell.enterInstruction(BashToPowershell.java:92)
 	at pl.edu.agh.kis.BashToPowershell.enterProgram(BashToPowershell.java:30)
-	at pl.edu.agh.kis.Main.lambda$static$0(Main.java:29)
+	at pl.edu.agh.kis.Main.lambda$static$0(Main.java:22)
 	at pl.edu.agh.kis.InputOutputFileManager.process(InputOutputFileManager.java:58)
-	at pl.edu.agh.kis.Main.main(Main.java:13)
+	at pl.edu.agh.kis.Main.main(Main.java:33)
