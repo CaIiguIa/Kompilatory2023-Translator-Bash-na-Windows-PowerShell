@@ -1,176 +1,892 @@
 {
-	"NoTranslation" : "XXXXXX",
-	"DeleteNextArgument" : "AAAAAA",
+	"Flags" : {
+		"IgnoreFlag" : 0,
+		"NoTranslation" : 1,
+		"NoTranslationAndDeleteNextArgument" : 2,
+		"AddFirst" : 3,
+		"AddLast" : 4
+	},
 	"Translations" : [
 		{
 			"Bash_Command" : "echo",
 			"WindowsPowerShell_Command" : "Write-Host",
 			"Description" : "Print text at the console.",
 			"arguments" : {
-				"-n" : "-NoNewline",
-				"-e" : "XXXXXX",
-				"-E" : "XXXXXX",
-				"--help" : "XXXXXX",
-				"--version" : "XXXXXX"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
 			"Bash_Command" : "cd",
 			"WindowsPowerShell_Command" : "Set-Location",
-			"Description" : "Change current directory",
+			"Description" : "Change current directory.",
 			"arguments" : {
-				"-L" : "XXXXXX",
-				"-P" : "XXXXXX",
-				"-e" : "XXXXXX",
-				"-@" : "XXXXXX"
+				"." : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "."
+				},
+				".." : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : ".."
+				},
+				"-" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-"
+				},
+				"~" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "$HOME"
+				},
+				"--" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-LiteralPath"
+				}
 			}
 		},
 		{
 			"Bash_Command" : "exit",
 			"WindowsPowerShell_Command" : "Exit",
 			"Description" : "Exit the script. Use of exit([0-9])!",
-			"arguments" : {
-
-			}
+			"arguments" : {}
 		},
 		{
 			"Bash_Command" : "find",
-			"WindowsPowerShell_Command" : "Find-ChildItem",
-			"Description" : "",
+			"WindowsPowerShell_Command" : "Get-ChildItem",
+			"Description" : "Search for specific patterns in files or input streams.",
 			"arguments" : {
-				"-P" : "XXXXXX",
-				"-H" : "XXXXXX",
-				"-D" : "XXXXXX",
-				"-Olevel" : "XXXXXX",
-				"-maxdepth" : "-Depth",
-				"-mindepth" : "XXXXXX",
-				"-L" : "-FollowSymlink",
-				"-path" : "-Path"
+				"-name" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Filter"
+				},
+				"-type" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"f" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-File"
+				},
+				"d" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Directory"
+				},
+				"-iname" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-maxdepth" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-exec" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-P" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-L" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-H" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-D" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-Olevel" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-daystart" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-follow" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-regextype" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-warn" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-nowarn" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-d" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-depth" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-ignore_readdir_race" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-mindepth" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-mount" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-noignore_readdir_race" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-noleaf" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-xdev" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-amin" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-anewer" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-atime" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-cmin" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-cnewer" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-ctime" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-empty" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-executable" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-false" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-fstype" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-gid" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-group" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-ilname" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-inum" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-ipath" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-iregex" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-iwholename" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-links" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-lname" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-mmin" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-mtime" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-newer" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-newerXY" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-nogroup" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-nouser" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-path" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Path"
+				},
+				"-perm" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-readable" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-regex" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-samefile" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-size" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-true" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"b" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"c" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"p" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"l" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"s" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"D" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-uid" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-used" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-user" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-wholename" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-writable" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-xtype" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-context" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-delete" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-execdir" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-fls" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-fprint" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-fprint0" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-ls" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-ok" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-okdir" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-print" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-print0" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-prune" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-quit" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
 			"Bash_Command" : "ls",
 			"WindowsPowerShell_Command" : "Get-Childitem",
-			"Description" : "",
+			"Description" : "Lists the provided directory.",
 			"arguments" : {
-				"-a" : "-",
-				"-A" : "-",
-				"--author" : "-",
-				"-b" : "-",
-				"-B" : "-",
-				"-c" : "-",
-				"-C" : "-",
-				"-D" : "-",
-				"-f" : "-",
-				"-F" : "-",
-				"-r" : "",
-				"-R" : "-Recurse",
-
-				"-t" : "",
-				"-T" : "AAAAAA",
-				"-u" : "",
-				"-U" : "",
-				"-v" : "",
-				"-w" : "AAAAAA",
-				"-x" : "",
-				"-X" : "",
-				"-Z" : "",
-				"-l" : "-",
-				"--help" : "",
-				"--version" : ""
+				"-l" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Force"
+				},
+				"-a" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Force"
+				},
+				"-all" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Force"
+				},
+				"-R" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Recurse"
+				},
+				"--recursive" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Recurse"
+				},
+				"-t" : {
+					"Flag" : 4,
+					"WindowsPowerShell_Argument" : "| Sort-Object LastWriteTime -Descending"
+				},
+				"-A" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--almost-all" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--author" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-b" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--escape" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-B" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--ignore-backups" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-c" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-C" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-d" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--directory" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-D" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--dired" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-f" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-F" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--classify" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--file-type" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--full-time" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-g" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--group-directories-first" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-G" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--no-group" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-h" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--human-readable" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--si" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-H" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--dereference-command-line" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--dereference-command-line-symlink-to-dir" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-i" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--inode" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-I" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-k" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--kibibytes" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-L" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--dereference" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-m" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-n" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--numeric-uid-gid" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-N" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--literal" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-o" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-p" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-q" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--hide-control-chars" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--show-control-chars" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-Q" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--quote-name" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-r" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--reverse" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-s" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--size" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-S" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-T" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-u" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-U" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-v" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-w" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-x" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-X" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-Z" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--context" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-1" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
 			"Bash_Command" : "kill",
-			"WindowsPowerShell_Command" : "taskkill",
-			"Description" : "",
+			"WindowsPowerShell_Command" : "Stop-Process -Id",
+			"Description" : "Kills the given process.",
 			"arguments" : {
-				"-s" : "-",
-				"-" : "-",
-				"-q" : "-",
-				"-queue" : "-",
-				"-l" : "-",
-				"-list" : "-",
-				"-L" : "-"
-			}
-		},
-		{
-			"Bash_Command" : "set",
-			"WindowsPowerShell_Command" : "",
-			"Description" : "",
-			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-s" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-p" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--signal" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-q" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--queue" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-l" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--list" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-L" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--table" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
 			"Bash_Command" : "sleep",
-			"WindowsPowerShell_Command" : "Start-Sleep",
-			"Description" : "",
+			"WindowsPowerShell_Command" : "Start-Sleep -Seconds",
+			"Description" : "Pause the execution of a script.",
 			"arguments" : {
 			}
 		},
 		{
 			"Bash_Command" : "read",
-			"WindowsPowerShell_Command" : "",
+			"WindowsPowerShell_Command" : "Read-Host",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-p" : {
+					"Flag" : 2,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-s" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-r" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
 			"Bash_Command" : "grep",
-			"WindowsPowerShell_Command" : "",
+			"WindowsPowerShell_Command" : "Select-String",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
 			"Bash_Command" : "wc",
-			"WindowsPowerShell_Command" : "",
+			"WindowsPowerShell_Command" : "Measure-Object",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-c" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Character"
+				},
+				"--bytes" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Character"
+				},
+				"-m" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Character"
+				},
+				"--chars" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Character"
+				},
+				"-l" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Line"
+				},
+				"--lines" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Line"
+				},
+				"-L" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--max-line-length" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-w" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Word"
+				},
+				"--words" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Word"
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
 			"Bash_Command" : "ssh",
-			"WindowsPowerShell_Command" : "",
-			"Description" : "",
-			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
-			}
+			"WindowsPowerShell_Command" : "ssh",
+			"Description" : "Secure connection.",
+			"arguments" : {}
 		},
 		{
 			"Bash_Command" : "apropos",
-			"WindowsPowerShell_Command" : "",
+			"WindowsPowerShell_Command" : "Get-Command -CommandType Cmdlet, Function | Where-Object { $_.Definition -like \"*keyword*\" }",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -178,23 +894,57 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
 			"Bash_Command" : "pwd",
-			"WindowsPowerShell_Command" : "",
+			"WindowsPowerShell_Command" : "Get-Location",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-L" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--logical" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-P" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--physical" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -202,11 +952,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -214,35 +979,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
-			}
-		},
-		{
-			"Bash_Command" : "less",
-			"WindowsPowerShell_Command" : "",
-			"Description" : "",
-			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
-			}
-		},
-		{
-			"Bash_Command" : "more",
-			"WindowsPowerShell_Command" : "",
-			"Description" : "",
-			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -250,11 +1006,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -262,11 +1033,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -274,11 +1060,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -286,11 +1087,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -298,11 +1114,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -310,11 +1141,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -322,11 +1168,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -334,11 +1195,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -346,11 +1222,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -358,11 +1249,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -370,11 +1276,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -382,11 +1303,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -394,11 +1330,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -406,11 +1357,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -418,11 +1384,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -430,11 +1411,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -442,11 +1438,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -454,11 +1465,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -466,11 +1492,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -478,11 +1519,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -490,11 +1546,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -502,11 +1573,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -514,11 +1600,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -526,11 +1627,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -538,11 +1654,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -550,11 +1681,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -562,11 +1708,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -574,23 +1735,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
-			}
-		},
-		{
-			"Bash_Command" : "kill",
-			"WindowsPowerShell_Command" : "",
-			"Description" : "",
-			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -598,11 +1762,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -610,35 +1789,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
-			}
-		},
-		{
-			"Bash_Command" : "nice",
-			"WindowsPowerShell_Command" : "",
-			"Description" : "",
-			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
-			}
-		},
-		{
-			"Bash_Command" : "renice",
-			"WindowsPowerShell_Command" : "",
-			"Description" : "",
-			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -646,11 +1816,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -658,11 +1843,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -670,11 +1870,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -682,35 +1897,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
-			}
-		},
-		{
-			"Bash_Command" : "atq",
-			"WindowsPowerShell_Command" : "",
-			"Description" : "",
-			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
-			}
-		},
-		{
-			"Bash_Command" : "atrm",
-			"WindowsPowerShell_Command" : "",
-			"Description" : "",
-			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -718,35 +1924,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
-			}
-		},
-		{
-			"Bash_Command" : "set",
-			"WindowsPowerShell_Command" : "",
-			"Description" : "",
-			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
-			}
-		},
-		{
-			"Bash_Command" : "unset",
-			"WindowsPowerShell_Command" : "",
-			"Description" : "",
-			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -754,11 +1951,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -766,11 +1978,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -778,11 +2005,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -790,11 +2032,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -802,11 +2059,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -814,11 +2086,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -826,11 +2113,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -838,11 +2140,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -850,23 +2167,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
-			}
-		},
-		{
-			"Bash_Command" : "du",
-			"WindowsPowerShell_Command" : "",
-			"Description" : "",
-			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -874,11 +2194,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -886,23 +2221,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
-			}
-		},
-		{
-			"Bash_Command" : "w",
-			"WindowsPowerShell_Command" : "",
-			"Description" : "",
-			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -910,11 +2248,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -922,23 +2275,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
-			}
-		},
-		{
-			"Bash_Command" : "basename",
-			"WindowsPowerShell_Command" : "",
-			"Description" : "",
-			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -946,11 +2302,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -958,11 +2329,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		},
 		{
@@ -970,11 +2356,26 @@
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
-				"-n" : "-",
-				"-a" : "-",
-				"-b" : "-",
-				"-c" : "-",
-				"-d" : "-"
+				"-n" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-NoNewline"
+				},
+				"-e" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-E" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--help" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--version" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				}
 			}
 		}
 	]
