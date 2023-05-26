@@ -949,18 +949,58 @@
 		},
 		{
 			"Bash_Command" : "rm",
-			"WindowsPowerShell_Command" : "",
+			"WindowsPowerShell_Command" : "Remove-Item",
 			"Description" : "",
 			"arguments" : {
-				"-n" : {
+				"-f" : {
 					"Flag" : 0,
-					"WindowsPowerShell_Argument" : "-NoNewline"
+					"WindowsPowerShell_Argument" : "-Force"
 				},
-				"-e" : {
+				"--force" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Force"
+				},
+				"-r" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Recurse"
+				},
+				"-R" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Recurse"
+				},
+				"--recursive" : {
+					"Flag" : 0,
+					"WindowsPowerShell_Argument" : "-Recurse"
+				},
+				"-i" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : "-Confirm"
+				},
+				"-I" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : "-Confirm"
+				},
+				"--one-file-system" : {
 					"Flag" : 1,
 					"WindowsPowerShell_Argument" : ""
 				},
-				"-E" : {
+				"--no-preserve-root" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-d" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--dir" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"-v" : {
+					"Flag" : 1,
+					"WindowsPowerShell_Argument" : ""
+				},
+				"--verbose" : {
 					"Flag" : 1,
 					"WindowsPowerShell_Argument" : ""
 				},
@@ -976,7 +1016,7 @@
 		},
 		{
 			"Bash_Command" : "cp",
-			"WindowsPowerShell_Command" : "",
+			"WindowsPowerShell_Command" : "Copy-Item",
 			"Description" : "",
 			"arguments" : {
 				"-n" : {
@@ -1084,33 +1124,6 @@
 		},
 		{
 			"Bash_Command" : "cat",
-			"WindowsPowerShell_Command" : "",
-			"Description" : "",
-			"arguments" : {
-				"-n" : {
-					"Flag" : 0,
-					"WindowsPowerShell_Argument" : "-NoNewline"
-				},
-				"-e" : {
-					"Flag" : 1,
-					"WindowsPowerShell_Argument" : ""
-				},
-				"-E" : {
-					"Flag" : 1,
-					"WindowsPowerShell_Argument" : ""
-				},
-				"--help" : {
-					"Flag" : 1,
-					"WindowsPowerShell_Argument" : ""
-				},
-				"--version" : {
-					"Flag" : 1,
-					"WindowsPowerShell_Argument" : ""
-				}
-			}
-		},
-		{
-			"Bash_Command" : "rev",
 			"WindowsPowerShell_Command" : "",
 			"Description" : "",
 			"arguments" : {
