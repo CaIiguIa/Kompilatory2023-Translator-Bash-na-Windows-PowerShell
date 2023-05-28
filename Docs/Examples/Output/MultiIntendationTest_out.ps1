@@ -1,8 +1,8 @@
 java.lang.NullPointerException: Cannot invoke "pl.edu.agh.kis.parser.BashGrammarParser$D_round_expr_makerContext.d_round_expr()" because "ctx" is null
+	at pl.edu.agh.kis.BashToPowershell.enterD_round_expr_maker(BashToPowershell.java:277)
 	at pl.edu.agh.kis.BashToPowershell.enterD_round_expr_maker(BashToPowershell.java:279)
-	at pl.edu.agh.kis.BashToPowershell.enterD_round_expr_maker(BashToPowershell.java:281)
-	at pl.edu.agh.kis.BashToPowershell.enterExpr_maker(BashToPowershell.java:271)
-	at pl.edu.agh.kis.BashToPowershell.enterWhile_loop(BashToPowershell.java:225)
+	at pl.edu.agh.kis.BashToPowershell.enterExpr_maker(BashToPowershell.java:269)
+	at pl.edu.agh.kis.BashToPowershell.enterWhile_loop(BashToPowershell.java:223)
 	at pl.edu.agh.kis.BashToPowershell.enterInstruction(BashToPowershell.java:70)
 	at pl.edu.agh.kis.BashToPowershell.enterProgram(BashToPowershell.java:32)
 	at pl.edu.agh.kis.Main.lambda$static$0(Main.java:28)

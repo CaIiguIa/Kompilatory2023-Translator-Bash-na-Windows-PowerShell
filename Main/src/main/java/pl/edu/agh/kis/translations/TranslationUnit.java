@@ -13,7 +13,7 @@ public class TranslationUnit {
     public final String command;
     public final String translation;
     public final  String description;
-    public final Map<String, String> arguments;
+    public final Map<String, TranslationArgument> arguments;
     public TranslationUnit(JSONObject translationObj) {
         this.command = translationObj.getString(TranslationUnit.commandKey);
         this.translation = translationObj.getString(TranslationUnit.translationKey);
@@ -22,6 +22,6 @@ public class TranslationUnit {
         this.arguments = new HashMap<>();
         JSONObject argumentsObj = translationObj.getJSONObject(TranslationUnit.argumentsKey);
 
-        argumentsObj.keys().forEachRemaining(argument -> this.arguments.put(argument, argumentsObj.getString(argument)));
+        argumentsObj.keys().forEachRemaining(argument -> this.arguments.put(argument, new TranslationArgument(argumentsObj.getJSONObject(argument))));
     }
 }
