@@ -590,7 +590,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
         //zakładam że dosłownie while z odwrotnym warunkiem
         outputString.append("while");
 //        this.invertWhile=true;
-        outputString.append("!");
+        outputString.append(" -not");
         enterExpr_maker(ctx.expr_maker());
 
         outputString.append(ctx.splitter_end_command(0).getText().equals(";") ? " " : "\n");
