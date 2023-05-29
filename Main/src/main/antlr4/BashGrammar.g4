@@ -25,8 +25,8 @@ instruction
     |   select
     |   coprocess
     |   assign
-//    |	pipeline_list
-    |   pipeline
+    |	pipeline_list
+//    |   pipeline
     |	splitter_end_command
     ;
 
@@ -83,7 +83,7 @@ var
     ;
 
 until_loop
-    :  UNTIL_LOOP_BEGIN (VARIABLE| variable_from_command expr_maker) splitter_end_command LOOP_MIDDLE instruction* LOOP_END splitter_end_command
+    :  UNTIL_LOOP_BEGIN expr_maker splitter_end_command LOOP_MIDDLE instruction* LOOP_END splitter_end_command
     ;
 
 if_statement
@@ -113,9 +113,8 @@ for_loop_argument //argument pętli for znajdujący się między "for", a ""
     | alphanumeric+ LOOP_IN variable_from_command splitter_end_command// $(command)
     ;
 
-numbers_pipeline_list_for_loop // {1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}
-    : (signed_number)+ ('..' signed_number)?
-    | '{' signed_number '..' signed_number ('..' signed_number)?  '}'
+numbers_pipeline_list_for_loop // {1..5}
+    : '{' signed_number '..' signed_number '}'
     ;
 
 signed_number
@@ -136,11 +135,11 @@ splitter_end_command
     ;
 
 block
-    :	L_PARENTH_ROUND pipeline_list R_PARENTH_ROUND
-    |	L_PARENTH_CURLY NEW_LINE? pipeline_list R_PARENTH_CURLY
-    |   L_PARENTH_ROUND L_PARENTH_ROUND  expr R_PARENTH_ROUND R_PARENTH_ROUND
-    |   CONDITION_LEFT_SINGLE  expr  CONDITION_RIGHT_SINGLE
-    |   CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE expr CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE
+    :	L_PARENTH_ROUND instruction* R_PARENTH_ROUND
+    |	L_PARENTH_CURLY NEW_LINE? instruction* R_PARENTH_CURLY
+//    |   L_PARENTH_ROUND L_PARENTH_ROUND  expr R_PARENTH_ROUND R_PARENTH_ROUND
+//    |   CONDITION_LEFT_SINGLE  expr  CONDITION_RIGHT_SINGLE
+//    |   CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE expr CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE
     ;
 
 expr_maker
@@ -187,12 +186,12 @@ expr // boolowa wartość bez nawiasów / && / ||
     | STRING
     ;
 
-function:   (alphanumeric)+ L_PARENTH_ROUND R_PARENTH_ROUND block /*(return_output)?*/
+function:   (alphanumeric)+ L_PARENTH_ROUND R_PARENTH_ROUND block   /*(return_output)?*/
     |   FUNCTION_START (alphanumeric)+ (L_PARENTH_ROUND R_PARENTH_ROUND)? block /*(return_output)?*/
     ;
 
 select
-	:	SELECT alphanumeric+ (LOOP_IN word)? splitter_end_command LOOP_MIDDLE pipeline_list LOOP_END
+	:	SELECT alphanumeric+ (LOOP_IN word)? splitter_end_command LOOP_MIDDLE instruction* LOOP_END
     ;
 
 coprocess

@@ -8,11 +8,15 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//TODO: function_out.ps1 nie tłumaczy $1 na $args[0] dlatego że isInFunction zwraza false zawsze, mimo,że wchodzimy do funkcji, potem siętym zajmę
+
 public class BashToPowershell extends BashGrammarBaseListener {
     private static final Translator translator = Translator.getInstance();
     private final StringBuilder outputString;
     public boolean skipComments;
     public int functionDepth;
+
+    private boolean addNL=true;
 
     BashToPowershell(boolean skipComments) {
         this.skipComments = skipComments;
@@ -32,16 +36,6 @@ public class BashToPowershell extends BashGrammarBaseListener {
         for (var instruct : ctx.instruction()) {   //  Instruction*
             enterInstruction(instruct);
         }
-    }
-
-    @Override
-    public void enterFunction(BashGrammarParser.FunctionContext ctx) {
-        functionDepth++;
-    }
-
-    @Override
-    public void exitFunction(BashGrammarParser.FunctionContext ctx) {
-        functionDepth--;
     }
 
     public boolean isInFunction() {
@@ -87,13 +81,13 @@ public class BashToPowershell extends BashGrammarBaseListener {
             enterCoprocess(ctx.coprocess());
         }
 //                |	pipeline_list
-//        else if (ctx.pipeline_list() != null) {
-//            enterPipeline_list(ctx.pipeline_list());
-//        }
-//                |	pipeline_list
-        else if (ctx.pipeline() != null) {
-            enterPipeline(ctx.pipeline());
+        else if (ctx.pipeline_list() != null) {
+            enterPipeline_list(ctx.pipeline_list());
         }
+//                |	pipeline_list
+//        else if (ctx.pipeline() != null) {
+//            enterPipeline(ctx.pipeline());
+//        }
 //                |   assign
         else if (ctx.assign() != null) {
             enterAssign(ctx.assign());
@@ -131,7 +125,8 @@ public class BashToPowershell extends BashGrammarBaseListener {
         if (ctx.TIME() != null) {
             outputString.append("}");
         }
-        if (ctx.splitter_end_command() != null) outputString.append(ctx.splitter_end_command().getText());
+        if (ctx.splitter_end_command() != null && addNL) outputString.append("\n");
+        addNL=true;
     }
 
     @Override
@@ -156,6 +151,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
                 Matcher matcher = pattern.matcher(ctx.getText());
                 if (matcher.find()) {
                     char c = matcher.group(1).charAt(1);
+                    System.out.println(ctx.getText().replace(matcher.group(1), "$args[" + c + " - 1]"));
                     outputString.append(ctx.getText().replace(matcher.group(1), "$args[" + c + " - 1]"));
                 } else {
                     outputString.append(translator.translate(ctx.getText()));
@@ -201,13 +197,19 @@ public class BashToPowershell extends BashGrammarBaseListener {
         outputString.append(ctx.EQ().getText());
         if (ctx.pipeline() != null) {
             outputString.append("$(");
+            addNL=false;
             enterPipeline(ctx.pipeline());
-            outputString.append(")");
+            outputString.append(")\n");
         } else {
-            outputString.append(ctx.number_float().getText());
+            enterNumber_float(ctx.number_float());
             enterSplitter_end_command(ctx.splitter_end_command());
         }
 
+    }
+
+    @Override
+    public void enterNumber_float(BashGrammarParser.Number_floatContext ctx) {
+        outputString.append(ctx.getText());
     }
 
     @Override
@@ -264,10 +266,10 @@ public class BashToPowershell extends BashGrammarBaseListener {
         else if (ctx.expr_maker().size() == 2) {
             enterExpr_maker(ctx.expr_maker(0));
 
-            if (ctx.CONDITION_DOUBLE_AMPERSAND() != null) outputString.append(ctx.CONDITION_DOUBLE_AMPERSAND().getText());
-            else if (ctx.CONDITION_DOUBLE_PIPE() != null) outputString.append(ctx.CONDITION_DOUBLE_PIPE().getText());
-            else if (ctx.PIPE() != null) outputString.append(ctx.PIPE().getText());
-            else if (ctx.AMPERSAN() != null) outputString.append(ctx.AMPERSAN().getText());
+            if (ctx.CONDITION_DOUBLE_AMPERSAND() != null) outputString.append(" -and ");
+            else if (ctx.CONDITION_DOUBLE_PIPE() != null) outputString.append(" -or ");
+            else if (ctx.PIPE() != null) outputString.append(" -bor ");
+            else if (ctx.AMPERSAN() != null) outputString.append(" -band ");
 
             enterExpr_maker(ctx.expr_maker(1));
         }
@@ -297,8 +299,8 @@ public class BashToPowershell extends BashGrammarBaseListener {
 //    : d_round_expr (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) d_round_expr_maker
         else {
             enterD_round_expr(ctx.d_round_expr());
-            if (ctx.CONDITION_DOUBLE_AMPERSAND() != null) outputString.append(ctx.CONDITION_DOUBLE_AMPERSAND().getText());
-            else if (ctx.CONDITION_DOUBLE_PIPE() != null) outputString.append(ctx.CONDITION_DOUBLE_PIPE().getText());
+            if (ctx.CONDITION_DOUBLE_AMPERSAND() != null) outputString.append(" -and ");
+            else if (ctx.CONDITION_DOUBLE_PIPE() != null) outputString.append(" -or ");
             else if (ctx.PIPE() != null) outputString.append("-bor");
             else if (ctx.AMPERSAN() != null) outputString.append("-band");
             enterD_round_expr_maker(ctx.d_round_expr_maker());
@@ -311,15 +313,20 @@ public class BashToPowershell extends BashGrammarBaseListener {
         //     https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_arithmetic_operators?view=powershell-7.3
         //    | BOOL
         if (ctx.variable_from_command() != null) {
-            outputString.append("-e");
+            outputString.append("Test-Path -Path C:\\temp\\important_file.txt -PathType Leaf");
             enterVariable_from_command(ctx.variable_from_command());
         } else if (ctx.STRING().size() == 1) {
-            outputString.append("-e");
+            outputString.append("Test-Path -Path ");
             outputString.append(ctx.STRING(0).getText());
+            outputString.append(" -PathType Leaf");
         } else if (ctx.VARIABLE() != null) {
-            outputString.append("-e");
+            outputString.append("Test-Path -Path ");
             outputString.append(ctx.VARIABLE().getText());
-        } else if (ctx.BOOL() != null) outputString.append(ctx.BOOL().getText());
+            outputString.append(" -PathType Leaf");
+        }
+
+
+        else if (ctx.BOOL() != null) outputString.append(ctx.BOOL().getText());
             //    | STRING EQ EQ? STRING
         else if (ctx.STRING().size() > 0) {
             outputString.append(ctx.STRING(0));
@@ -355,7 +362,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
             else if (ctx.CONDITION_LT() != null) outputString.append(" -lt "); //:                             -lt
             else if (ctx.CONDITION_GT() != null) outputString.append(" -gt "); //:                             -gt
             else if (ctx.CONDITION_NEQ() != null) outputString.append(" -neq "); //:                           -neq
-            else if (ctx.EQ().size() > 0) for (var eq : ctx.EQ()) outputString.append("="); //:                  == albo =
+            else if (ctx.EQ().size() >0)  outputString.append(" -eq "); //:                  == albo =
 
             enterExpr(ctx.expr(1));
         }
@@ -474,17 +481,46 @@ public class BashToPowershell extends BashGrammarBaseListener {
     @Override
     public void enterIf_statement(BashGrammarParser.If_statementContext ctx) {
         outputString.append(ctx.IF_START().getText());
+        outputString.append("(");
         enterExpr_maker(ctx.expr_maker());
-        enterSplitter_end_command(ctx.splitter_end_command(0));
-        outputString.append(ctx.IF_MIDDLE().getText());
-        //TODO: refaktor
+        outputString.append(")");
+        outputString.append("\n");
+        outputString.append("{");
+
+        for(var instr:ctx.instruction()) enterInstruction(instr);
+
+        outputString.append("}\n");
+
+        if (ctx.if_elsif().size()>0){
+            for (var elsif:ctx.if_elsif()) enterIf_elsif(elsif);
+        }
+        if (ctx.if_else()!=null) enterIf_else(ctx.if_else());
+    }
+
+    @Override
+    public void enterIf_elsif(BashGrammarParser.If_elsifContext ctx) {
+        outputString.append("elsif {");
+        outputString.append("(");
+        enterExpr_maker(ctx.expr_maker());
+        outputString.append(")");
+        enterSplitter_end_command(ctx.splitter_end_command());
+        for(var instr:ctx.instruction()) enterInstruction(instr);
+        outputString.append("}\n");
+    }
+
+    @Override
+    public void enterIf_else(BashGrammarParser.If_elseContext ctx) {
+        outputString.append("else {");
+        for(var instr:ctx.instruction()) enterInstruction(instr);
+        outputString.append("}\n");
     }
 
     @Override
     public void enterFor_loop(BashGrammarParser.For_loopContext ctx) {
-        outputString.append(ctx.FOR_LOOP_BEGIN().getText());
+        if (ctx.for_loop_argument().LOOP_IN()==null) outputString.append(ctx.FOR_LOOP_BEGIN().getText());
+        else outputString.append("foreach ");
         enterFor_loop_argument(ctx.for_loop_argument());
-        outputString.append("{");
+        outputString.append(" {");
         enterSplitter_end_command(ctx.splitter_end_command(0));
 
         for (var instr: ctx.instruction()) enterInstruction(instr);
@@ -496,8 +532,9 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterFor_loop_argument(BashGrammarParser.For_loop_argumentContext ctx) {
+        outputString.append("(");
+
         if (ctx.L_PARENTH_ROUND().size()>0) {
-            outputString.append("(");
             enterExpr(ctx.expr(0));
             outputString.append(";");
             enterExpr_maker(ctx.expr_maker());
@@ -505,10 +542,113 @@ public class BashToPowershell extends BashGrammarBaseListener {
             if (ctx.expr().size()>1) enterExpr(ctx.expr(1));
             else if (ctx.assign()!=null) enterAssign(ctx.assign());
             else if (ctx.d_round_expr()!=null) enterD_round_expr(ctx.d_round_expr());
-            outputString.append(")");
+        }else if (ctx.LOOP_IN()!=null){
+            outputString.append("$");
+            for (var al:ctx.alphanumeric()) outputString.append(al.getText().replaceAll(" ", ""));
+            outputString.append(ctx.LOOP_IN().getText());
+            outputString.append(" ");
+            if (ctx.numbers_pipeline_list_for_loop()!=null) enterNumbers_pipeline_list_for_loop(ctx.numbers_pipeline_list_for_loop());
+            else enterVariable_from_command(ctx.variable_from_command());
         }
+        outputString.append(")");
+
         // TODO: reszty produkcji chyba nie ma w powershellu, trzeba na około
+        // TODO: dać ostrzeżenie czy coś
     }
 
+    @Override
+    public void enterBlock(BashGrammarParser.BlockContext ctx) {
+        if (ctx.L_PARENTH_ROUND()!=null){
+            outputString.append("(");
 
+            for (var instr: ctx.instruction()) enterInstruction(instr);
+
+            outputString.append(")");
+        }
+        else {
+            outputString.append("{\n");
+
+            for (var instr: ctx.instruction()) enterInstruction(instr);
+
+            outputString.append("}");
+        }
+    }
+
+    @Override
+    public void enterFunction(BashGrammarParser.FunctionContext ctx) {
+        functionDepth+=1;
+        outputString.append("function ");
+
+        for (var al:ctx.alphanumeric()) outputString.append(al.getText());
+
+        enterBlock(ctx.block());
+        functionDepth-=1;
+    }
+
+    @Override
+    public void enterUntil_loop(BashGrammarParser.Until_loopContext ctx) {
+        //zakładam że dosłownie while z odwrotnym warunkiem
+        outputString.append("while");
+//        this.invertWhile=true;
+        outputString.append("!");
+        enterExpr_maker(ctx.expr_maker());
+
+        outputString.append(ctx.splitter_end_command(0).getText().equals(";") ? " " : "\n");
+        outputString.append("{");
+
+        for (var intruct : ctx.instruction()) {
+            enterInstruction(intruct);
+        }
+
+        outputString.append("}");
+        enterSplitter_end_command(ctx.splitter_end_command(1));
+    }
+
+    @Override
+    public void enterCoprocess(BashGrammarParser.CoprocessContext ctx) {
+        //bash        COPROCESS_START (alphanumeric)* word //redirections
+        //powershell  $(alphanumeric)* = Start-Job –ScriptBlock {
+                                            //  word
+                                            //}
+    if (ctx.alphanumeric().size()>0) {
+        outputString.append("$");
+        for (var al:ctx.alphanumeric()) outputString.append(al.getText());
+        outputString.append("=");
+    }
+    outputString.append("Start-Job –ScriptBlock {");
+    enterWord(ctx.word());
+    outputString.append("}");
+
+    }
+
+    @Override
+    public void enterSelect(BashGrammarParser.SelectContext ctx) {
+        // to nie ma prawa działać
+        // SELECT alphanumeric+ (LOOP_IN word)? splitter_end_command LOOP_MIDDLE pipeline_list LOOP_END
+        outputString.append("foreach ($");
+        for (var al:ctx.alphanumeric()) outputString.append(al.getText().replaceAll(" ", ""));
+
+        outputString.append(" in ");
+        if (ctx.LOOP_IN()!=null) {
+            enterWord(ctx.word());
+        }
+        else {
+            outputString.append("$");
+            for (var al:ctx.alphanumeric()) outputString.append(al.getText());
+        }
+        outputString.append(")\n{");
+        for (var intruct : ctx.instruction()) {
+            enterInstruction(intruct);
+        }
+        outputString.append("}");
+    }
+
+    @Override
+    public void enterNumbers_pipeline_list_for_loop(BashGrammarParser.Numbers_pipeline_list_for_loopContext ctx) {
+//        numbers_pipeline_list_for_loop // {1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}
+//        : '{' signed_number '..' signed_number '}'
+        enterSigned_number(ctx.signed_number(0));
+        outputString.append("..");
+        enterSigned_number(ctx.signed_number(1));
+    }
 }

@@ -3,12 +3,12 @@ while [ "$1" == 1 ] ; do
     case "$1" in
         asdas )
             echo "Test 1" ;
-            if ((1**1 =2 && 1+1=8)) && ((""=""))
+            if ((1 ==2 && 1+1==8)) && ((""=""))
             then
                 #q="avb"
                 case $q in
                     a)
-                        for asd in 1 2 3 4 5 .. 6
+                        for asd in {1..6}
                         do
                             echo $asd
                         done
