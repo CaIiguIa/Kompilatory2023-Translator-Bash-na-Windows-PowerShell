@@ -86,9 +86,9 @@ public class BashToPowershell extends BashGrammarBaseListener {
             enterCoprocess(ctx.coprocess());
         }
 //                |	pipeline_list
-        else if (ctx.pipeline_list() != null) {
-            enterPipeline_list(ctx.pipeline_list());
-        }
+//        else if (ctx.pipeline_list() != null) {
+//            enterPipeline_list(ctx.pipeline_list());
+//        }
 //                |   assign
         else if (ctx.assign() != null) {
             enterAssign(ctx.assign());
@@ -126,7 +126,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
         if (ctx.TIME() != null) {
             outputString.append("}");
         }
-        outputString.append(ctx.NEW_LINE() != null ? "\n" : ";");
+        outputString.append(ctx.splitter_end_command().getText());
     }
 
     @Override

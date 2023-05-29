@@ -1,9 +1,11 @@
 grammar BashGrammar;
 // !Note: Do not change production names or order unless you also change DashToPowershell class
 //TODO: (NA KOŃCU) Poprawić for, while, if ,itp żeby było jak w man bash -u
-// TODO: błędy w gramatyce: pipeline_list można usunąć, wprowadza niedeterminizm tworzenia drzewa, lepiej zrobić instriction -> pipeline
 // TODO: błędy w gramatyce: word to niby command+ więc komenda: ("asdasd" echo) jest parsowalna, trzeba sprawić, że pierwszy ciąg znaków to nie string
-
+// TODO: nie działają:
+         //((counter++))
+         //$((num1+num2))
+         //przypisanie gdy nazwa zmiennej zawiera cyfrę
 
 program
     :	COMMENT instruction* EOF
@@ -19,9 +21,9 @@ instruction
     |   case_statement
     |   select
     |   coprocess
-    |	pipeline_list
-//    |   pipeline
     |   assign
+//    |	pipeline_list
+    |   pipeline
     |	splitter_end_command
     ;
 
@@ -44,6 +46,7 @@ command
 	|	variable_from_command
 	|	argument
 	|	symbols
+	| VARIABLE
 	;
 
 pipe_symbol
@@ -51,8 +54,16 @@ pipe_symbol
 	|	PIPE AMPERSAN
 	;
 
+case_statement
+    : CASE_START (VARIABLE | STRING | variable_from_command) LOOP_IN  splitter_end_command? single_case+ ( CASE_DEFAULT instruction*)? splitter_end_command? CASE_END splitter_end_command
+    ;
+
+single_case
+    :    ( ( ( alphanumeric+ | STRING ) ( PIPE ( alphanumeric+ | STRING ) )* )  ) R_PARENTH_ROUND NEW_LINE?  instruction* case_break splitter_end_command
+    ;
+
 pipeline
-	:	(TIME MINUSP?)? (BOOL_NEGATION)? word (pipe_symbol word)* (SINGLE_SEMICOLON|NEW_LINE)
+	:	(TIME MINUSP?)? (BOOL_NEGATION)? word (pipe_symbol word)* splitter_end_command?
     ;
 
 pipeline_list
@@ -66,14 +77,6 @@ assign
 var
 //    :   DOLLAR_SIGN? ~(EQ | DOLLAR_SIGN | NEW_LINE | SINGLE_SEMICOLON | '#' | SPACE | DIGIT | CONDITION_RIGHT_SINGLE | CONDITION_LEFT_SINGLE) ~(EQ | DOLLAR_SIGN | NEW_LINE | SINGLE_SEMICOLON | '#' | SPACE | CONDITION_RIGHT_SINGLE | CONDITION_LEFT_SINGLE)*
     : DOLLAR_SIGN? ALPHA alphanumeric+
-    ;
-
-case_statement
-    : CASE_START VARIABLE LOOP_IN  splitter_end_command? single_case+ ( CASE_DEFAULT instruction* BRAKE_ABSOLUTE)? splitter_end_command? CASE_END splitter_end_command
-    ;
-
-single_case
-    :    ( ( ( alphanumeric+ | STRING ) ( PIPE ( alphanumeric+ | STRING ) )* )  ) R_PARENTH_ROUND splitter_end_command? instruction* BRAKE_ABSOLUTE splitter_end_command?
     ;
 
 until_loop
@@ -123,8 +126,8 @@ splitter_end_command
 
 block
     :	L_PARENTH_ROUND pipeline_list R_PARENTH_ROUND
-    |	L_PARENTH_CURLY pipeline_list R_PARENTH_CURLY
-    |   L_PARENTH_ROUND L_PARENTH_ROUND expr R_PARENTH_ROUND R_PARENTH_ROUND
+    |	L_PARENTH_CURLY NEW_LINE? pipeline_list R_PARENTH_CURLY
+    |   L_PARENTH_ROUND L_PARENTH_ROUND  expr R_PARENTH_ROUND R_PARENTH_ROUND
     |   CONDITION_LEFT_SINGLE  expr  CONDITION_RIGHT_SINGLE
     |   CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE expr CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE
     ;
@@ -157,6 +160,7 @@ d_round_expr // single, atomic  epression returning bool
     | variable_or_number ( PLUS PLUS | MINUS MINUS ) //id++ id-- -- teoretycznie dziala w bashu dla id, zmiennej i liczby
     | ( PLUS PLUS | MINUS MINUS ) variable_or_number //++id --id
     | STRING EQ EQ? STRING
+    | '-e' (variable_from_command | STRING | VARIABLE)
     ;
 
 variable_or_number /*zmienna, liczba*/
@@ -170,6 +174,7 @@ expr // boolowa wartość bez nawiasów / && / ||
     : expr (PLUS | MINUS | WILDCARD_OR_MULTIPLY | DIVIDE | MODULO | WILDCARD_OR_MULTIPLY WILDCARD_OR_MULTIPLY ) expr
     | L_PARENTH_ROUND expr R_PARENTH_ROUND
     | variable_or_number
+    | STRING
     ;
 
 function:   (alphanumeric)+ L_PARENTH_ROUND R_PARENTH_ROUND block /*(return_output)?*/
@@ -206,6 +211,9 @@ id
     :	ALPHA alphanumeric*
     ;
 
+case_break
+    :   ';;'
+    ;
 
 STRING						:	["](~["]|' ')*["];
 CHARACTER_CHAIN				:	['](~[']|' ')*['];
@@ -238,7 +246,6 @@ ELSE                        :   'else';
 ELSE_IF                     :   'elif';
 CASE_START                  :   'case';
 CASE_DEFAULT                :   '*)';
-BRAKE_ABSOLUTE              :   ';;';
 BRAKE_CONTINUATION          :   ';&';
 BRAKE_WITH_NEXT_EXEC        :   ';;&';
 CASE_END                    :   'esac';
@@ -280,4 +287,4 @@ NUMERIC                     :   [0-9];
 //NEW_VARIABLE                :   ~[$#\n;0-9 =]~[$#\n; =]*;
 MINUSP						:	'-p';
 SPACE						:	' '->more;
-TAB							:	[\t]->skip;
+TAB							:	[\t]->more;

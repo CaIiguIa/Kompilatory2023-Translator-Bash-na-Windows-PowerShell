@@ -1,6 +1,6 @@
 #!/bin/bash
-filename="example.txt"
-if [ -e "$filename" ]; then
+fname="example.txt"
+if [ -e "$fname" ]; then
     echo "File exists."
 else
     echo "File does not exist."

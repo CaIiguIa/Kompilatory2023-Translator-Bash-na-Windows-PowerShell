@@ -5,7 +5,7 @@ while [ "$1" == 1 ] ; do
             echo "Test 1" ;
             if ((1**1 =2 && 1+1=8)) && ((""=""))
             then
-                q="avb"
+                #q="avb"
                 case $q in
                     a)
                         for asd in 1 2 3 4 5 .. 6
