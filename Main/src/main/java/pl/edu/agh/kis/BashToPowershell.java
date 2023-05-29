@@ -4,6 +4,7 @@ import pl.edu.agh.kis.parser.BashGrammarBaseListener;
 import pl.edu.agh.kis.parser.BashGrammarParser;
 import pl.edu.agh.kis.translations.Translator;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,7 +26,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterProgram(BashGrammarParser.ProgramContext ctx) {
-        //  This append below is not needed for a windows power shell program
+        //  This append below is not needed for a Windows powershell program
         //outputString.append(ctx.COMMENT().toString()); //COMMENT
 
         for (var instruct : ctx.instruction()) {   //  Instruction*
@@ -89,6 +90,10 @@ public class BashToPowershell extends BashGrammarBaseListener {
 //        else if (ctx.pipeline_list() != null) {
 //            enterPipeline_list(ctx.pipeline_list());
 //        }
+//                |	pipeline_list
+        else if (ctx.pipeline() != null) {
+            enterPipeline(ctx.pipeline());
+        }
 //                |   assign
         else if (ctx.assign() != null) {
             enterAssign(ctx.assign());
@@ -116,7 +121,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
         }
 
 
-        enterWord((BashGrammarParser.WordContext) ctx.getChild(0));
+        enterWord(ctx.word(0));
         for (int childID = 1; childID < ctx.word().size(); childID++) {
             outputString.append(ctx.pipe_symbol(childID - 1).getText());
             enterWord(ctx.word(childID));
@@ -126,13 +131,12 @@ public class BashToPowershell extends BashGrammarBaseListener {
         if (ctx.TIME() != null) {
             outputString.append("}");
         }
-        outputString.append(ctx.splitter_end_command().getText());
+        if (ctx.splitter_end_command() != null) outputString.append(ctx.splitter_end_command().getText());
     }
 
     @Override
     public void enterWord(BashGrammarParser.WordContext ctx) {
-        enterCommand(ctx.command(0));
-        for (int i = 1; i < ctx.getChildCount(); i++)
+        for (int i = 0; i < ctx.getChildCount(); i++)
             enterCommand(ctx.command(i));
     }
 
@@ -144,6 +148,8 @@ public class BashToPowershell extends BashGrammarBaseListener {
             enterArgument(ctx.argument());
         } else if (ctx.variable_from_command() != null) {
             enterVariable_from_command(ctx.variable_from_command());
+        } else if (ctx.VARIABLE() != null) {
+            outputString.append(ctx.VARIABLE().getText());
         } else { //either string or char_chain
             if (isInFunction()) {
                 Pattern pattern = Pattern.compile("$[0-9]");
@@ -174,12 +180,17 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterArgument(BashGrammarParser.ArgumentContext ctx) {
-        outputString.append(translator.translate(ctx.getText().replaceAll(" ", "")));
+        if (ctx.MINUS().size() > 0) outputString.append(" -");
+        enterSymbols(ctx.symbols());
     }
 
     @Override
     public void enterVariable_from_command(BashGrammarParser.Variable_from_commandContext ctx) {
-        outputString.append(translator.translate(ctx.getText().replaceAll(" ", "")));
+        outputString.append("$(");
+
+        enterPipeline_list(ctx.pipeline_list());
+
+        outputString.append(")");
     }
 
     @Override
@@ -189,7 +200,9 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
         outputString.append(ctx.EQ().getText());
         if (ctx.pipeline() != null) {
+            outputString.append("$(");
             enterPipeline(ctx.pipeline());
+            outputString.append(")");
         } else {
             outputString.append(ctx.number_float().getText());
             enterSplitter_end_command(ctx.splitter_end_command());
@@ -200,9 +213,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
     @Override
     public void enterVar(BashGrammarParser.VarContext ctx) {
 //: DOLLAR_SIGN? ALPHA alphanumeric+
-        if (ctx.DOLLAR_SIGN() != null) {
-            outputString.append("$");
-        }
+        outputString.append("$"); //* ogólnie raczej lepiej jest zawsze oznajmiać że zmienna
         outputString.append(ctx.ALPHA().getText());
         for (var alnum : ctx.alphanumeric()) {
             enterAlphanumeric(alnum);
@@ -299,7 +310,16 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
         //     https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_arithmetic_operators?view=powershell-7.3
         //    | BOOL
-        if (ctx.BOOL() != null) outputString.append(ctx.BOOL().getText());
+        if (ctx.variable_from_command() != null) {
+            outputString.append("-e");
+            enterVariable_from_command(ctx.variable_from_command());
+        } else if (ctx.STRING().size() == 1) {
+            outputString.append("-e");
+            outputString.append(ctx.STRING(0).getText());
+        } else if (ctx.VARIABLE() != null) {
+            outputString.append("-e");
+            outputString.append(ctx.VARIABLE().getText());
+        } else if (ctx.BOOL() != null) outputString.append(ctx.BOOL().getText());
             //    | STRING EQ EQ? STRING
         else if (ctx.STRING().size() > 0) {
             outputString.append(ctx.STRING(0));
@@ -313,30 +333,29 @@ public class BashToPowershell extends BashGrammarBaseListener {
                 else outputString.append("--");
             }
             //    | ( PLUS PLUS | MINUS MINUS ) variable_or_number //++id --id
-            else if (ctx.getChild(2) instanceof BashGrammarParser.Variable_or_numberContext){
+            else if (ctx.getChild(2) instanceof BashGrammarParser.Variable_or_numberContext) {
                 if (ctx.PLUS().size() > 0) outputString.append("++");
                 else outputString.append("--");
                 enterVariable_or_number(ctx.variable_or_number());
             }
-        }
-        else {
+        } else {
             //    | expr (<<comparator>>)  expr
             enterExpr(ctx.expr(0));
 
-            if (ctx.POINTER_LEFT().size()>0 && ctx.EQ().size()>0) outputString.append(" -le "); //:     <=
-            else if (ctx.POINTER_RIGHT().size()>0 && ctx.EQ().size()>0) outputString.append(" -ge "); //:    >=
-            else if (ctx.BOOL_NEGATION()!=null && ctx.EQ().size()>0) outputString.append(" -ne "); //:       !=
-            else if (ctx.POINTER_LEFT().size()==1) outputString.append("-lt"); //:                           <
-            else if (ctx.POINTER_RIGHT().size()==1) outputString.append("-gt"); //:                          >
-            else if (ctx.POINTER_LEFT().size()==2) outputString.append("-shl"); //:                          <<
-            else if (ctx.POINTER_RIGHT().size()==2) outputString.append("-shr"); //:                         >>
-            else if (ctx.CONDITION_LE()!=null) outputString.append(" -le "); //:                             -le
-            else if (ctx.CONDITION_EQ()!=null) outputString.append(" -eq "); //:                             -eq
-            else if (ctx.CONDITION_GE()!=null) outputString.append(" -ge "); //:                             -ge
-            else if (ctx.CONDITION_LT()!=null) outputString.append(" -lt "); //:                             -lt
-            else if (ctx.CONDITION_GT()!=null) outputString.append(" -gt "); //:                             -gt
-            else if (ctx.CONDITION_NEQ()!=null) outputString.append(" -neq "); //:                           -neq
-            else if (ctx.EQ().size()>0) for (var eq:ctx.EQ()) outputString.append("="); //:                  == albo =
+            if (ctx.POINTER_LEFT().size() > 0 && ctx.EQ().size() > 0) outputString.append(" -le "); //:     <=
+            else if (ctx.POINTER_RIGHT().size() > 0 && ctx.EQ().size() > 0) outputString.append(" -ge "); //:    >=
+            else if (ctx.BOOL_NEGATION() != null && ctx.EQ().size() > 0) outputString.append(" -ne "); //:       !=
+            else if (ctx.POINTER_LEFT().size() == 1) outputString.append("-lt"); //:                           <
+            else if (ctx.POINTER_RIGHT().size() == 1) outputString.append("-gt"); //:                          >
+            else if (ctx.POINTER_LEFT().size() == 2) outputString.append("-shl"); //:                          <<
+            else if (ctx.POINTER_RIGHT().size() == 2) outputString.append("-shr"); //:                         >>
+            else if (ctx.CONDITION_LE() != null) outputString.append(" -le "); //:                             -le
+            else if (ctx.CONDITION_EQ() != null) outputString.append(" -eq "); //:                             -eq
+            else if (ctx.CONDITION_GE() != null) outputString.append(" -ge "); //:                             -ge
+            else if (ctx.CONDITION_LT() != null) outputString.append(" -lt "); //:                             -lt
+            else if (ctx.CONDITION_GT() != null) outputString.append(" -gt "); //:                             -gt
+            else if (ctx.CONDITION_NEQ() != null) outputString.append(" -neq "); //:                           -neq
+            else if (ctx.EQ().size() > 0) for (var eq : ctx.EQ()) outputString.append("="); //:                  == albo =
 
             enterExpr(ctx.expr(1));
         }
@@ -347,26 +366,27 @@ public class BashToPowershell extends BashGrammarBaseListener {
     public void enterExpr(BashGrammarParser.ExprContext ctx) {
         // TODO
         //    | variable_or_number
-        if (ctx.variable_or_number()!=null){
+        if (ctx.STRING() != null) {
+            outputString.append(ctx.STRING().getText());
+        } else if (ctx.variable_or_number() != null) {
             enterVariable_or_number(ctx.variable_or_number());
         }
         //    | L_PARENTH_ROUND expr R_PARENTH_ROUND
-        if (ctx.expr().size()==1)
-        {
+        else if (ctx.expr().size() == 1) {
             outputString.append("(");
             enterExpr(ctx.expr(0));
             outputString.append(")");
         }
         //  : expr (PLUS | MINUS | WILDCARD_OR_MULTIPLY | DIVIDE | MODULO | WILDCARD_OR_MULTIPLY WILDCARD_OR_MULTIPLY ) expr
-        else if (ctx.expr().size()==2){
+        else if (ctx.expr().size() == 2) {
             enterExpr(ctx.expr(0));
 
-            if (ctx.PLUS()!=null) outputString.append("+"); //:                           PLUS
-            else if (ctx.MINUS()!=null) outputString.append("-"); //:                     Minus
-            else if (ctx.WILDCARD_OR_MULTIPLY().size()==1) outputString.append("*"); //:  WILDCARD_OR_MULTIPLY
-            else if (ctx.DIVIDE()!=null) outputString.append("/"); //:                    DIVIDE
-            else if (ctx.MODULO()!=null) outputString.append("%"); //:                    MODULO
-            else if (ctx.WILDCARD_OR_MULTIPLY().size()==2) outputString.append("**");//:  WILDCARD_OR_MULTIPLY WILDCARD_OR_MULTIPLY
+            if (ctx.PLUS() != null) outputString.append("+"); //:                           PLUS
+            else if (ctx.MINUS() != null) outputString.append("-"); //:                     Minus
+            else if (ctx.WILDCARD_OR_MULTIPLY().size() == 1) outputString.append("*"); //:  WILDCARD_OR_MULTIPLY
+            else if (ctx.DIVIDE() != null) outputString.append("/"); //:                    DIVIDE
+            else if (ctx.MODULO() != null) outputString.append("%"); //:                    MODULO
+            else if (ctx.WILDCARD_OR_MULTIPLY().size() == 2) outputString.append("**");//:  WILDCARD_OR_MULTIPLY WILDCARD_OR_MULTIPLY
 
             enterExpr(ctx.expr(1));
         }
@@ -376,11 +396,11 @@ public class BashToPowershell extends BashGrammarBaseListener {
     @Override
     public void enterVariable_or_number(BashGrammarParser.Variable_or_numberContext ctx) {
         //    : VARIABLE
-        if (ctx.VARIABLE()!=null) outputString.append(ctx.VARIABLE().getText());
-        //    | id
-        else if (ctx.id()!=null) enterId(ctx.id());
-        //    | signed_number
-        else if (ctx.signed_number()!=null) enterSigned_number(ctx.signed_number());
+        if (ctx.VARIABLE() != null) outputString.append(ctx.VARIABLE().getText());
+            //    | id
+        else if (ctx.id() != null) enterId(ctx.id());
+            //    | signed_number
+        else if (ctx.signed_number() != null) enterSigned_number(ctx.signed_number());
     }
 
     @Override
@@ -398,4 +418,97 @@ public class BashToPowershell extends BashGrammarBaseListener {
     public void enterSplitter_end_command(BashGrammarParser.Splitter_end_commandContext ctx) {
         outputString.append(ctx.getText());
     }
+
+    @Override
+    public void enterPipe_symbol(BashGrammarParser.Pipe_symbolContext ctx) {
+        outputString.append("|");
+        if (ctx.AMPERSAN() != null) outputString.append("&");
+    }
+
+    @Override
+    public void enterCase_break(BashGrammarParser.Case_breakContext ctx) {
+        outputString.append("}");
+    }
+
+    @Override
+    public void enterSingle_case(BashGrammarParser.Single_caseContext ctx) {
+        //przepisz wszystko aż do ")", jak dodamy variable_from_command jako możliwe wartości zmiennej, to trzeba będzie rozbić single_case na podprodukcje bo
+        // się nie będzie dało łatwo przełumaczyć
+        for (var child : ctx.children) {
+            if (Objects.equals(child.getText(), ctx.R_PARENTH_ROUND().getText())) break;
+            outputString.append(child.getText());
+        }
+        outputString.append("{");
+        for (var instr : ctx.instruction())
+            enterInstruction(instr);
+        enterCase_break(ctx.case_break());
+        enterSplitter_end_command(ctx.splitter_end_command());
+    }
+
+    @Override
+    public void enterCase_statement(BashGrammarParser.Case_statementContext ctx) {
+        outputString.append("switch (");
+
+        if (ctx.VARIABLE()!=null) outputString.append(ctx.VARIABLE().getText());
+        else if (ctx.STRING()!=null) outputString.append(ctx.STRING().getText());
+        else if (ctx.variable_from_command()!=null) enterVariable_from_command(ctx.variable_from_command());
+
+        outputString.append(")");
+
+        if (ctx.LOOP_IN()!=null) outputString.append("{");
+        enterSplitter_end_command(ctx.splitter_end_command(0));
+
+        for (var scase:ctx.single_case()) enterSingle_case(scase);
+
+        if (ctx.CASE_DEFAULT()!=null){
+            outputString.append("default {");
+            for (var instr:ctx.instruction()) enterInstruction(instr);
+            outputString.append("}");
+        }
+
+        enterSplitter_end_command(ctx.splitter_end_command(0));
+        outputString.append("}");
+        enterSplitter_end_command(ctx.splitter_end_command(0));
+    }
+
+    @Override
+    public void enterIf_statement(BashGrammarParser.If_statementContext ctx) {
+        outputString.append(ctx.IF_START().getText());
+        enterExpr_maker(ctx.expr_maker());
+        enterSplitter_end_command(ctx.splitter_end_command(0));
+        outputString.append(ctx.IF_MIDDLE().getText());
+        //TODO: refaktor
+    }
+
+    @Override
+    public void enterFor_loop(BashGrammarParser.For_loopContext ctx) {
+        outputString.append(ctx.FOR_LOOP_BEGIN().getText());
+        enterFor_loop_argument(ctx.for_loop_argument());
+        outputString.append("{");
+        enterSplitter_end_command(ctx.splitter_end_command(0));
+
+        for (var instr: ctx.instruction()) enterInstruction(instr);
+
+        enterSplitter_end_command(ctx.splitter_end_command(0));
+        outputString.append("}");
+        enterSplitter_end_command(ctx.splitter_end_command(0));
+    }
+
+    @Override
+    public void enterFor_loop_argument(BashGrammarParser.For_loop_argumentContext ctx) {
+        if (ctx.L_PARENTH_ROUND().size()>0) {
+            outputString.append("(");
+            enterExpr(ctx.expr(0));
+            outputString.append(";");
+            enterExpr_maker(ctx.expr_maker());
+            outputString.append(";");
+            if (ctx.expr().size()>1) enterExpr(ctx.expr(1));
+            else if (ctx.assign()!=null) enterAssign(ctx.assign());
+            else if (ctx.d_round_expr()!=null) enterD_round_expr(ctx.d_round_expr());
+            outputString.append(")");
+        }
+        // TODO: reszty produkcji chyba nie ma w powershellu, trzeba na około
+    }
+
+
 }

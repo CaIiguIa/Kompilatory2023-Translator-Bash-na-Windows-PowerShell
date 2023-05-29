@@ -1,11 +1,14 @@
 grammar BashGrammar;
 // !Note: Do not change production names or order unless you also change DashToPowershell class
-//TODO: (NA KOŃCU) Poprawić for, while, if ,itp żeby było jak w man bash -u
+// TODO: (NA KOŃCU) Poprawić for, while, if ,itp żeby było jak w man bash -u
 // TODO: błędy w gramatyce: word to niby command+ więc komenda: ("asdasd" echo) jest parsowalna, trzeba sprawić, że pierwszy ciąg znaków to nie string
 // TODO: nie działają:
          //((counter++))
          //$((num1+num2))
          //przypisanie gdy nazwa zmiennej zawiera cyfrę
+// TODO: Ktoś (Szymon) zapomniał dodać przypisywanie stringów do zmiennej, trzeba to wimplementować i sprawdzić
+// TODO: tak samo cyfry i varable_from_command jako możliwe wartości zmiennej w single_cas
+// TODO: tak samo for_loop_arguments ma braki
 
 program
     :	COMMENT instruction* EOF
@@ -84,7 +87,15 @@ until_loop
     ;
 
 if_statement
-	: IF_START expr_maker splitter_end_command IF_MIDDLE instruction* (ELSE_IF expr_maker splitter_end_command  IF_MIDDLE  instruction* )* (ELSE instruction* )? IF_END splitter_end_command
+	: IF_START expr_maker splitter_end_command IF_MIDDLE instruction* (if_elsif)* (if_else)? IF_END splitter_end_command
+    ;
+
+if_elsif
+    : ELSE_IF expr_maker splitter_end_command  IF_MIDDLE  instruction*
+    ;
+
+ if_else
+    : ELSE instruction*
     ;
 
 while_loop
@@ -96,7 +107,7 @@ for_loop
     ;
 
 for_loop_argument //argument pętli for znajdujący się między "for", a ""
-    : L_PARENTH_ROUND L_PARENTH_ROUND  /*TODO: expr*/  SINGLE_SEMICOLON  expr_maker  SINGLE_SEMICOLON  /*TODO: expr*/  R_PARENTH_ROUND R_PARENTH_ROUND splitter_end_command//(( i=0 ; i<10 ; i++ ))
+    : L_PARENTH_ROUND L_PARENTH_ROUND  expr  SINGLE_SEMICOLON  expr_maker  SINGLE_SEMICOLON  (expr|assign|d_round_expr)  R_PARENTH_ROUND R_PARENTH_ROUND splitter_end_command//(( i=0 ; i<10 ; i++ ))
 // TODO: (ocochodzi)    | alphanumeric+ (LOOP_IN (CHAR_CHAIN )+)* splitter_end_command // ???
     | alphanumeric+ LOOP_IN numbers_pipeline_list_for_loop splitter_end_command // {1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}
     | alphanumeric+ LOOP_IN variable_from_command splitter_end_command// $(command)
@@ -145,7 +156,6 @@ expr_maker
 // TODO    | CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE s_square_expr CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE//
 //    | /*TODO: pipeline_list*/
     ;
-
 
 d_round_expr_maker
     : d_round_expr (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) d_round_expr_maker
