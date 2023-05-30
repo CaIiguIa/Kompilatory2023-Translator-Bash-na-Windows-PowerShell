@@ -1,3 +1,3 @@
 Write-Host "What is your name?"
-Read-Host-rname
+Read-Host -r name
 Write-Host "Hello, $name!"

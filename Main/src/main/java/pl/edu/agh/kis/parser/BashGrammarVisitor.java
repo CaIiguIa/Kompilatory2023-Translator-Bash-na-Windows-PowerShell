@@ -53,6 +53,18 @@ public interface BashGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPipe_symbol(BashGrammarParser.Pipe_symbolContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link BashGrammarParser#case_statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCase_statement(BashGrammarParser.Case_statementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BashGrammarParser#single_case}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSingle_case(BashGrammarParser.Single_caseContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link BashGrammarParser#pipeline}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -77,18 +89,6 @@ public interface BashGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVar(BashGrammarParser.VarContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link BashGrammarParser#case_statement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCase_statement(BashGrammarParser.Case_statementContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link BashGrammarParser#single_case}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSingle_case(BashGrammarParser.Single_caseContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link BashGrammarParser#until_loop}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -100,6 +100,18 @@ public interface BashGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIf_statement(BashGrammarParser.If_statementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BashGrammarParser#if_elsif}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIf_elsif(BashGrammarParser.If_elsifContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BashGrammarParser#if_else}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIf_else(BashGrammarParser.If_elseContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link BashGrammarParser#while_loop}.
 	 * @param ctx the parse tree
@@ -214,4 +226,10 @@ public interface BashGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitId(BashGrammarParser.IdContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BashGrammarParser#case_break}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCase_break(BashGrammarParser.Case_breakContext ctx);
 }

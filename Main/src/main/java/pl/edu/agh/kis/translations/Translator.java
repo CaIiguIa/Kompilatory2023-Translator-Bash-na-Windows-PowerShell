@@ -17,6 +17,7 @@ public class Translator {
     private static final String flagKey = "Flags";
     private static final String translationsKey = "Translations";
     private final List<TranslationUnit> translations;
+    private final int invalidFindIndex = -1;
     public final String inputFilePath = "Main\\src\\main\\config\\TranslatorConfig.json";
 
     public String commandDelimiter = " ";
@@ -38,15 +39,15 @@ public class Translator {
     }
     public String translate(String command) {
         int index = this.findCommand(command);
-        if (index == -1) return command;
+        if (index == this.invalidFindIndex) return command;
 
         return this.translations.get(index).translation;
     }
     public String translateCommand(String command, List<String> arguments) {
         StringBuilder stringBuilder = new StringBuilder();
 
-        int index = this.findCommand(command);
-        if (index == -1) {
+        final int index = this.findCommand(command);
+        if (index == this.invalidFindIndex) {
             stringBuilder.append(command).append(this.commandDelimiter);
 
             for (String arg : arguments)
@@ -96,6 +97,6 @@ public class Translator {
             if (Objects.equals(this.translations.get(i).command, command))
                 return i;
 
-        return -1;
+        return this.invalidFindIndex;
     }
 }

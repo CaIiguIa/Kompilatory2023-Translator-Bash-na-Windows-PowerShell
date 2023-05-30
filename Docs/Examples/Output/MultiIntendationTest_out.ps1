@@ -1,10 +1,23 @@
-java.lang.NullPointerException: Cannot invoke "pl.edu.agh.kis.parser.BashGrammarParser$D_round_expr_makerContext.d_round_expr()" because "ctx" is null
-	at pl.edu.agh.kis.BashToPowershell.enterD_round_expr_maker(BashToPowershell.java:277)
-	at pl.edu.agh.kis.BashToPowershell.enterD_round_expr_maker(BashToPowershell.java:279)
-	at pl.edu.agh.kis.BashToPowershell.enterExpr_maker(BashToPowershell.java:269)
-	at pl.edu.agh.kis.BashToPowershell.enterWhile_loop(BashToPowershell.java:223)
-	at pl.edu.agh.kis.BashToPowershell.enterInstruction(BashToPowershell.java:70)
-	at pl.edu.agh.kis.BashToPowershell.enterProgram(BashToPowershell.java:32)
-	at pl.edu.agh.kis.Main.lambda$static$0(Main.java:28)
-	at pl.edu.agh.kis.files.InputOutputFileManager.process(InputOutputFileManager.java:51)
-	at pl.edu.agh.kis.Main.main(Main.java:39)
+while( "$1" -eq  1)
+{
+switch ( "$1"){
+        asdas{            Write-Host "Test 1"
+
+            if(((1 -eq 2 -and  1+1 -eq 8)) -and (("" -eq "")))
+{
+switch ( $q){
+                    a{foreach ($asd in 1..1) {
+                            Write-Host $asd
+
+}
+
+
+}
+
+}
+}
+}
+
+}
+}
+man bash -u | Select-String "between x and y" | Get-Content

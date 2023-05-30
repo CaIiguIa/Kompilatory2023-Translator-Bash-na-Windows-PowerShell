@@ -101,6 +101,30 @@ public class BashGrammarBaseListener implements BashGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterCase_statement(BashGrammarParser.Case_statementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCase_statement(BashGrammarParser.Case_statementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSingle_case(BashGrammarParser.Single_caseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSingle_case(BashGrammarParser.Single_caseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterPipeline(BashGrammarParser.PipelineContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -149,30 +173,6 @@ public class BashGrammarBaseListener implements BashGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCase_statement(BashGrammarParser.Case_statementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCase_statement(BashGrammarParser.Case_statementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterSingle_case(BashGrammarParser.Single_caseContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitSingle_case(BashGrammarParser.Single_caseContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterUntil_loop(BashGrammarParser.Until_loopContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -192,6 +192,30 @@ public class BashGrammarBaseListener implements BashGrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIf_statement(BashGrammarParser.If_statementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIf_elsif(BashGrammarParser.If_elsifContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIf_elsif(BashGrammarParser.If_elsifContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIf_else(BashGrammarParser.If_elseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIf_else(BashGrammarParser.If_elseContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -420,6 +444,18 @@ public class BashGrammarBaseListener implements BashGrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitId(BashGrammarParser.IdContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCase_break(BashGrammarParser.Case_breakContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCase_break(BashGrammarParser.Case_breakContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

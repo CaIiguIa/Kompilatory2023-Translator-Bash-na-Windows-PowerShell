@@ -78,6 +78,26 @@ public interface BashGrammarListener extends ParseTreeListener {
 	 */
 	void exitPipe_symbol(BashGrammarParser.Pipe_symbolContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#case_statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterCase_statement(BashGrammarParser.Case_statementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#case_statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitCase_statement(BashGrammarParser.Case_statementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#single_case}.
+	 * @param ctx the parse tree
+	 */
+	void enterSingle_case(BashGrammarParser.Single_caseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#single_case}.
+	 * @param ctx the parse tree
+	 */
+	void exitSingle_case(BashGrammarParser.Single_caseContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link BashGrammarParser#pipeline}.
 	 * @param ctx the parse tree
 	 */
@@ -118,26 +138,6 @@ public interface BashGrammarListener extends ParseTreeListener {
 	 */
 	void exitVar(BashGrammarParser.VarContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BashGrammarParser#case_statement}.
-	 * @param ctx the parse tree
-	 */
-	void enterCase_statement(BashGrammarParser.Case_statementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link BashGrammarParser#case_statement}.
-	 * @param ctx the parse tree
-	 */
-	void exitCase_statement(BashGrammarParser.Case_statementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link BashGrammarParser#single_case}.
-	 * @param ctx the parse tree
-	 */
-	void enterSingle_case(BashGrammarParser.Single_caseContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link BashGrammarParser#single_case}.
-	 * @param ctx the parse tree
-	 */
-	void exitSingle_case(BashGrammarParser.Single_caseContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link BashGrammarParser#until_loop}.
 	 * @param ctx the parse tree
 	 */
@@ -157,6 +157,26 @@ public interface BashGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIf_statement(BashGrammarParser.If_statementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#if_elsif}.
+	 * @param ctx the parse tree
+	 */
+	void enterIf_elsif(BashGrammarParser.If_elsifContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#if_elsif}.
+	 * @param ctx the parse tree
+	 */
+	void exitIf_elsif(BashGrammarParser.If_elsifContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#if_else}.
+	 * @param ctx the parse tree
+	 */
+	void enterIf_else(BashGrammarParser.If_elseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#if_else}.
+	 * @param ctx the parse tree
+	 */
+	void exitIf_else(BashGrammarParser.If_elseContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link BashGrammarParser#while_loop}.
 	 * @param ctx the parse tree
@@ -347,4 +367,14 @@ public interface BashGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitId(BashGrammarParser.IdContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#case_break}.
+	 * @param ctx the parse tree
+	 */
+	void enterCase_break(BashGrammarParser.Case_breakContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#case_break}.
+	 * @param ctx the parse tree
+	 */
+	void exitCase_break(BashGrammarParser.Case_breakContext ctx);
 }

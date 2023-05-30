@@ -1,7 +1,9 @@
 package pl.edu.agh.kis;
 
+import pl.edu.agh.kis.log.Logger;
 import pl.edu.agh.kis.parser.BashGrammarBaseListener;
 import pl.edu.agh.kis.parser.BashGrammarParser;
+import pl.edu.agh.kis.settings.ProgramConfig;
 import pl.edu.agh.kis.translations.Translator;
 
 import java.util.Objects;
@@ -13,15 +15,13 @@ import java.util.regex.Pattern;
 public class BashToPowershell extends BashGrammarBaseListener {
     private static final Translator translator = Translator.getInstance();
     private final StringBuilder outputString;
-    public boolean skipComments;
+    public final int defaultFunctionDepth = 0;
     public int functionDepth;
-
     private boolean addNL=true;
 
-    BashToPowershell(boolean skipComments) {
-        this.skipComments = skipComments;
+    BashToPowershell() {
         this.outputString = new StringBuilder();
-        this.functionDepth = 0;
+        this.functionDepth = this.defaultFunctionDepth;
     }
 
     public String getOutputString() {
@@ -39,13 +39,13 @@ public class BashToPowershell extends BashGrammarBaseListener {
     }
 
     public boolean isInFunction() {
-        return functionDepth != 0;
+        return functionDepth > this.defaultFunctionDepth;
     }
 
     @Override
     public void enterInstruction(BashGrammarParser.InstructionContext ctx) {
 //                :	COMMENT
-        if (!skipComments && ctx.COMMENT() != null) {
+        if (!ProgramConfig.getInstance().skipComments && ctx.COMMENT() != null) {
             outputString.append(ctx.COMMENT().getText());
         }
 //                |   function
@@ -107,6 +107,8 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterPipeline(BashGrammarParser.PipelineContext ctx) {
+        final int commandPosition = 0;
+        final int shiftFromCommandToArguments = 1;
         //(TIME MINUSP?)? (BOOL_NEGATION)? word (pipe_symbol word)* (SINGLE_SEMICOLON|NEW_LINE)
         //!TODO: argumenty do time
 
@@ -115,9 +117,9 @@ public class BashToPowershell extends BashGrammarBaseListener {
         }
 
 
-        enterWord(ctx.word(0));
-        for (int childID = 1; childID < ctx.word().size(); childID++) {
-            outputString.append(ctx.pipe_symbol(childID - 1).getText());
+        enterWord(ctx.word(commandPosition));
+        for (int childID = commandPosition + shiftFromCommandToArguments; childID < ctx.word().size(); childID++) {
+            outputString.append(ctx.pipe_symbol(childID - shiftFromCommandToArguments).getText());
             enterWord(ctx.word(childID));
         }
 
@@ -137,6 +139,8 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterCommand(BashGrammarParser.CommandContext ctx) {
+        final int groupNumber = 1;
+        final int charNumberLocation = 1;
         if (ctx.symbols() != null) {
             enterSymbols(ctx.symbols());
         } else if (ctx.argument() != null) {
@@ -150,9 +154,9 @@ public class BashToPowershell extends BashGrammarBaseListener {
                 Pattern pattern = Pattern.compile("$[0-9]");
                 Matcher matcher = pattern.matcher(ctx.getText());
                 if (matcher.find()) {
-                    char c = matcher.group(1).charAt(1);
-                    System.out.println(ctx.getText().replace(matcher.group(1), "$args[" + c + " - 1]"));
-                    outputString.append(ctx.getText().replace(matcher.group(1), "$args[" + c + " - 1]"));
+                    char c = matcher.group(groupNumber).charAt(charNumberLocation);
+                    System.out.println(ctx.getText().replace(matcher.group(groupNumber), "$args[" + c + " - 1]"));
+                    outputString.append(ctx.getText().replace(matcher.group(groupNumber), "$args[" + c + " - 1]"));
                 } else {
                     outputString.append(translator.translate(ctx.getText()));
                 }
@@ -170,12 +174,12 @@ public class BashToPowershell extends BashGrammarBaseListener {
             if (spaceFlag) outputString.append(" "); //add space only after first word
             spaceFlag = true;
             outputString.append(translator.translate(str).replaceAll(" ", ""));//remove redundant spaces
-
         }
     }
 
     @Override
     public void enterArgument(BashGrammarParser.ArgumentContext ctx) {
+        //  TODO: nie mam pojęcia czemu tu jest 0 jakbyś dodał stałą.
         if (ctx.MINUS().size() > 0) outputString.append(" -");
         enterSymbols(ctx.symbols());
     }
@@ -235,6 +239,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
         enterExpr_maker(ctx.expr_maker());
 
+        //  TODO: nie mam pojęcia czemu tu jest 0 jakbyś dodał stałą.
         outputString.append(ctx.splitter_end_command(0).getText().equals(";") ? " " : "\n");
         outputString.append("{");
 
@@ -542,7 +547,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
             if (ctx.expr().size()>1) enterExpr(ctx.expr(1));
             else if (ctx.assign()!=null) enterAssign(ctx.assign());
             else if (ctx.d_round_expr()!=null) enterD_round_expr(ctx.d_round_expr());
-        }else if (ctx.LOOP_IN()!=null){
+        } else if (ctx.LOOP_IN()!=null){
             outputString.append("$");
             for (var al:ctx.alphanumeric()) outputString.append(al.getText().replaceAll(" ", ""));
             outputString.append(ctx.LOOP_IN().getText());
@@ -554,6 +559,8 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
         // TODO: reszty produkcji chyba nie ma w powershellu, trzeba na około
         // TODO: dać ostrzeżenie czy coś
+        // Dodane :D jak się logera używa
+        // Logger.getInstance().addLog("");
     }
 
     @Override
@@ -576,13 +583,13 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterFunction(BashGrammarParser.FunctionContext ctx) {
-        functionDepth+=1;
+        functionDepth++;
         outputString.append("function ");
 
-        for (var al:ctx.alphanumeric()) outputString.append(al.getText());
+        for (var al : ctx.alphanumeric()) outputString.append(al.getText());
 
         enterBlock(ctx.block());
-        functionDepth-=1;
+        functionDepth--;
     }
 
     @Override
@@ -610,15 +617,14 @@ public class BashToPowershell extends BashGrammarBaseListener {
         //powershell  $(alphanumeric)* = Start-Job –ScriptBlock {
                                             //  word
                                             //}
-    if (ctx.alphanumeric().size()>0) {
-        outputString.append("$");
-        for (var al:ctx.alphanumeric()) outputString.append(al.getText());
-        outputString.append("=");
-    }
-    outputString.append("Start-Job –ScriptBlock {");
-    enterWord(ctx.word());
-    outputString.append("}");
-
+        if (ctx.alphanumeric().size() > 0) {
+            outputString.append("$");
+            for (var al:ctx.alphanumeric()) outputString.append(al.getText());
+            outputString.append("=");
+        }
+        outputString.append("Start-Job –ScriptBlock {");
+        enterWord(ctx.word());
+        outputString.append("}");
     }
 
     @Override
@@ -629,7 +635,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
         for (var al:ctx.alphanumeric()) outputString.append(al.getText().replaceAll(" ", ""));
 
         outputString.append(" in ");
-        if (ctx.LOOP_IN()!=null) {
+        if (ctx.LOOP_IN() != null) {
             enterWord(ctx.word());
         }
         else {
@@ -645,10 +651,13 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterNumbers_pipeline_list_for_loop(BashGrammarParser.Numbers_pipeline_list_for_loopContext ctx) {
+        final int firstArgumentPosition = 0;
+        final int secondArgumentPosition = 0;
+        final String joinBetweenArguments = "..";
 //        numbers_pipeline_list_for_loop // {1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}
 //        : '{' signed_number '..' signed_number '}'
-        enterSigned_number(ctx.signed_number(0));
-        outputString.append("..");
-        enterSigned_number(ctx.signed_number(1));
+        enterSigned_number(ctx.signed_number(firstArgumentPosition));
+        outputString.append(joinBetweenArguments);
+        enterSigned_number(ctx.signed_number(secondArgumentPosition));
     }
 }

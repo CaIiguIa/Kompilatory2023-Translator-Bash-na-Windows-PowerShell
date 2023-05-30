@@ -10,6 +10,8 @@ import pl.edu.agh.kis.files.InputOutputFileManager;
 import pl.edu.agh.kis.log.Logger;
 import pl.edu.agh.kis.parser.BashGrammarLexer;
 import pl.edu.agh.kis.parser.BashGrammarParser;
+import pl.edu.agh.kis.settings.ProgramArgumentsParser;
+import pl.edu.agh.kis.settings.ProgramConfig;
 
 public class Main {
     public static final String inputDirectory = "Main\\src\\test\\input";
@@ -24,7 +26,7 @@ public class Main {
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             BashGrammarParser parser = new BashGrammarParser(tokens);
             BashGrammarParser.ProgramContext tree = parser.program();
-            BashToPowershell translator = new BashToPowershell(true);
+            BashToPowershell translator = new BashToPowershell();
             translator.enterProgram(tree);
             translator.exitProgram(tree);
             return translator.getOutputString();
@@ -35,6 +37,10 @@ public class Main {
         }
     };
     public static void main(String[] args) {
+        //  Gives ability to use command line arguments.
+        ProgramArgumentsParser parser = new ProgramArgumentsParser(args);
+        ProgramConfig.setParser(parser);
+
         InputOutputFileManager manager = new InputOutputFileManager(Main.inputDirectory, Main.outputDirectory, Main.run);
         manager.process();
 

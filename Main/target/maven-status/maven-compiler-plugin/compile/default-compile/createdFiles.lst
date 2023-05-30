@@ -20,14 +20,17 @@ pl\edu\agh\kis\parser\BashGrammarVisitor.class
 pl\edu\agh\kis\parser\BashGrammarParser$For_loop_argumentContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$FunctionContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$ProgramContext.class
+pl\edu\agh\kis\parser\BashGrammarParser$If_elseContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$Variable_from_commandContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$SymbolsContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$For_loopContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$D_round_exprContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$Until_loopContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$While_loopContext.class
+pl\edu\agh\kis\parser\BashGrammarParser$Case_breakContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$InstructionContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$CoprocessContext.class
+pl\edu\agh\kis\parser\BashGrammarParser$If_elsifContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$WordContext.class
 pl\edu\agh\kis\parser\BashGrammarParser$Expr_makerContext.class
 pl\edu\agh\kis\parser\BashGrammarParser.class
