@@ -6,10 +6,7 @@ import pl.edu.agh.kis.parser.BashGrammarParser;
 import pl.edu.agh.kis.settings.ProgramConfig;
 import pl.edu.agh.kis.translations.Translator;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,6 +18,8 @@ public class BashToPowershell extends BashGrammarBaseListener {
     public final int defaultFunctionDepth = 0;
     public int functionDepth;
     private boolean addNL=true;
+
+    private Stack<String> indent = new Stack<>();
 
     BashToPowershell() {
         this.outputString = new StringBuilder();
@@ -257,19 +256,24 @@ public class BashToPowershell extends BashGrammarBaseListener {
     @Override
     public void enterWhile_loop(BashGrammarParser.While_loopContext ctx) {
 //        :  WHILE_LOOP_BEGIN expr_maker splitter_end_command LOOP_MIDDLE instruction* LOOP_END splitter_end_command
+        indent.add(ctx.WHILE_LOOP_BEGIN().getText().replace("while", ""));
         outputString.append(ctx.WHILE_LOOP_BEGIN().getText());
 
         enterExpr_maker(ctx.expr_maker());
 
         //  TODO: nie mam pojęcia czemu tu jest 0 jakbyś dodał stałą.
-        outputString.append(ctx.splitter_end_command(0).getText().equals(";") ? " " : "\n");
-        outputString.append("{");
+        if (ctx.splitter_end_command(0).getText().equals(";")){
+            outputString.append(" {");
+        }
+        else {
+            outputString.append("\n").append(indent.peek()).append("{");
+        }
 
         for (var intruct : ctx.instruction()) {
             enterInstruction(intruct);
         }
 
-        outputString.append("}");
+        outputString.append(indent.pop()).append("}");
         enterSplitter_end_command(ctx.splitter_end_command(1));
     }
 
@@ -461,18 +465,20 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterCase_break(BashGrammarParser.Case_breakContext ctx) {
-        outputString.append("}");
+        outputString.append(indent.pop()).append("}");
+
     }
 
     @Override
     public void enterSingle_case(BashGrammarParser.Single_caseContext ctx) {
         //przepisz wszystko aż do ")", jak dodamy variable_from_command jako możliwe wartości zmiennej, to trzeba będzie rozbić single_case na podprodukcje bo
         // się nie będzie dało łatwo przełumaczyć
+        indent.add(ctx.children.get(0).getText().replaceAll("[^ \t]", ""));
         for (var child : ctx.children) {
             if (Objects.equals(child.getText(), ctx.R_PARENTH_ROUND().getText())) break;
             outputString.append(child.getText());
         }
-        outputString.append("{");
+        outputString.append("{\n");
         for (var instr : ctx.instruction())
             enterInstruction(instr);
         enterCase_break(ctx.case_break());
@@ -481,6 +487,8 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterCase_statement(BashGrammarParser.Case_statementContext ctx) {
+        indent.add(ctx.CASE_START().getText().replaceAll("case", ""));
+        outputString.append(indent.peek()); //indent
         outputString.append("switch (");
 
         if (ctx.VARIABLE()!=null) outputString.append(ctx.VARIABLE().getText());
@@ -495,57 +503,62 @@ public class BashToPowershell extends BashGrammarBaseListener {
         for (var scase:ctx.single_case()) enterSingle_case(scase);
 
         if (ctx.CASE_DEFAULT()!=null){
-            outputString.append("default {");
+            indent.add(ctx.CASE_DEFAULT().getText().replace("*)", ""));
+            outputString.append(indent.peek()).append("default {");
             for (var instr:ctx.instruction()) enterInstruction(instr);
-            outputString.append("}");
+            outputString.append(indent.pop()).append("}");
         }
 
         enterSplitter_end_command(ctx.splitter_end_command(0));
-        outputString.append("}");
+        outputString.append(indent.pop()).append("}");
         enterSplitter_end_command(ctx.splitter_end_command(0));
     }
 
     @Override
     public void enterIf_statement(BashGrammarParser.If_statementContext ctx) {
+
+        indent.add(ctx.IF_START().getText().replaceAll("if", ""));
         outputString.append(ctx.IF_START().getText());
         outputString.append("(");
         enterExpr_maker(ctx.expr_maker());
         outputString.append(")");
         outputString.append("\n");
-        outputString.append("{");
+        outputString.append(indent.peek()).append("{");
 
         for(var instr:ctx.instruction()) enterInstruction(instr);
 
-        outputString.append("}\n");
+        outputString.append(indent.peek()).append("}\n");
 
         if (ctx.if_elsif().size()>0){
             for (var elsif:ctx.if_elsif()) enterIf_elsif(elsif);
         }
         if (ctx.if_else()!=null) enterIf_else(ctx.if_else());
+        indent.pop();
     }
 
     @Override
     public void enterIf_elsif(BashGrammarParser.If_elsifContext ctx) {
-        outputString.append("elsif {");
+        outputString.append(indent.peek()).append("elsif {");
         outputString.append("(");
         enterExpr_maker(ctx.expr_maker());
         outputString.append(")");
         enterSplitter_end_command(ctx.splitter_end_command());
         for(var instr:ctx.instruction()) enterInstruction(instr);
-        outputString.append("}\n");
+        outputString.append(indent.peek()).append("}\n");
     }
 
     @Override
     public void enterIf_else(BashGrammarParser.If_elseContext ctx) {
-        outputString.append("else {");
+        outputString.append(indent.peek()).append("else {");
         for(var instr:ctx.instruction()) enterInstruction(instr);
-        outputString.append("}\n");
+        outputString.append(indent.peek()).append("}\n");
     }
 
     @Override
     public void enterFor_loop(BashGrammarParser.For_loopContext ctx) {
-        if (ctx.for_loop_argument().LOOP_IN()==null) outputString.append(ctx.FOR_LOOP_BEGIN().getText());
-        else outputString.append("foreach ");
+        indent.add(ctx.FOR_LOOP_BEGIN().getText().replaceAll("for", ""));
+        if (ctx.for_loop_argument().LOOP_IN()==null) outputString.append(indent).append(ctx.FOR_LOOP_BEGIN().getText());
+        else outputString.append(indent.peek()).append("foreach ");
         enterFor_loop_argument(ctx.for_loop_argument());
         outputString.append(" {");
         enterSplitter_end_command(ctx.splitter_end_command(0));
@@ -553,7 +566,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
         for (var instr: ctx.instruction()) enterInstruction(instr);
 
         enterSplitter_end_command(ctx.splitter_end_command(0));
-        outputString.append("}");
+        outputString.append(indent.pop()).append("}");
         enterSplitter_end_command(ctx.splitter_end_command(0));
     }
 
@@ -617,7 +630,8 @@ public class BashToPowershell extends BashGrammarBaseListener {
     @Override
     public void enterUntil_loop(BashGrammarParser.Until_loopContext ctx) {
         //zakładam że dosłownie while z odwrotnym warunkiem
-        outputString.append("while");
+        indent.add(ctx.UNTIL_LOOP_BEGIN().getText().replace("until", " "));
+        outputString.append(indent.peek()).append("while");
 //        this.invertWhile=true;
         outputString.append(" -not");
         enterExpr_maker(ctx.expr_maker());
@@ -629,7 +643,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
             enterInstruction(intruct);
         }
 
-        outputString.append("}");
+        outputString.append(indent.pop()).append("}");
         enterSplitter_end_command(ctx.splitter_end_command(1));
     }
 
@@ -653,7 +667,8 @@ public class BashToPowershell extends BashGrammarBaseListener {
     public void enterSelect(BashGrammarParser.SelectContext ctx) {
         // to nie ma prawa działać
         // SELECT alphanumeric+ (LOOP_IN word)? splitter_end_command LOOP_MIDDLE pipeline_list LOOP_END
-        outputString.append("foreach ($");
+        indent.add(ctx.SELECT().getText().replace("select", ""));
+        outputString.append(indent.peek()).append("foreach ($");
         for (var al:ctx.alphanumeric()) outputString.append(al.getText().replaceAll(" ", ""));
 
         outputString.append(" in ");
@@ -664,11 +679,11 @@ public class BashToPowershell extends BashGrammarBaseListener {
             outputString.append("$");
             for (var al:ctx.alphanumeric()) outputString.append(al.getText());
         }
-        outputString.append(")\n{");
+        outputString.append(") {");
         for (var intruct : ctx.instruction()) {
             enterInstruction(intruct);
         }
-        outputString.append("}");
+        outputString.append(indent.pop()).append("}");
     }
 
     @Override
