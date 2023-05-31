@@ -59,7 +59,7 @@ public class Translator {
         return "";
     }
     public String translateCommand(String command, List<String> arguments) {
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder(" ");
 
         final int index = this.findCommand(command);
         if (index == this.invalidFindIndex) {
