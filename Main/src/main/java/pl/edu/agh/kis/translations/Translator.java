@@ -74,6 +74,7 @@ public class Translator {
             boolean popFlag = false;
 
             for (String arg : arguments) {
+                if (arg.equals("")) continue;
                 if (popFlag) {
                     popFlag = false;
                     continue;
@@ -94,7 +95,7 @@ public class Translator {
                         default -> Logger.getInstance().addLog("Wrong flag in command translation!");
                     }
                 } else {
-                    Logger.getInstance().addLog("In command: " + command + ", argument: " + arg + " is not found!");
+//                    Logger.getInstance().addLog("In command: " + command + ", argument: " + arg + " is not found!");
                     stringBuilder.append(this.commandDelimiter).append(arg);
                 }
             }
@@ -103,7 +104,7 @@ public class Translator {
                 stringBuilder.append(val);
         }
         //System.out.println(stringBuilder.toString());
-        return stringBuilder.toString().substring(1);
+        return stringBuilder.substring(1);
     }
     private int findCommand(String command) {
         for (int i = 0; i < this.translations.size(); ++i)
