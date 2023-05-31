@@ -1,9 +1,13 @@
 package pl.edu.agh.kis.settings;
 
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import pl.edu.agh.kis.Main;
 import pl.edu.agh.kis.log.Logger;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -92,6 +96,23 @@ public class ProgramArgumentsParser {
                         Logger.getInstance().addLog("Provided output directory \"" + this.outputDirectory + "\" is not a directory!");
                         this.mode &= (~ProgramArgumentsParser.customOutputFlag);
                     }
+                    break;
+                case "-h":
+                case "-H":
+                case "--Help":
+                    System.out.println("Program usage: <path/to/program/executable.jar> [--NoComments] [--NoWarnings] [-g|-G|--GUI] [--CustomSuffix] [--SeparateDirectory] [-i|-I|--Input <path/to/input_dir>] [-o|-O|--Output <path/to/output_dir>] [-h|-H|--Help] [-v|-V|--Version] [;|\\n]");
+                    break;
+                case "-v":
+                case "-V":
+                case "--Version":
+                    MavenXpp3Reader reader = new MavenXpp3Reader();
+                    Model model;
+                    try {
+                        model = reader.read(new FileReader("pom.xml"));
+                    } catch (IOException | XmlPullParserException e) {
+                        throw new RuntimeException(e);
+                    }
+                    System.out.println("Program Id: " + model.getId() + ", GroupID: " + model.getGroupId() + ", ArtifactID: " + model.getArtifactId() + ", Version: " + model.getVersion());
                     break;
                 default:
                     Logger.getInstance().addLog("Unknown command-line argument provided: \"" + args[i] + "\". Due to this fact this argument will be skipped!");
