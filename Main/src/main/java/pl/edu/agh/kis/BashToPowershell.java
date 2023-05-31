@@ -45,7 +45,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
     @Override
     public void enterInstruction(BashGrammarParser.InstructionContext ctx) {
 //                :	COMMENT
-        if (!ProgramConfig.getInstance().skipComments && ctx.COMMENT() != null) {
+        if (!ProgramConfig.getInstance().skipComments() && ctx.COMMENT() != null) {
             outputString.append(ctx.COMMENT().getText());
         }
 //                |   function

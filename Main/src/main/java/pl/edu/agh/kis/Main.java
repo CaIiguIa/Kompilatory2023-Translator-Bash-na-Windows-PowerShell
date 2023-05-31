@@ -13,9 +13,10 @@ import pl.edu.agh.kis.parser.BashGrammarParser;
 import pl.edu.agh.kis.settings.ProgramArgumentsParser;
 import pl.edu.agh.kis.settings.ProgramConfig;
 
+import java.io.Console;
+
 public class Main {
-    public static final String inputDirectory = "Main\\src\\test\\input";
-    public static final String outputDirectory = "Docs\\Examples\\Output";
+    public static ProgramConfig config;
     public static FileOperation run = (x) -> {
         try {
             //lexer
@@ -40,11 +41,13 @@ public class Main {
         //  Gives ability to use command line arguments.
         ProgramArgumentsParser parser = new ProgramArgumentsParser(args);
         ProgramConfig.setParser(parser);
+        Main.config = ProgramConfig.getInstance();
 
-        InputOutputFileManager manager = new InputOutputFileManager(Main.inputDirectory, Main.outputDirectory, Main.run);
+        InputOutputFileManager manager = new InputOutputFileManager(Main.config.getInputFiles(), Main.config.getOutputDirectory(), Main.run);
         manager.process();
 
         //  Print all the messages gathered through the program.
-        System.out.println(Logger.getInstance().getAllLogs());
+        if (!ProgramConfig.getInstance().noWarnings())
+            System.out.println(Logger.getInstance().getAllLogs());
     }
 }
