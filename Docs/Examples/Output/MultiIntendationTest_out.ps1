@@ -20,4 +20,4 @@ switch ( $q){
 
 }
 }
-man bash -u | Select-String "between x and y" | Get-Content
+ manbash -u | Select-String "between x and y" | Get-Content

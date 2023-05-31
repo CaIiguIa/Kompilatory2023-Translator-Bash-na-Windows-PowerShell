@@ -6,6 +6,9 @@ import pl.edu.agh.kis.parser.BashGrammarParser;
 import pl.edu.agh.kis.settings.ProgramConfig;
 import pl.edu.agh.kis.translations.Translator;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -133,18 +136,27 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterWord(BashGrammarParser.WordContext ctx) {
-        for (int i = 0; i < ctx.getChildCount(); i++)
-            enterCommand(ctx.command(i));
+        String command = ctx.command(0).getText();
+        for (int i = 0; i < command.length(); ++i) {
+            if (command.charAt(i) == ' ') {
+                outputString.append(" ");
+            }
+        }
+        outputString.append(translator.translate(command.replaceAll(" ", "")));
+
+        for (int i = 1; i < ctx.getChildCount(); i++)
+            enterCommand(command, ctx.command(i));
+
     }
 
-    @Override
-    public void enterCommand(BashGrammarParser.CommandContext ctx) {
+
+    public void enterCommand(String commandStart, BashGrammarParser.CommandContext ctx) {
         final int groupNumber = 1;
         final int charNumberLocation = 1;
         if (ctx.symbols() != null) {
             enterSymbols(ctx.symbols());
         } else if (ctx.argument() != null) {
-            enterArgument(ctx.argument());
+            enterArgument(commandStart, ctx.argument());
         } else if (ctx.variable_from_command() != null) {
             enterVariable_from_command(ctx.variable_from_command());
         } else if (ctx.VARIABLE() != null) {
@@ -169,19 +181,29 @@ public class BashToPowershell extends BashGrammarBaseListener {
     @Override
     public void enterSymbols(BashGrammarParser.SymbolsContext ctx) {
         //dla kazdego po splicie tlumacz
-        boolean spaceFlag = false;
-        for (var str : ctx.getText().stripTrailing().split(" ")) {
-            if (spaceFlag) outputString.append(" "); //add space only after first word
-            spaceFlag = true;
-            outputString.append(translator.translate(str).replaceAll(" ", ""));//remove redundant spaces
-        }
+//        boolean spaceFlag = false;
+//        for (var str : ctx.getText().stripTrailing().split(" ")) {
+//            if (spaceFlag) outputString.append(" "); //add space only after first word
+//            spaceFlag = true;
+//            outputString.append(translator.translate(str).replaceAll(" ", ""));//remove redundant spaces
+//        }
+
+//        for (var str : ctx.getText().stripTrailing().split(" ")) {
+//
+//        }
+        outputString.append(ctx.getText());
     }
 
-    @Override
-    public void enterArgument(BashGrammarParser.ArgumentContext ctx) {
+    public void enterArgument(String commandStart, BashGrammarParser.ArgumentContext ctx) {
         //  TODO: nie mam pojęcia czemu tu jest 0 jakbyś dodał stałą.
-        if (ctx.MINUS().size() > 0) outputString.append(" -");
-        enterSymbols(ctx.symbols());
+
+        List<String> args = new ArrayList<>(List.of(ctx.getText().split(" ")));
+
+//        args.remove(0);
+
+        outputString.append(translator.translateCommand(commandStart, args));
+
+//        enterSymbols(ctx.symbols());
     }
 
     @Override

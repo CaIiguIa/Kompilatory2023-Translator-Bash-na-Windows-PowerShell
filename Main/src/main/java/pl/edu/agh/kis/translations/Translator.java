@@ -43,19 +43,31 @@ public class Translator {
 
         return this.translations.get(index).translation;
     }
+
+    public String translateArgument(String command, String argument) {
+        final int index = this.findCommand(command);
+
+        argument = argument.replaceAll(" ", "");
+
+        if (index == this.invalidFindIndex) {
+            return argument;
+        }
+        TranslationUnit unit = this.translations.get(index);
+        if (unit.arguments.containsKey(argument)) {
+            return unit.arguments.get(argument).translated_argument;
+        }
+        return "";
+    }
     public String translateCommand(String command, List<String> arguments) {
         StringBuilder stringBuilder = new StringBuilder();
 
         final int index = this.findCommand(command);
         if (index == this.invalidFindIndex) {
-            stringBuilder.append(command).append(this.commandDelimiter);
 
             for (String arg : arguments)
                 stringBuilder.append(this.commandDelimiter).append(arg);
         } else {
             TranslationUnit unit = this.translations.get(index);
-
-            stringBuilder.append(unit.translation);
 
             Queue<String> lastInsert = new LinkedList<>();
 
@@ -90,7 +102,8 @@ public class Translator {
             for (String val : lastInsert)
                 stringBuilder.append(val);
         }
-        return stringBuilder.toString();
+        //System.out.println(stringBuilder.toString());
+        return stringBuilder.toString().substring(1);
     }
     private int findCommand(String command) {
         for (int i = 0; i < this.translations.size(); ++i)
