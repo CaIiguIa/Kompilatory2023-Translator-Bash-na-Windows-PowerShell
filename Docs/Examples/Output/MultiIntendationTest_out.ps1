@@ -8,7 +8,7 @@ while( "$1" -eq  1)
             {
                 switch ( $q){
                     a{
-                        foreach ($asd in 1..1) {
+                        foreach ($asd in 1..6) {
                             Write-Host $asd
 
                         }

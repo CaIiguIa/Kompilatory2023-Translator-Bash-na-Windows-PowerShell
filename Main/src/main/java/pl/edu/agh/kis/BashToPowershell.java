@@ -689,7 +689,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
     @Override
     public void enterNumbers_pipeline_list_for_loop(BashGrammarParser.Numbers_pipeline_list_for_loopContext ctx) {
         final int firstArgumentPosition = 0;
-        final int secondArgumentPosition = 0;
+        final int secondArgumentPosition = 1;
         final String joinBetweenArguments = "..";
 //        numbers_pipeline_list_for_loop // {1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}
 //        : '{' signed_number '..' signed_number '}'
