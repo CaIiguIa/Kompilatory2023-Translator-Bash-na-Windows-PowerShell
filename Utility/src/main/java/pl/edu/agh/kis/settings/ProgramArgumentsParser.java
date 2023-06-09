@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.stream.Stream;
 
 public class ProgramArgumentsParser {
     public static final int skipCommentsFlag       =   0b1;
@@ -22,7 +23,7 @@ public class ProgramArgumentsParser {
     public static final int customInputFlag        =   0b10000;
     public static final int customOutputFlag       =   0b100000;
     public static final int useGUI                 =   0b1000000;
-    public static final int defaultMode            =   0;
+    public static final int defaultMode            =   0b0000001;
     public static final String defaultSuffix       =   "_out";
     public static final String defaultCustomDirectoryName = "";
     public static String defaultOutputDirectory    =   Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
@@ -72,8 +73,8 @@ public class ProgramArgumentsParser {
                     ++i;
                     for (; i < args.length; ++i) {
                         if (args[i].charAt(0) != '-') {
-                            try {
-                                Files.walk(Path.of(args[i]))
+                            try (Stream<Path> pathStream = Files.walk(Path.of(args[i]))) {
+                                pathStream
                                         .filter(Files::isRegularFile)
                                         .forEach(path -> this.inputFiles.add(path.toFile().toString()));
                             } catch (IOException e) {

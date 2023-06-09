@@ -58,7 +58,7 @@ public class Translator {
         }
         return "";
     }
-    public String translateCommand(String command, List<String> arguments) {
+    public String translateCommand(String command, List<String> arguments, int line, int column) {
         StringBuilder stringBuilder = new StringBuilder(" ");
 
         final int index = this.findCommand(command);
@@ -85,14 +85,14 @@ public class Translator {
 
                     switch (argument.flag) {
                         case 0 -> stringBuilder.append(this.commandDelimiter).append(argument.translated_argument);
-                        case 1 -> Logger.getInstance().addLog("In command: " + command + ", argument: " + argument.translated_argument + " is not translatable!");
+                        case 1 -> Logger.getInstance().addLog("{" + line + ", " + column + "}In command: " + command + ", argument: " + argument.translated_argument + " is not translatable!");
                         case 2 -> {
                             popFlag = true;
-                            Logger.getInstance().addLog("In command: " + command + ", argument: " + argument.translated_argument + " is not translatable and the next argument is skipped!");
+                            Logger.getInstance().addLog("{" + line + ", " + column + "}In command: " + command + ", argument: " + argument.translated_argument + " is not translatable and the next argument is skipped!");
                         }
                         case 3 -> stringBuilder.insert(0, argument.translated_argument + this.commandDelimiter);
                         case 4 -> lastInsert.add(this.commandDelimiter + argument.translated_argument);
-                        default -> Logger.getInstance().addLog("Wrong flag in command translation!");
+                        default -> Logger.getInstance().addLog("{" + line + ", " + column + "}Wrong flag in command translation!");
                     }
                 } else {
 //                    Logger.getInstance().addLog("In command: " + command + ", argument: " + arg + " is not found!");

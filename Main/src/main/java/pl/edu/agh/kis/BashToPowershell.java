@@ -1,6 +1,5 @@
 package pl.edu.agh.kis;
 
-import pl.edu.agh.kis.log.Logger;
 import pl.edu.agh.kis.parser.BashGrammarBaseListener;
 import pl.edu.agh.kis.parser.BashGrammarParser;
 import pl.edu.agh.kis.settings.ProgramConfig;
@@ -19,7 +18,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
     public int functionDepth;
     private boolean addNL=true;
 
-    private Stack<String> indent = new Stack<>();
+    private final Stack<String> indent = new Stack<>();
 
     BashToPowershell() {
         this.outputString = new StringBuilder();
@@ -32,7 +31,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterProgram(BashGrammarParser.ProgramContext ctx) {
-        //  This append below is not needed for a Windows powershell program
+        //  This appended text below is not needed for a Windows powershell program
         //outputString.append(ctx.COMMENT().toString()); //COMMENT
 
         for (var instruct : ctx.instruction()) {   //  Instruction*
@@ -200,7 +199,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
 //        args.remove(0);
 
-        outputString.append(translator.translateCommand(commandStart, args));
+        outputString.append(translator.translateCommand(commandStart, args, ctx.start.getLine(), ctx.start.getCharPositionInLine()));
 
 //        enterSymbols(ctx.symbols());
     }
