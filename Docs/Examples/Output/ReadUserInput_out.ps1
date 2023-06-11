@@ -1,1 +1,3 @@
-java.lang.NullPointerException: Cannot invoke "pl.edu.agh.kis.parser.BashGrammarParser$PipelineContext.getChildCount()" because "ctx" is null
+Write-Host "What is your name?"
+Read-Host  name
+Write-Host "Hello, $name!"

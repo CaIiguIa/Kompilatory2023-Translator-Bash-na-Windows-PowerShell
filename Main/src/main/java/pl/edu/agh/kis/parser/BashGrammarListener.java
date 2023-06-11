@@ -1,4 +1,5 @@
-package pl.edu.agh.kis.parser;// Generated from BashGrammar.g4 by ANTLR 4.12.0
+// Generated from BashGrammar.g4 by ANTLR 4.12.0
+package pl.edu.agh.kis.parser;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -27,6 +28,56 @@ public interface BashGrammarListener extends ParseTreeListener {
 	 */
 	void exitInstruction(BashGrammarParser.InstructionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#symbols}.
+	 * @param ctx the parse tree
+	 */
+	void enterSymbols(BashGrammarParser.SymbolsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#symbols}.
+	 * @param ctx the parse tree
+	 */
+	void exitSymbols(BashGrammarParser.SymbolsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#argument}.
+	 * @param ctx the parse tree
+	 */
+	void enterArgument(BashGrammarParser.ArgumentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#argument}.
+	 * @param ctx the parse tree
+	 */
+	void exitArgument(BashGrammarParser.ArgumentContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#word}.
+	 * @param ctx the parse tree
+	 */
+	void enterWord(BashGrammarParser.WordContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#word}.
+	 * @param ctx the parse tree
+	 */
+	void exitWord(BashGrammarParser.WordContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#command}.
+	 * @param ctx the parse tree
+	 */
+	void enterCommand(BashGrammarParser.CommandContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#command}.
+	 * @param ctx the parse tree
+	 */
+	void exitCommand(BashGrammarParser.CommandContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#pipe_symbol}.
+	 * @param ctx the parse tree
+	 */
+	void enterPipe_symbol(BashGrammarParser.Pipe_symbolContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#pipe_symbol}.
+	 * @param ctx the parse tree
+	 */
+	void exitPipe_symbol(BashGrammarParser.Pipe_symbolContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link BashGrammarParser#case_statement}.
 	 * @param ctx the parse tree
 	 */
@@ -47,6 +98,46 @@ public interface BashGrammarListener extends ParseTreeListener {
 	 */
 	void exitSingle_case(BashGrammarParser.Single_caseContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#pipeline}.
+	 * @param ctx the parse tree
+	 */
+	void enterPipeline(BashGrammarParser.PipelineContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#pipeline}.
+	 * @param ctx the parse tree
+	 */
+	void exitPipeline(BashGrammarParser.PipelineContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#pipeline_list}.
+	 * @param ctx the parse tree
+	 */
+	void enterPipeline_list(BashGrammarParser.Pipeline_listContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#pipeline_list}.
+	 * @param ctx the parse tree
+	 */
+	void exitPipeline_list(BashGrammarParser.Pipeline_listContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#assign}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssign(BashGrammarParser.AssignContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#assign}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssign(BashGrammarParser.AssignContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#var}.
+	 * @param ctx the parse tree
+	 */
+	void enterVar(BashGrammarParser.VarContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#var}.
+	 * @param ctx the parse tree
+	 */
+	void exitVar(BashGrammarParser.VarContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link BashGrammarParser#until_loop}.
 	 * @param ctx the parse tree
 	 */
@@ -66,6 +157,26 @@ public interface BashGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIf_statement(BashGrammarParser.If_statementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#if_elsif}.
+	 * @param ctx the parse tree
+	 */
+	void enterIf_elsif(BashGrammarParser.If_elsifContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#if_elsif}.
+	 * @param ctx the parse tree
+	 */
+	void exitIf_elsif(BashGrammarParser.If_elsifContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#if_else}.
+	 * @param ctx the parse tree
+	 */
+	void enterIf_else(BashGrammarParser.If_elseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#if_else}.
+	 * @param ctx the parse tree
+	 */
+	void exitIf_else(BashGrammarParser.If_elseContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link BashGrammarParser#while_loop}.
 	 * @param ctx the parse tree
@@ -207,46 +318,6 @@ public interface BashGrammarListener extends ParseTreeListener {
 	 */
 	void exitExpr(BashGrammarParser.ExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BashGrammarParser#word}.
-	 * @param ctx the parse tree
-	 */
-	void enterWord(BashGrammarParser.WordContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link BashGrammarParser#word}.
-	 * @param ctx the parse tree
-	 */
-	void exitWord(BashGrammarParser.WordContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link BashGrammarParser#pipe_symbol}.
-	 * @param ctx the parse tree
-	 */
-	void enterPipe_symbol(BashGrammarParser.Pipe_symbolContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link BashGrammarParser#pipe_symbol}.
-	 * @param ctx the parse tree
-	 */
-	void exitPipe_symbol(BashGrammarParser.Pipe_symbolContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link BashGrammarParser#pipeline}.
-	 * @param ctx the parse tree
-	 */
-	void enterPipeline(BashGrammarParser.PipelineContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link BashGrammarParser#pipeline}.
-	 * @param ctx the parse tree
-	 */
-	void exitPipeline(BashGrammarParser.PipelineContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link BashGrammarParser#pipeline_list}.
-	 * @param ctx the parse tree
-	 */
-	void enterPipeline_list(BashGrammarParser.Pipeline_listContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link BashGrammarParser#pipeline_list}.
-	 * @param ctx the parse tree
-	 */
-	void exitPipeline_list(BashGrammarParser.Pipeline_listContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link BashGrammarParser#function}.
 	 * @param ctx the parse tree
 	 */
@@ -277,6 +348,16 @@ public interface BashGrammarListener extends ParseTreeListener {
 	 */
 	void exitCoprocess(BashGrammarParser.CoprocessContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link BashGrammarParser#alphanumeric}.
+	 * @param ctx the parse tree
+	 */
+	void enterAlphanumeric(BashGrammarParser.AlphanumericContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BashGrammarParser#alphanumeric}.
+	 * @param ctx the parse tree
+	 */
+	void exitAlphanumeric(BashGrammarParser.AlphanumericContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link BashGrammarParser#id}.
 	 * @param ctx the parse tree
 	 */
@@ -287,13 +368,13 @@ public interface BashGrammarListener extends ParseTreeListener {
 	 */
 	void exitId(BashGrammarParser.IdContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BashGrammarParser#string}.
+	 * Enter a parse tree produced by {@link BashGrammarParser#case_break}.
 	 * @param ctx the parse tree
 	 */
-	void enterString(BashGrammarParser.StringContext ctx);
+	void enterCase_break(BashGrammarParser.Case_breakContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BashGrammarParser#string}.
+	 * Exit a parse tree produced by {@link BashGrammarParser#case_break}.
 	 * @param ctx the parse tree
 	 */
-	void exitString(BashGrammarParser.StringContext ctx);
+	void exitCase_break(BashGrammarParser.Case_breakContext ctx);
 }

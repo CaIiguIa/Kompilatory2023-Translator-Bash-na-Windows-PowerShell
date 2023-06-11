@@ -7,7 +7,7 @@ Symbol startowy: program
 
 instruction
 
-        :	COMMENT
+    :	COMMENT
     |   function
     |   if_statement
     |   for_loop
@@ -17,6 +17,7 @@ instruction
     |   select
     |   coprocess
     |	pipeline_list
+    |   assign
     |	splitter_end_command
     ;
 
@@ -54,7 +55,8 @@ for_loop
 
 for_loop_argument
 
-    :	ALPHANUMERIC+ LOOP_IN numbers_pipeline_list_for_loop splitter_end_word // zmienna in [{1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}]
+    :	ALPHANUMERIC+ LOOP_IN numbers_pipeline_list_for_loop splitter_end_command
+    |   ALPHANUMERIC+ LOOP_IN variable_from_command splitter_end_command
     ;
 
 numbers_pipeline_list_for_loop 
@@ -77,21 +79,36 @@ number_float
 
 variable_from_word
 
+
     : DOLLAR_SIGN L_PARENTH_ROUND pipeline_list R_PARENTH_ROUND
     ;
 
+splitter_end_command
+
+
+    : SINGLE_SEMICOLON
+    | NEW_LINE
+    ;   
+
 variable
+
 
     : VARIABLE
     | SCRIPT_ARGUMENT_NUMBER
     | SCRIPT_ARGUMENT
     ;
 
-variable_or_number /*zmienna, liczba*/
+variable_from_command
 
-    :	variable
-    |   id
-    |   signed_number
+
+    : DOLLAR_SIGN L_PARENTH_ROUND pipeline_list R_PARENTH_ROUND
+    ;
+
+splitter_end_command
+
+
+    : SINGLE_SEMICOLON
+    | NEW_LINE
     ;
 
 id
@@ -102,7 +119,12 @@ id
 string
 
     :	APOSTROPHE ~(APOSTROPHE)* APOSTROPHE
-    ;   
+    ;
+
+character_chain
+
+    :	SINGLE_APOSTROPHE ~(SINGLE_APOSTROPHE)* SINGLE_APOSTROPHE
+    ;
 
 ## Wyrażenia zwracające bool
 
@@ -123,21 +145,23 @@ expr_maker
 
 expr 
 
-    :	variable_or_number compare variable_or_number
-    |   math_expr compare  math_expr
-    |   BOOL
-    |   variable_or_number ( PLUS PLUS | MINUS MINUS ) 
-    |   ( PLUS PLUS | MINUS MINUS ) variable_or_number
-    |   string CONDITION_EQ CONDITION_EQ?  string
+    :	expr (PLUS | MINUS | WILDCARD_OR_MULTIPLY | DIVIDE | MODULO | WILDCARD_OR_MULTIPLY WILDCARD_OR_MULTIPLY ) expr
+    | L_PARENTH_ROUND expr R_PARENTH_ROUND
+    | variable_or_number
     ;
 
+d_round_expr_maker
 
+    :	d_round_expr (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) d_round_expr_maker
+    | L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND
+    |d_round_expr
+    ;
 
-math_expr 
+variable_or_number
 
-    :	math_expr (PLUS | MINUS | WILDCARD_OR_MULTIPLY | DIVIDE | MODULO | WILDCARD_OR_MULTIPLY WILDCARD_OR_MULTIPLY ) math_expr
-    |   L_PARENTH_ROUND math_expr R_PARENTH_ROUND
-    |   variable_or_number
+    :VARIABLE
+    | id
+    | signed_number
     ;
 
 compare
@@ -154,10 +178,32 @@ compare
 
 # Komendy i pipeline'y
 
+
+symbols
+    
+    :	ALPHANUMERIC+
+    ;
+
+argument
+
+    :	(MINUS|(MINUS MINUS)) ALPHANUMERIC+
+    ;
+
+
 word
 
-    :	~(PIPE|AMPERSAND|SINGLE_SEMICOLON|L_PARENTH_ROUND|R_PARENTH_ROUND|POINTER_LEFT|POINTER_RIGHT|SPACE|TAB|NEW_LINE|WHILE_LOOP_BEGIN|UNTIL_LOOP_BEGIN|FOR_LOOP_BEGIN|LOOP_MIDDLE|IF_START|IF_MIDDLE|IF_END|LOOP_IN|ELSE|ELSE_IF|CASE_START|CASE_END|FUNCTION_START|SELECT|COPROCESS_START|TIME|CREATE_VARABLE)+
-    ;
+    :	(command)+
+	;
+
+command
+
+    :	symbols
+	|	string
+	|	character_chain
+	|	variable_from_command
+	|	argument
+	;
+
 
 pipe_symbol
 
@@ -167,17 +213,17 @@ pipe_symbol
 
 pipeline
 
-    :	(TIME ('-p')?)? (BOOL_NEGATION)? word ((pipe_symbol)? word)+
+    :	(TIME MINUSP?)? (BOOL_NEGATION)? word (pipe_symbol word)* (SINGLE_SEMICOLON|NEW_LINE)
     ;
 
 pipeline_list
 
-    :	(pipeline (SINGLE_SEMICOLON|NEW_LINE))+ splitter_end_word?
+    :	(pipeline)+
     ;
 
 function
 
-    :   (ALPHANUMERIC)+ L_PARENTH_ROUND R_PARENTH_ROUND block /*(return_output)?*/
+    :	(ALPHANUMERIC)+ L_PARENTH_ROUND R_PARENTH_ROUND block /*(return_output)?*/
     |   FUNCTION_START (ALPHANUMERIC)+ (L_PARENTH_ROUND R_PARENTH_ROUND)? block /*(return_output)?*/
     ;
 
@@ -195,6 +241,6 @@ coprocess
 
 splitter_end_word
 
-    : SINGLE_SEMICOLON
-    | NEW_LINE
+    :	SINGLE_SEMICOLON
+    |   NEW_LINE
     ;

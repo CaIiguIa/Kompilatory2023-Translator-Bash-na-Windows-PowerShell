@@ -7,11 +7,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Main" />
-        <module name="Kompilatory2023-Translator-Bash-na-Windows-PowerShell" />
         <module name="Utility" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="Haha_Maven" target="17" />
       <module name="Kompilatory2023-Translator-Bash-na-Windows-PowerShell" target="1.5" />
     </bytecodeTargetLevel>
   </component>

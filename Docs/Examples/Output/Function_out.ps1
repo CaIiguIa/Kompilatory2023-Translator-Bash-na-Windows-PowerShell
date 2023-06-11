@@ -1,1 +1,4 @@
-java.lang.NullPointerException: Cannot invoke "pl.edu.agh.kis.parser.BashGrammarParser$PipelineContext.getChildCount()" because "ctx" is null
+function greet{
+    Write-Host "Hello, $1!"
+}
+greet "John"

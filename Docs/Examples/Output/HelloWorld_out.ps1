@@ -1,2 +1,1 @@
-#!/bin/bash
-echo"Hello,World! "
+Write-Host "Hello, World!"

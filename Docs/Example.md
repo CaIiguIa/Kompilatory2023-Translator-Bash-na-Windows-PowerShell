@@ -1,5 +1,4 @@
-```
-
+```shell
 #!/bin/bash
 while [ $1 == 1 ] ; do
     case "$1" in 
@@ -22,5 +21,4 @@ while [ $1 == 1 ] ; do
     esac
 done
 man bash -u | grep "between x and y" | cat 
-
 ```
