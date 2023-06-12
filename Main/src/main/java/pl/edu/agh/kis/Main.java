@@ -53,7 +53,7 @@ public class Main {
         }
 
         //  Print all the messages gathered through the program.
-        if (!ProgramConfig.getInstance().noWarnings())
+        if (!Main.config.noWarnings())
             System.out.println(Logger.getInstance().getAllLogs());
     }
 }

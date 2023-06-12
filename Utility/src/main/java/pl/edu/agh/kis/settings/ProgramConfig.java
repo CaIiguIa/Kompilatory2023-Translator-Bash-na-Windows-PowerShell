@@ -35,14 +35,6 @@ public class ProgramConfig {
         return (parser == null || !this.CustomSuffix() ? ProgramArgumentsParser.defaultSuffix : parser.customSuffix);
     }
 
-    public boolean SeparateDirectory() {
-        return ((parser == null ? ProgramArgumentsParser.defaultMode : parser.getMode()) & ProgramArgumentsParser.separateDirectoryFlag) > 0;
-    }
-
-    public String getSeparateDirectory() {
-        return (parser == null ? ProgramArgumentsParser.defaultCustomDirectoryName : parser.customDirectoryName);
-    }
-
     public boolean customInput () {
         return ((parser == null ? ProgramArgumentsParser.defaultMode : parser.getMode()) & ProgramArgumentsParser.customInputFlag) > 0;
     }
@@ -58,12 +50,10 @@ public class ProgramConfig {
     public String getOutputDirectory() {
         if (parser == null)
             return ProgramArgumentsParser.defaultOutputDirectory;
-        if (this.customOutput()) {
-            if (this.SeparateDirectory()) {
-                return parser.outputDirectory + "\\" + this.getSeparateDirectory();
-            }
+
+        if (this.customOutput())
             return parser.outputDirectory;
-        }
+
         return ProgramArgumentsParser.defaultOutputDirectory;
     }
 
