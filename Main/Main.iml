@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="AdditionalModuleElements">
+    <content url="file://$MODULE_DIR$" dumb="true">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/antlr4" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/config" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/input" type="java-test-resource" />
+    </content>
+  </component>
+</module>

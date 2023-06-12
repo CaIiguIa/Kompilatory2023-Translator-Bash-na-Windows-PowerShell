@@ -19,16 +19,14 @@ public class ProgramArgumentsParser {
     public static final int skipCommentsFlag       =   0b1;
     public static final int noWarningFlag          =   0b10;
     public static final int customSuffixFlag       =   0b100;
-    public static final int separateDirectoryFlag  =   0b1000;
-    public static final int customInputFlag        =   0b10000;
-    public static final int customOutputFlag       =   0b100000;
-    public static final int useGUI                 =   0b1000000;
-    public static final int defaultMode            =   0b0000001;
+    public static final int customInputFlag        =   0b1000;
+    public static final int customOutputFlag       =   0b10000;
+    public static final int useGUI                 =   0b100000;
+    public static final int defaultMode            =   0b000001;
     public static final String defaultSuffix       =   "_out";
     public static final String defaultCustomDirectoryName = "";
     public static String defaultOutputDirectory    =   Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
     public String customSuffix;
-    public String customDirectoryName;
     public final Queue<String> inputFiles;
     public String outputDirectory;
     private int mode;
@@ -36,7 +34,6 @@ public class ProgramArgumentsParser {
         this.mode = ProgramArgumentsParser.defaultMode;
 
         this.customSuffix = ProgramArgumentsParser.defaultSuffix;
-        this.customDirectoryName = ProgramArgumentsParser.defaultCustomDirectoryName;
         this.inputFiles = new LinkedList<>();
         this.outputDirectory = ProgramArgumentsParser.defaultOutputDirectory;
         this.parse(args);
@@ -60,11 +57,6 @@ public class ProgramArgumentsParser {
                     this.mode |= ProgramArgumentsParser.customSuffixFlag;
                     ++i;
                     this.customSuffix = args[i];
-                    break;
-                case "--SeparateDirectory":
-                    this.mode |= ProgramArgumentsParser.separateDirectoryFlag;
-                    ++i;
-                    this.customDirectoryName = args[i];
                     break;
                 case "-i":
                 case "-I":
