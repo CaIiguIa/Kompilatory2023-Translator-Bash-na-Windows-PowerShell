@@ -4,7 +4,7 @@ while( "$1" -eq  1)
         asdas{
             Write-Host "Test 1"
 
-            if(((1 -eq 2 -and  1+1 -eq 8)) -and (("" -eq "")))
+            if(((1 -eq 2 -and  1 + 1 -eq 8)) -and (("" -eq "")))
             {
                 #q="avb"
                 switch ( $q){
