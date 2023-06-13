@@ -30,7 +30,7 @@ public class InputOutputFileManager {
             if (!this.OutputDirectory.mkdir())
                 throw new RuntimeException(outputDirectoryPath + " is not a directory!");
     }
-    public String getOutputFileName(String in) {
+    public static String getOutputFileName(String in) {
         String substring = ".sh";
         String replacement = ProgramConfig.getInstance().getCustomSuffix() + ".ps1";
 

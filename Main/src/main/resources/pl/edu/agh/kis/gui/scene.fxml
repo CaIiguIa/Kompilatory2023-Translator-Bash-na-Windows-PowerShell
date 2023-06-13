@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.Double?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Polyline?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="1200.0" prefHeight="900.0" prefWidth="1600.0" style="-fx-background-color: f4f4f4;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.kis.gui.Controller">
+   <children>
+      <AnchorPane prefHeight="600.0" prefWidth="1600.0" style="-fx-background-color: dfdfdf;">
+         <children>
+            <TextArea fx:id="PowershellCode" layoutX="864.0" layoutY="16.0" prefHeight="572.0" prefWidth="720.0" style="-fx-background-color: ffffff; -fx-border-color: dfdfdf;" />
+            <Polyline fill="#b2b2b2" layoutX="804.0" layoutY="277.0" rotate="-90.0" stroke="#5e5e5e" strokeType="INSIDE">
+              <points>
+                <Double fx:value="-50.0" />
+                <Double fx:value="-40.0" />
+                <Double fx:value="50.0" />
+                <Double fx:value="-40.0" />
+                <Double fx:value="0.0" />
+                <Double fx:value="60.0" />
+                <Double fx:value="-50.0" />
+                <Double fx:value="-40.0" />
+              </points>
+            </Polyline>
+            <TextArea fx:id="BashCode" layoutX="19.0" layoutY="16.0" prefHeight="572.0" prefWidth="720.0" style="-fx-background-color: ffffff; -fx-border-color: dfdfdf;" />
+         </children>
+      </AnchorPane>
+      <Button layoutX="756.0" layoutY="823.0" mnemonicParsing="false" onAction="#Translate" prefHeight="53.0" prefWidth="101.0" text="Translate">
+         <font>
+            <Font size="18.0" />
+         </font></Button>
+      <Line endX="622.0001220703125" endY="-316.0" fill="BLACK" layoutX="978.0" layoutY="916.0" startX="-978.0" startY="-316.0" stroke="#8a8a8a" />
+      <TextField fx:id="Input" layoutX="169.0" layoutY="620.0" prefHeight="40.0" prefWidth="358.0" />
+      <TextField fx:id="Output" layoutX="169.0" layoutY="680.0" prefHeight="40.0" prefWidth="358.0" />
+      <TextField fx:id="Suffix" layoutX="169.0" layoutY="740.0" prefHeight="40.0" prefWidth="358.0" />
+      <Label layoutX="58.0" layoutY="624.0" text="Input file">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="38.0" layoutY="687.0" text="Output file dir">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="21.0" layoutY="746.0" text="Custom file suffix">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button layoutX="561.0" layoutY="625.0" mnemonicParsing="false" onAction="#ChooseFile" text="Choose" />
+      <Button layoutX="562.0" layoutY="688.0" mnemonicParsing="false" onAction="#chooseDirectory" text="Choose" />
+      <Label fx:id="ErrorMsg" alignment="CENTER" contentDisplay="CENTER" layoutX="28.0" layoutY="835.0" text="Error message" textFill="#f20000">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <CheckBox fx:id="Comments" layoutX="747.0" layoutY="618.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="190.0" text="Skip comments">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </CheckBox>
+   </children>
+</AnchorPane>

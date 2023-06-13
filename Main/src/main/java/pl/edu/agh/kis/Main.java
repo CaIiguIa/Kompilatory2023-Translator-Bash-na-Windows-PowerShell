@@ -43,7 +43,7 @@ public class Main {
 
         Main.config = ProgramConfig.getInstance();
 
-        //  If the program determinist to use gui, then run gui.
+        //  If the program determines to use gui, then run gui.
         if (config.gui()) {
             Main.gui = new App();
             Main.gui.run();
