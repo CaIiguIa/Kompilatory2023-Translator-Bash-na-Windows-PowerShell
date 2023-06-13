@@ -26,6 +26,7 @@ instruction
     |	pipeline_list
 //    |   pipeline
     |	splitter_end_command
+    |   expr_maker
     ;
 
 symbols

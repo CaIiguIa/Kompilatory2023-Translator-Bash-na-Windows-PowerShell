@@ -100,6 +100,10 @@ public class BashToPowershell extends BashGrammarBaseListener {
         else if (ctx.splitter_end_command() != null) {
             enterSplitter_end_command(ctx.splitter_end_command());
         }
+        //  |   expr_maker
+        else if (ctx.expr_maker() != null) {
+            enterExpr_maker(ctx.expr_maker());
+        }
     }
 
     @Override
