@@ -31,7 +31,7 @@ public class BashGrammarParser extends Parser {
 		R_PARENTH_ROUND=55, L_PARENTH_CURLY=56, R_PARENTH_CURLY=57, POINTER_RIGHT=58, 
 		POINTER_LEFT=59, BOOL_NEGATION=60, FUNCTION_START=61, SELECT=62, COPROCESS_START=63, 
 		TIME=64, CREATE_VARABLE=65, TILDA=66, LAST_FOLDER=67, THIS_FOLDER=68, 
-		NUMBER=69, ALPHA=70, MINUSP=71, SPACE=72;
+		NUMBER=69, ALPHA=70, MINUSP=71, UNDERSCORE=72, SPACE=73;
 	public static final int
 		RULE_program = 0, RULE_instruction = 1, RULE_symbols = 2, RULE_argument = 3, 
 		RULE_word = 4, RULE_command = 5, RULE_pipe_symbol = 6, RULE_case_statement = 7, 
@@ -65,7 +65,7 @@ public class BashGrammarParser extends Parser {
 			"'esac'", "'$'", null, "'$#'", null, null, null, null, null, "'|'", "'+'", 
 			"'*'", "'?'", "'-'", "'/'", "'\\'", "'&'", "'('", "')'", "'{'", "'}'", 
 			"'>'", "'<'", "'!'", "'function'", "'select'", "'coproc'", "'time'", 
-			"'declare'", "'~'", "'..'", "'.'", null, null, "'-p'", "' '"
+			"'declare'", "'~'", "'..'", "'.'", null, null, "'-p'", "'_'", "' '"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -85,7 +85,7 @@ public class BashGrammarParser extends Parser {
 			"R_PARENTH_ROUND", "L_PARENTH_CURLY", "R_PARENTH_CURLY", "POINTER_RIGHT", 
 			"POINTER_LEFT", "BOOL_NEGATION", "FUNCTION_START", "SELECT", "COPROCESS_START", 
 			"TIME", "CREATE_VARABLE", "TILDA", "LAST_FOLDER", "THIS_FOLDER", "NUMBER", 
-			"ALPHA", "MINUSP", "SPACE"
+			"ALPHA", "MINUSP", "UNDERSCORE", "SPACE"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -175,7 +175,7 @@ public class BashGrammarParser extends Parser {
 			setState(78);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 97L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 353L) != 0)) {
 				{
 				{
 				setState(75);
@@ -608,6 +608,7 @@ public class BashGrammarParser extends Parser {
 				break;
 			case NUMBER:
 			case ALPHA:
+			case UNDERSCORE:
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(118);
@@ -792,7 +793,7 @@ public class BashGrammarParser extends Parser {
 				setState(140); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( _la==STRING || _la==NUMBER || _la==ALPHA );
+			} while ( _la==STRING || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & 11L) != 0) );
 			setState(149);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -904,6 +905,7 @@ public class BashGrammarParser extends Parser {
 			switch (_input.LA(1)) {
 			case NUMBER:
 			case ALPHA:
+			case UNDERSCORE:
 				{
 				setState(158); 
 				_errHandler.sync(this);
@@ -918,7 +920,7 @@ public class BashGrammarParser extends Parser {
 					setState(160); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-				} while ( _la==NUMBER || _la==ALPHA );
+				} while ( ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & 11L) != 0) );
 				}
 				break;
 			case STRING:
@@ -943,6 +945,7 @@ public class BashGrammarParser extends Parser {
 				switch (_input.LA(1)) {
 				case NUMBER:
 				case ALPHA:
+				case UNDERSCORE:
 					{
 					setState(167); 
 					_errHandler.sync(this);
@@ -957,7 +960,7 @@ public class BashGrammarParser extends Parser {
 						setState(169); 
 						_errHandler.sync(this);
 						_la = _input.LA(1);
-					} while ( _la==NUMBER || _la==ALPHA );
+					} while ( ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & 11L) != 0) );
 					}
 					break;
 				case STRING:
@@ -992,7 +995,7 @@ public class BashGrammarParser extends Parser {
 			setState(186);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 97L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 353L) != 0)) {
 				{
 				{
 				setState(183);
@@ -1338,7 +1341,7 @@ public class BashGrammarParser extends Parser {
 				setState(234); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( _la==NUMBER || _la==ALPHA );
+			} while ( ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & 11L) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -1404,7 +1407,7 @@ public class BashGrammarParser extends Parser {
 			setState(243);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 97L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 353L) != 0)) {
 				{
 				{
 				setState(240);
@@ -1493,7 +1496,7 @@ public class BashGrammarParser extends Parser {
 			setState(256);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 97L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 353L) != 0)) {
 				{
 				{
 				setState(253);
@@ -1593,7 +1596,7 @@ public class BashGrammarParser extends Parser {
 			setState(278);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 97L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 353L) != 0)) {
 				{
 				{
 				setState(275);
@@ -1652,7 +1655,7 @@ public class BashGrammarParser extends Parser {
 			setState(285);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 97L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 353L) != 0)) {
 				{
 				{
 				setState(282);
@@ -1728,7 +1731,7 @@ public class BashGrammarParser extends Parser {
 			setState(295);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 97L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 353L) != 0)) {
 				{
 				{
 				setState(292);
@@ -1977,7 +1980,7 @@ public class BashGrammarParser extends Parser {
 					setState(335); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-				} while ( _la==NUMBER || _la==ALPHA );
+				} while ( ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & 11L) != 0) );
 				setState(337);
 				match(LOOP_IN);
 				setState(338);
@@ -2002,7 +2005,7 @@ public class BashGrammarParser extends Parser {
 					setState(344); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-				} while ( _la==NUMBER || _la==ALPHA );
+				} while ( ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & 11L) != 0) );
 				setState(346);
 				match(LOOP_IN);
 				setState(347);
@@ -2342,7 +2345,7 @@ public class BashGrammarParser extends Parser {
 				setState(379);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 97L) != 0)) {
+				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 353L) != 0)) {
 					{
 					{
 					setState(376);
@@ -2375,7 +2378,7 @@ public class BashGrammarParser extends Parser {
 				setState(390);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 97L) != 0)) {
+				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 353L) != 0)) {
 					{
 					{
 					setState(387);
@@ -3269,6 +3272,7 @@ public class BashGrammarParser extends Parser {
 			switch (_input.LA(1)) {
 			case NUMBER:
 			case ALPHA:
+			case UNDERSCORE:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(534); 
@@ -3284,7 +3288,7 @@ public class BashGrammarParser extends Parser {
 					setState(536); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-				} while ( _la==NUMBER || _la==ALPHA );
+				} while ( ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & 11L) != 0) );
 				setState(538);
 				match(L_PARENTH_ROUND);
 				setState(539);
@@ -3311,7 +3315,7 @@ public class BashGrammarParser extends Parser {
 					setState(546); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-				} while ( _la==NUMBER || _la==ALPHA );
+				} while ( ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & 11L) != 0) );
 				setState(550);
 				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,66,_ctx) ) {
@@ -3403,7 +3407,7 @@ public class BashGrammarParser extends Parser {
 				setState(560); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( _la==NUMBER || _la==ALPHA );
+			} while ( ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & 11L) != 0) );
 			setState(564);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -3423,7 +3427,7 @@ public class BashGrammarParser extends Parser {
 			setState(571);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 97L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & -1151759587104219536L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & 353L) != 0)) {
 				{
 				{
 				setState(568);
@@ -3519,6 +3523,7 @@ public class BashGrammarParser extends Parser {
 	public static class AlphanumericContext extends ParserRuleContext {
 		public TerminalNode ALPHA() { return getToken(BashGrammarParser.ALPHA, 0); }
 		public TerminalNode NUMBER() { return getToken(BashGrammarParser.NUMBER, 0); }
+		public TerminalNode UNDERSCORE() { return getToken(BashGrammarParser.UNDERSCORE, 0); }
 		public AlphanumericContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -3542,7 +3547,7 @@ public class BashGrammarParser extends Parser {
 			{
 			setState(585);
 			_la = _input.LA(1);
-			if ( !(_la==NUMBER || _la==ALPHA) ) {
+			if ( !(((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & 11L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -3686,7 +3691,7 @@ public class BashGrammarParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001H\u0255\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001I\u0255\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+
@@ -3779,8 +3784,8 @@ public class BashGrammarParser extends Parser {
 		"\u0001#\u0005#\u024e\b#\n#\f#\u0251\t#\u0001$\u0001$\u0001$\u0000\u0002"+
 		"4<%\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018"+
 		"\u001a\u001c\u001e \"$&(*,.02468:<>@BDFH\u0000\u0005\u0002\u0000//22\u0002"+
-		"\u0000\u0001\u0001DD\u0002\u0000\t\t--\u0003\u0000\u001d\u001e..55\u0001"+
-		"\u0000EF\u02a4\u0000J\u0001\u0000\u0000\u0000\u0002_\u0001\u0000\u0000"+
+		"\u0000\u0001\u0001DD\u0002\u0000\t\t--\u0003\u0000\u001d\u001e..55\u0002"+
+		"\u0000EFHH\u02a4\u0000J\u0001\u0000\u0000\u0000\u0002_\u0001\u0000\u0000"+
 		"\u0000\u0004b\u0001\u0000\u0000\u0000\u0006i\u0001\u0000\u0000\u0000\b"+
 		"n\u0001\u0000\u0000\u0000\nx\u0001\u0000\u0000\u0000\f}\u0001\u0000\u0000"+
 		"\u0000\u000e\u007f\u0001\u0000\u0000\u0000\u0010\u00a3\u0001\u0000\u0000"+
