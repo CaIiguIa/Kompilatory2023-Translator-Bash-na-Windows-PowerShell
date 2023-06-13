@@ -1,16 +1,16 @@
 package pl.edu.agh.kis;
 
-import pl.edu.agh.kis.log.Logger;
 import pl.edu.agh.kis.parser.BashGrammarBaseListener;
 import pl.edu.agh.kis.parser.BashGrammarParser;
 import pl.edu.agh.kis.settings.ProgramConfig;
 import pl.edu.agh.kis.translations.Translator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-//TODO: function_out.ps1 nie tłumaczy $1 na $args[0] dlatego że isInFunction zwraza false zawsze, mimo,że wchodzimy do funkcji, potem siętym zajmę
 
 public class BashToPowershell extends BashGrammarBaseListener {
     private static final Translator translator = Translator.getInstance();
