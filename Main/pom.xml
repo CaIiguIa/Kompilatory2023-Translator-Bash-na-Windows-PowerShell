@@ -112,7 +112,7 @@
           <sourceDirectory>${basedir}/src/main/antlr4</sourceDirectory>
           <outputDirectory>${basedir}/src/main/java/pl/edu/agh/kis/parser</outputDirectory>
           <listener>true</listener>
-          <visitor>true</visitor>
+          <visitor>false</visitor>
           <arguments>
             <argument>-package</argument>
             <argument>pl.edu.agh.kis.parser</argument>
