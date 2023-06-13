@@ -1,11 +1,10 @@
 grammar BashGrammar;
-// !Note: Do not change production names or order unless you also change DashToPowershell class
+// !Note: Do not change production names or order unless you also change BashToPowershell class
 // TODO: (NA KOŃCU) Poprawić for, while, if ,itp żeby było jak w man bash -u
 // TODO: błędy w gramatyce: word to niby command+ więc komenda: ("asdasd" echo) jest parsowalna, trzeba sprawić, że pierwszy ciąg znaków to nie string
 // TODO: nie działają:
          //((counter++))
          //$((num1+num2))
-         //przypisanie gdy nazwa zmiennej zawiera cyfrę
 // TODO: Ktoś (Szymon) zapomniał dodać przypisywanie stringów do zmiennej, trzeba to wimplementować i sprawdzić
 // TODO: tak samo cyfry i varable_from_command jako możliwe wartości zmiennej w single_cas
 // TODO: tak samo for_loop_arguments ma braki
@@ -79,7 +78,7 @@ assign
 
 var
 //    :   DOLLAR_SIGN? ~(EQ | DOLLAR_SIGN | NEW_LINE | SINGLE_SEMICOLON | '#' | SPACE | DIGIT | CONDITION_RIGHT_SINGLE | CONDITION_LEFT_SINGLE) ~(EQ | DOLLAR_SIGN | NEW_LINE | SINGLE_SEMICOLON | '#' | SPACE | CONDITION_RIGHT_SINGLE | CONDITION_LEFT_SINGLE)*
-    : DOLLAR_SIGN? ALPHA alphanumeric+
+    : DOLLAR_SIGN? ALPHA (alphanumeric | NUMBER)+
     ;
 
 until_loop
@@ -122,7 +121,7 @@ signed_number
     ;
 
 number_float
-    : NUMBER (('.'|',') (NUMERIC)*)?
+    : NUMBER (('.'|',') NUMBER)?
     ;
 
 variable_from_command
@@ -199,7 +198,7 @@ coprocess
 	;
 
 alphanumeric
-    :   (ALPHA | NUMERIC)
+    :   (ALPHA | NUMBER)
     ;
 
 
@@ -291,7 +290,7 @@ LAST_FOLDER                 :   '..';
 THIS_FOLDER                 :   '.';
 NUMBER                      :   [1-9][0-9]*;
 ALPHA                       :   [A-Za-z];
-NUMERIC                     :   [0-9];
+//NUMERIC                     :   [0-9];
 //ALPHANUMERIC                :   [a-zA-Z0-9_];
 //NEW_VARIABLE                :   ~[$#\n;0-9 =]~[$#\n; =]*;
 MINUSP						:	'-p';
