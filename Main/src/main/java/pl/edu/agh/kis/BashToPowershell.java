@@ -5,11 +5,12 @@ import pl.edu.agh.kis.parser.BashGrammarParser;
 import pl.edu.agh.kis.settings.ProgramConfig;
 import pl.edu.agh.kis.translations.Translator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-//TODO: function_out.ps1 nie tłumaczy $1 na $args[0] dlatego że isInFunction zwraza false zawsze, mimo,że wchodzimy do funkcji, potem siętym zajmę
 
 public class BashToPowershell extends BashGrammarBaseListener {
     private static final Translator translator = Translator.getInstance();
@@ -51,7 +52,9 @@ public class BashToPowershell extends BashGrammarBaseListener {
         }
 //                |   function
         else if (ctx.function() != null) {
+            this.functionDepth++;
             enterFunction(ctx.function());
+            this.functionDepth--;
         }
 //                |   if_statement
         else if (ctx.if_statement() != null) {
@@ -96,6 +99,10 @@ public class BashToPowershell extends BashGrammarBaseListener {
 //                |	splitter_end_command
         else if (ctx.splitter_end_command() != null) {
             enterSplitter_end_command(ctx.splitter_end_command());
+        }
+        //  |   expr_maker
+        else if (ctx.expr_maker() != null) {
+            enterExpr_maker(ctx.expr_maker());
         }
     }
 
@@ -157,16 +164,16 @@ public class BashToPowershell extends BashGrammarBaseListener {
             enterArgument(commandStart, ctx.argument());
         } else if (ctx.variable_from_command() != null) {
             enterVariable_from_command(ctx.variable_from_command());
-        } else if (ctx.VARIABLE() != null) {
-            outputString.append(ctx.VARIABLE().getText());
+        } else if (ctx.var() != null) {
+            outputString.append(ctx.var().getText());
         } else { //either string or char_chain
-            if (isInFunction()) {
-                Pattern pattern = Pattern.compile("$[0-9]");
+            if (!this.isInFunction()) {
+                Pattern pattern = Pattern.compile("(\\$[0-9])");
                 Matcher matcher = pattern.matcher(ctx.getText());
                 if (matcher.find()) {
                     char c = matcher.group(groupNumber).charAt(charNumberLocation);
-                    System.out.println(ctx.getText().replace(matcher.group(groupNumber), "$args[" + c + " - 1]"));
-                    outputString.append(ctx.getText().replace(matcher.group(groupNumber), "$args[" + c + " - 1]"));
+                    //System.out.println(ctx.getText().replace(matcher.group(groupNumber), "$($args[" + c + " - 1])"));
+                    outputString.append(ctx.getText().replace(matcher.group(groupNumber), "$($args[" + c + " - 1])"));
                 } else {
                     outputString.append(translator.translate(ctx.getText()));
                 }
@@ -206,7 +213,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterVariable_from_command(BashGrammarParser.Variable_from_commandContext ctx) {
-        outputString.append("$(");
+        outputString.append("(");
 
         enterPipeline_list(ctx.pipeline_list());
 
@@ -219,16 +226,17 @@ public class BashToPowershell extends BashGrammarBaseListener {
         enterVar(ctx.var());
 
         outputString.append(ctx.EQ().getText());
-        if (ctx.pipeline() != null) {
-            outputString.append("$(");
+        if (ctx.expr_maker() != null) {
+            enterExpr_maker(ctx.expr_maker());
+        } else if (ctx.pipeline() != null) {
+            outputString.append("(");
             addNL=false;
             enterPipeline(ctx.pipeline());
-            outputString.append(")\n");
+            outputString.append(")");
         } else {
             enterNumber_float(ctx.number_float());
-            enterSplitter_end_command(ctx.splitter_end_command());
         }
-
+        enterSplitter_end_command(ctx.splitter_end_command());
     }
 
     @Override
@@ -316,10 +324,13 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterD_round_expr_maker(BashGrammarParser.D_round_expr_makerContext ctx) {
-//    | L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND
+//    | L_PARENTH_ROUND (d_round_expr_maker | expr) R_PARENTH_ROUND
         if (ctx.d_round_expr() == null) {
             outputString.append("(");
-            enterD_round_expr_maker(ctx.d_round_expr_maker());
+            if (ctx.d_round_expr_maker() != null)
+                enterD_round_expr_maker(ctx.d_round_expr_maker());
+            else
+                enterExpr(ctx.expr());
             outputString.append(")");
         }
 //    |d_round_expr
@@ -349,9 +360,9 @@ public class BashToPowershell extends BashGrammarBaseListener {
             outputString.append("Test-Path -Path ");
             outputString.append(ctx.STRING(0).getText());
             outputString.append(" -PathType Leaf");
-        } else if (ctx.VARIABLE() != null) {
+        } else if (ctx.var() != null) {
             outputString.append("Test-Path -Path ");
-            outputString.append(ctx.VARIABLE().getText());
+            outputString.append(ctx.var().getText());
             outputString.append(" -PathType Leaf");
         }
 
@@ -402,13 +413,13 @@ public class BashToPowershell extends BashGrammarBaseListener {
     @Override
     public void enterExpr(BashGrammarParser.ExprContext ctx) {
         // TODO
-        //    | variable_or_number
+        //    | STRING
         if (ctx.STRING() != null) {
             outputString.append(ctx.STRING().getText());
         } else if (ctx.variable_or_number() != null) {
             enterVariable_or_number(ctx.variable_or_number());
         }
-        //    | L_PARENTH_ROUND expr R_PARENTH_ROUND
+        //   | L_PARENTH_ROUND expr R_PARENTH_ROUND
         else if (ctx.expr().size() == 1) {
             outputString.append("(");
             enterExpr(ctx.expr(0));
@@ -417,23 +428,28 @@ public class BashToPowershell extends BashGrammarBaseListener {
         //  : expr (PLUS | MINUS | WILDCARD_OR_MULTIPLY | DIVIDE | MODULO | WILDCARD_OR_MULTIPLY WILDCARD_OR_MULTIPLY ) expr
         else if (ctx.expr().size() == 2) {
             enterExpr(ctx.expr(0));
-
+            outputString.append(" ");
             if (ctx.PLUS() != null) outputString.append("+"); //:                           PLUS
             else if (ctx.MINUS() != null) outputString.append("-"); //:                     Minus
             else if (ctx.WILDCARD_OR_MULTIPLY().size() == 1) outputString.append("*"); //:  WILDCARD_OR_MULTIPLY
             else if (ctx.DIVIDE() != null) outputString.append("/"); //:                    DIVIDE
             else if (ctx.MODULO() != null) outputString.append("%"); //:                    MODULO
             else if (ctx.WILDCARD_OR_MULTIPLY().size() == 2) outputString.append("**");//:  WILDCARD_OR_MULTIPLY WILDCARD_OR_MULTIPLY
-
+            outputString.append(" ");
             enterExpr(ctx.expr(1));
         }
-
     }
 
     @Override
     public void enterVariable_or_number(BashGrammarParser.Variable_or_numberContext ctx) {
         //    : VARIABLE
-        if (ctx.VARIABLE() != null) outputString.append(ctx.VARIABLE().getText());
+        if (ctx.var() != null) {
+            String out = ctx.var().getText().replaceAll(" ", "");
+            if (!out.startsWith("$")) {
+                out = "$" + out;
+            }
+            outputString.append(out);
+        }
             //    | id
         else if (ctx.id() != null) enterId(ctx.id());
             //    | signed_number
@@ -490,7 +506,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
         outputString.append(indent.peek()); //indent
         outputString.append("switch (");
 
-        if (ctx.VARIABLE()!=null) outputString.append(ctx.VARIABLE().getText());
+        if (ctx.var()!=null) outputString.append(ctx.var().getText());
         else if (ctx.STRING()!=null) outputString.append(ctx.STRING().getText());
         else if (ctx.variable_from_command()!=null) enterVariable_from_command(ctx.variable_from_command());
 
@@ -617,13 +633,11 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterFunction(BashGrammarParser.FunctionContext ctx) {
-        functionDepth++;
         outputString.append("function ");
 
         for (var al : ctx.alphanumeric()) outputString.append(al.getText());
 
         enterBlock(ctx.block());
-        functionDepth--;
     }
 
     @Override
@@ -653,7 +667,7 @@ public class BashToPowershell extends BashGrammarBaseListener {
                                             //  word
                                             //}
         if (ctx.alphanumeric().size() > 0) {
-            outputString.append("$");
+            //outputString.append("$");
             for (var al:ctx.alphanumeric()) outputString.append(al.getText());
             outputString.append("=");
         }

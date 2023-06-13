@@ -22,7 +22,7 @@ public class ProgramArgumentsParser {
     public static final int customInputFlag        =   0b1000;
     public static final int customOutputFlag       =   0b10000;
     public static final int useGUI                 =   0b100000;
-    public static final int defaultMode            =   0b000001;
+    public static final int defaultMode            =   0b000000;
     public static final String defaultSuffix       =   "_out";
     public static final String defaultCustomDirectoryName = "";
     public static String defaultOutputDirectory    =   Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();

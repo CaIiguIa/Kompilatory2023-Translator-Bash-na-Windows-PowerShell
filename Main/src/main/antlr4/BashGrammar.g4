@@ -1,11 +1,9 @@
 grammar BashGrammar;
-// !Note: Do not change production names or order unless you also change DashToPowershell class
+// !Note: Do not change production names or order unless you also change BashToPowershell class
 // TODO: (NA KOŃCU) Poprawić for, while, if ,itp żeby było jak w man bash -u
 // TODO: błędy w gramatyce: word to niby command+ więc komenda: ("asdasd" echo) jest parsowalna, trzeba sprawić, że pierwszy ciąg znaków to nie string
 // TODO: nie działają:
          //((counter++))
-         //$((num1+num2))
-         //przypisanie gdy nazwa zmiennej zawiera cyfrę
 // TODO: Ktoś (Szymon) zapomniał dodać przypisywanie stringów do zmiennej, trzeba to wimplementować i sprawdzić
 // TODO: tak samo cyfry i varable_from_command jako możliwe wartości zmiennej w single_cas
 // TODO: tak samo for_loop_arguments ma braki
@@ -28,6 +26,7 @@ instruction
     |	pipeline_list
 //    |   pipeline
     |	splitter_end_command
+    |   expr_maker
     ;
 
 symbols
@@ -49,7 +48,7 @@ command
 	|	variable_from_command
 	|	argument
 	|	symbols
-	| VARIABLE
+	|   var
 	;
 
 pipe_symbol
@@ -58,7 +57,7 @@ pipe_symbol
 	;
 
 case_statement
-    : CASE_START (VARIABLE | STRING | variable_from_command) LOOP_IN  splitter_end_command? single_case+ ( CASE_DEFAULT instruction*)? splitter_end_command? CASE_END splitter_end_command
+    : CASE_START (var | STRING | variable_from_command) LOOP_IN  splitter_end_command? single_case+ ( CASE_DEFAULT instruction*)? splitter_end_command? CASE_END splitter_end_command
     ;
 
 single_case
@@ -74,12 +73,12 @@ pipeline_list
     ;
 
 assign
-    :   var EQ (pipeline|(number_float splitter_end_command))
+    :   var EQ (expr_maker|number_float|pipeline) splitter_end_command
     ;
 
 var
 //    :   DOLLAR_SIGN? ~(EQ | DOLLAR_SIGN | NEW_LINE | SINGLE_SEMICOLON | '#' | SPACE | DIGIT | CONDITION_RIGHT_SINGLE | CONDITION_LEFT_SINGLE) ~(EQ | DOLLAR_SIGN | NEW_LINE | SINGLE_SEMICOLON | '#' | SPACE | CONDITION_RIGHT_SINGLE | CONDITION_LEFT_SINGLE)*
-    : DOLLAR_SIGN? ALPHA alphanumeric+
+    : DOLLAR_SIGN? ALPHA (alphanumeric)*
     ;
 
 until_loop
@@ -122,7 +121,7 @@ signed_number
     ;
 
 number_float
-    : NUMBER (('.'|',') (NUMERIC)*)?
+    : NUMBER (('.'|',') NUMBER)?
     ;
 
 variable_from_command
@@ -147,8 +146,8 @@ expr_maker
 //    : L_PARENTH_ROUND expr_maker R_PARENTH_ROUND
     | TILDA expr  //bitwise negation
     | expr_maker (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) expr_maker // pipeline_list (|| albo | albo & albo &&) pipeline_list ;
-    | L_PARENTH_ROUND  d_round_expr_maker  R_PARENTH_ROUND // (()) condition - && == STRING arithmetic
-    | L_PARENTH_ROUND L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND R_PARENTH_ROUND
+    | DOLLAR_SIGN? L_PARENTH_ROUND  d_round_expr_maker  R_PARENTH_ROUND // (()) condition - && == STRING arithmetic
+    | DOLLAR_SIGN? L_PARENTH_ROUND L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND R_PARENTH_ROUND
     | CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE d_round_expr_maker CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE
     | CONDITION_LEFT_SINGLE d_round_expr_maker CONDITION_RIGHT_SINGLE
 //    | CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE d_square_expr_maker  CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE// [[]] condition
@@ -158,7 +157,7 @@ expr_maker
 
 d_round_expr_maker
     : d_round_expr (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) d_round_expr_maker
-    | L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND
+    | L_PARENTH_ROUND (d_round_expr_maker | expr) R_PARENTH_ROUND
     |d_round_expr
     ;
 
@@ -169,11 +168,11 @@ d_round_expr // single, atomic  epression returning bool
     | variable_or_number ( PLUS PLUS | MINUS MINUS ) //id++ id-- -- teoretycznie dziala w bashu dla id, zmiennej i liczby
     | ( PLUS PLUS | MINUS MINUS ) variable_or_number //++id --id
     | STRING EQ EQ? STRING
-    | '-e' (variable_from_command | STRING | VARIABLE)
+    | '-e' (variable_from_command | STRING | var)
     ;
 
 variable_or_number /*zmienna, liczba*/
-    : VARIABLE
+    : var
     | id
     | signed_number
     ;
@@ -199,7 +198,9 @@ coprocess
 	;
 
 alphanumeric
-    :   (ALPHA | NUMERIC)
+    :   ALPHA
+    |   NUMBER
+    |   UNDERSCORE
     ;
 
 
@@ -259,7 +260,7 @@ BRAKE_CONTINUATION          :   ';&';
 BRAKE_WITH_NEXT_EXEC        :   ';;&';
 CASE_END                    :   'esac';
 DOLLAR_SIGN                 :   '$';
-VARIABLE                    :   '$'~[$#\n;0-9 ]~[$#\n; ]*;
+//VARIABLE                    :   '$'~[$#\n;0-9 ]~[$#\n; ]*;
 SCRIPT_ARGUMENT_NUMBER      :   '$#';
 SCRIPT_ARGUMENT             :   '$'[0-9];
 BOOL                        :   ('true'|'false');
@@ -291,9 +292,10 @@ LAST_FOLDER                 :   '..';
 THIS_FOLDER                 :   '.';
 NUMBER                      :   [1-9][0-9]*;
 ALPHA                       :   [A-Za-z];
-NUMERIC                     :   [0-9];
+//NUMERIC                     :   [0-9];
 //ALPHANUMERIC                :   [a-zA-Z0-9_];
 //NEW_VARIABLE                :   ~[$#\n;0-9 =]~[$#\n; =]*;
 MINUSP						:	'-p';
+UNDERSCORE                  :   '_';
 SPACE						:	' '->more;
 TAB							:	[\t]->more;

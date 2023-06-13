@@ -1,4 +1,4 @@
-$fruit=$("apple")
+$fruit=("apple")
 switch ( $fruit){
     "apple"{
         Write-Host "It's an apple."    }
