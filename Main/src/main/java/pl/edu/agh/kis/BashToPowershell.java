@@ -1,5 +1,6 @@
 package pl.edu.agh.kis;
 
+import pl.edu.agh.kis.log.Logger;
 import pl.edu.agh.kis.parser.BashGrammarBaseListener;
 import pl.edu.agh.kis.parser.BashGrammarParser;
 import pl.edu.agh.kis.settings.ProgramConfig;
@@ -51,7 +52,9 @@ public class BashToPowershell extends BashGrammarBaseListener {
         }
 //                |   function
         else if (ctx.function() != null) {
+            this.functionDepth++;
             enterFunction(ctx.function());
+            this.functionDepth--;
         }
 //                |   if_statement
         else if (ctx.if_statement() != null) {
@@ -160,13 +163,13 @@ public class BashToPowershell extends BashGrammarBaseListener {
         } else if (ctx.VARIABLE() != null) {
             outputString.append(ctx.VARIABLE().getText());
         } else { //either string or char_chain
-            if (isInFunction()) {
-                Pattern pattern = Pattern.compile("$[0-9]");
+            if (!this.isInFunction()) {
+                Pattern pattern = Pattern.compile("(\\$[0-9])");
                 Matcher matcher = pattern.matcher(ctx.getText());
                 if (matcher.find()) {
                     char c = matcher.group(groupNumber).charAt(charNumberLocation);
-                    System.out.println(ctx.getText().replace(matcher.group(groupNumber), "$args[" + c + " - 1]"));
-                    outputString.append(ctx.getText().replace(matcher.group(groupNumber), "$args[" + c + " - 1]"));
+                    //System.out.println(ctx.getText().replace(matcher.group(groupNumber), "$($args[" + c + " - 1])"));
+                    outputString.append(ctx.getText().replace(matcher.group(groupNumber), "$($args[" + c + " - 1])"));
                 } else {
                     outputString.append(translator.translate(ctx.getText()));
                 }
@@ -617,13 +620,11 @@ public class BashToPowershell extends BashGrammarBaseListener {
 
     @Override
     public void enterFunction(BashGrammarParser.FunctionContext ctx) {
-        functionDepth++;
         outputString.append("function ");
 
         for (var al : ctx.alphanumeric()) outputString.append(al.getText());
 
         enterBlock(ctx.block());
-        functionDepth--;
     }
 
     @Override
