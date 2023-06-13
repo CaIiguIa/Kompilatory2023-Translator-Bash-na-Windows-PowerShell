@@ -198,7 +198,9 @@ coprocess
 	;
 
 alphanumeric
-    :   (ALPHA | NUMBER)
+    :   ALPHA
+    |   NUMBER
+    |   UNDERSCORE
     ;
 
 
@@ -294,5 +296,6 @@ ALPHA                       :   [A-Za-z];
 //ALPHANUMERIC                :   [a-zA-Z0-9_];
 //NEW_VARIABLE                :   ~[$#\n;0-9 =]~[$#\n; =]*;
 MINUSP						:	'-p';
+UNDERSCORE                  :   '_';
 SPACE						:	' '->more;
 TAB							:	[\t]->more;
