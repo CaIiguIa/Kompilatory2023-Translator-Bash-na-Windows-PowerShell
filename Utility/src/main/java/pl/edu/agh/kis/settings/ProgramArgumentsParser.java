@@ -27,7 +27,7 @@ public class ProgramArgumentsParser {
     public static final String defaultCustomDirectoryName = "";
     public static String defaultOutputDirectory    =   Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
     public String customSuffix;
-    public final Queue<String> inputFiles;
+    public Queue<String> inputFiles;
     public String outputDirectory;
     private int mode;
     public ProgramArgumentsParser(String[] args) {
@@ -120,5 +120,8 @@ public class ProgramArgumentsParser {
 
     public int getMode() {
         return this.mode;
+    }
+    public void setMode(int m){
+        mode=m;
     }
 }

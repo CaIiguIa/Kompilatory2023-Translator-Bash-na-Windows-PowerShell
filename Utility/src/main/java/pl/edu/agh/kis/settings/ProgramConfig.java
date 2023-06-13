@@ -6,9 +6,12 @@ import java.util.Queue;
 public class ProgramConfig {
     private static ProgramConfig INSTANCE;
     private static ProgramArgumentsParser parser;
-    private ProgramConfig() {}
+
+    private ProgramConfig() {
+    }
+
     public static ProgramConfig getInstance() {
-        if(ProgramConfig.INSTANCE == null) {
+        if (ProgramConfig.INSTANCE == null) {
             ProgramConfig.INSTANCE = new ProgramConfig();
         }
 
@@ -35,7 +38,7 @@ public class ProgramConfig {
         return (parser == null || !this.CustomSuffix() ? ProgramArgumentsParser.defaultSuffix : parser.customSuffix);
     }
 
-    public boolean customInput () {
+    public boolean customInput() {
         return ((parser == null ? ProgramArgumentsParser.defaultMode : parser.getMode()) & ProgramArgumentsParser.customInputFlag) > 0;
     }
 
@@ -61,5 +64,30 @@ public class ProgramConfig {
         if (ProgramConfig.parser == null) {
             ProgramConfig.parser = p;
         }
+    }
+
+    public void setInput(Queue<String> q) {
+        parser.inputFiles = q;
+    }
+
+    public void setOutputDirectory(String d) {
+        parser.outputDirectory = d;
+    }
+    public void setSuffix(String s){
+        parser.customSuffix=s;
+
+        int number=parser.getMode();
+        int position=2;
+        int bit=1;
+        int mask = 1 << position;
+        parser.setMode((number & ~mask) | ((bit << position) & mask));
+    }
+
+    public void setComments(boolean c){
+        int number=parser.getMode();
+        int position=0;
+        int bit=c?1:0;
+        int mask = 1 << position;
+        parser.setMode((number & ~mask) | ((bit << position) & mask));
     }
 }
