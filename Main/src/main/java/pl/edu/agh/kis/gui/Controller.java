@@ -72,7 +72,6 @@ public class Controller implements Initializable {
             String out = InputOutputFileManager.process(Input.getText(), Main.run);
             String errors = Logger.getInstance().getAllLogs();
             errors = errors.substring(errors.indexOf(".sh") + 3);
-            System.out.println("\"" +errors.replaceAll("( |\t|\n|\r)", "")+ "\"");
             if (errors.replaceAll("( |\t|\n|\r)", "").equals("")) {
                 PowershellCode.setText(out);
                 File file =
@@ -139,9 +138,9 @@ public class Controller implements Initializable {
         BashCode.setEditable(false);
         PowershellCode.setEditable(false);
         try {
-            Font.loadFont(getClass().getResource("\\JetBrainsMono-Light.ttf").openStream(),12);
-            BashCode.setFont(new Font("JetBrainsMono-Light", 12));
-            PowershellCode.setFont(new Font("JetBrainsMono-Light", 12));
+            Font.loadFont(getClass().getResource("\\JetBrainsMono-Medium.ttf").openStream(),13);
+            BashCode.setFont(new Font("JetBrains Mono Medium", 13));
+            PowershellCode.setFont(new Font("JetBrains Mono Medium", 13));
         } catch (IOException e) {
             BashCode.setFont(new Font("Segoe UI", 12));
             PowershellCode.setFont(new Font("Segoe UI", 12));
