@@ -1,6 +1,6 @@
 # Transpiler z Bash na WindowsPowerShell
 
-![example workflow](https://github.com/CaIiguIa/Kompilatory2023-Translator-Bash-na-Windows-PowerShell/actions/workflows/main.yml/badge.svg)
+[![Java CI with Maven](https://github.com/CaIiguIa/Kompilatory2023-Translator-Bash-na-Windows-PowerShell/actions/workflows/maven.yml/badge.svg?branch=main)](https://github.com/CaIiguIa/Kompilatory2023-Translator-Bash-na-Windows-PowerShell/actions/workflows/maven.yml)
 
 ---
 
