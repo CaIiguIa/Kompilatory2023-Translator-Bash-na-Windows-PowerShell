@@ -13,6 +13,7 @@
     - [Linia komend](#funckjonalności-lini-komend)
     - [GUI](#funckjonalności-gui)
 3.  [Instalacja](#instalacja)
+    - [.jar](#z-pliku-jar)
 4.  [Dokumentacja](#dokumentacja)
     - [Uwagi](#ogólne-uwagi)
     - [Błędy](#zgłaszanie-błędów)
@@ -93,7 +94,24 @@ Lista dostępnych argumentów do podania w lini komend:
 	
 ## Instalacja:
 
-#### TODO!!!!!
+#### Wymagania:
+
+- Potrzebana jest wspomniana wcześniej JAVA 17 z linku na początku pliku.
+
+#### Z pliku `.jar`:
+
+1. Wejdź w sekcję `Releases` w repozytorium projektu.
+   ![alt](./Docs/Images/1.png)
+2. Pobierz plik `.jar` z dostępnych asetów.
+   ![alt](./Docs/Images/2.png)
+3. Zmień katalog na ten, gdzie pobrałeś plik.
+4. Użyj komendy:
+   ```shell
+   java -jar .\Kompilatory2023-Translator-Bash-na-Windows-PowerShell.jar
+   ```
+      ![alt](./Docs/Images/3.png)
+5. Wszystkie wyrazy oddzielone spacjami są traktowane jako kolejne argumenty z lini poleceń dla programu.
+
 
 ## Dokumentacja:
 
