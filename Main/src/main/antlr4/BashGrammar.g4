@@ -2,10 +2,7 @@ grammar BashGrammar;
 // !Note: Do not change production names or order unless you also change BashToPowershell class
 // TODO: (NA KOŃCU) Poprawić for, while, if ,itp żeby było jak w man bash -u
 // TODO: błędy w gramatyce: word to niby command+ więc komenda: ("asdasd" echo) jest parsowalna, trzeba sprawić, że pierwszy ciąg znaków to nie string
-// TODO: nie działają:
-         //((counter++))
 // TODO: Ktoś (Szymon) zapomniał dodać przypisywanie stringów do zmiennej, trzeba to wimplementować i sprawdzić
-// TODO: tak samo cyfry i varable_from_command jako możliwe wartości zmiennej w single_cas
 // TODO: tak samo for_loop_arguments ma braki
 
 program
