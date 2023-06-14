@@ -30,8 +30,9 @@ Stworzyć translator skryptów napisanych w Bash-u (plik .bs) na ich ekwiwalenty
 2. Maven - jako narzędzie do budowy projektu.
 3. ANTLR4 - generator lexerów i perserów, w implementacji użyliśmy Listener -a.
 4. Openjfx - GUI projektu.
-5. Junit - do testów aplikacji.
-6. Inne pomniejsze *dependencies* np. do parsowania plików .json lub .csv.
+5. SceneBuilder - Aplikacja pomagająca w tworzeniu interfejsów graficznych
+6. Junit - do testów aplikacji.
+7. Inne pomniejsze *dependencies* np. do parsowania plików .json lub .csv.
 
 ## Instrukcje użycia:
 
@@ -73,9 +74,23 @@ Lista dostępnych argumentów do podania w lini komend:
 #### Funckjonalności GUI
 
 **Podano `[-g | -G | --GUI]` jako argument aplikacji.**
+	
+![alt](./Docs/Images/GUIguide.png)
+	
+1. W tym oknie wyświetla się wybrany skrypt w Bashu (.sh)
 
-#### TODO!!!!!
-
+2. W tym oknie pojawi się skrypt przetłumaczony do Powershell (.ps1)
+	
+3. To pole tekstowe przeznaczone jest na ścieżkę do skryptu Basha, który chcesz przetłumaczyć. Można ją wpisać ręcznie, albo wcisnąć przycisk "Choose", wtedy pojawi się okno wyboru pliku
+	
+4. Tutaj należy podać katalog wyjściowy w którym znaleźć ma się tłumaczenie. Można go podać ręcznie, albo wcisnąć przycisk "Choose", wtedy pojawi się okno wyboru katalogu
+	
+5. W tym polu tekstowym znajduje się suffix doklejany do nazwy pliku wejściowego, aby utworzyć nazwę pliku wyjściowego
+	
+6. Jeżeli to pole wyboru zostanie zaznaczone, translator pominie tłumaczenie/przepisywanie komentarzy z pliku wejściowego
+	
+7. Jeśli naciśnie się ten przycisk, to plik wejściowy zostanie przetłumaczony, a w dużym polu tekstowym pop prawej (2.) pojawi się przytłumaczony kod
+	
 ## Instalacja:
 
 #### TODO!!!!!
