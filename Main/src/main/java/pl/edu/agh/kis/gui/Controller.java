@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.text.Font;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -41,6 +42,7 @@ public class Controller implements Initializable {
 
     @FXML
     public void Translate(ActionEvent e) {
+        PowershellCode.setStyle("-fx-text-fill: black;");
 
         //Check input file
         if (Input.getText().equals("")) ErrorMsg.setText("You need to choose Inpt file");
@@ -48,12 +50,12 @@ public class Controller implements Initializable {
                 "extension)");
         else if (!checkNamePropriety(Input.getText())) ErrorMsg.setText("Input file name contains forbidden characters");
 
-        //check output directory
+            //check output directory
         else if (Output.getText().equals("")) ErrorMsg.setText("You must choose output directory");
-        else if (Output.getText().lastIndexOf(".")>0) ErrorMsg.setText("You must choose a directory (not a file) as output directory");
+        else if (Output.getText().lastIndexOf(".") > 0) ErrorMsg.setText("You must choose a directory (not a file) as output directory");
         else if (!checkNamePropriety(Output.getText())) ErrorMsg.setText("Output file name contains forbidden characters");
 
-        //check suffix
+            //check suffix
         else if (!checkNamePropriety(Suffix.getText())) ErrorMsg.setText("Output file suffix contains forbidden characters");
 
         else {
@@ -68,20 +70,29 @@ public class Controller implements Initializable {
 
             //Translate and save to file
             String out = InputOutputFileManager.process(Input.getText(), Main.run);
-            PowershellCode.setText(out);
+            String errors = Logger.getInstance().getAllLogs();
+            errors = errors.substring(errors.indexOf(".sh") + 3);
+            System.out.println("\"" +errors.replaceAll("( |\t|\n|\r)", "")+ "\"");
+            if (errors.replaceAll("( |\t|\n|\r)", "").equals("")) {
+                PowershellCode.setText(out);
+                File file =
+                        new File(Output.getText() + (Output.getText().lastIndexOf("/") > 0 ? "/" : "\\") + InputOutputFileManager.getOutputFileName(new File(Input.getText()).getName()));
 
-            File file =
-                    new File(Output.getText() + (Output.getText().lastIndexOf("/")>0 ?"/":"\\") + InputOutputFileManager.getOutputFileName(new File(Input.getText()).getName()));
-
-            try  {
-                FileWriter writer = new FileWriter(file);
-                writer.write(out);
-                writer.close();
-            } catch (IOException err) {
-                String stack = ExceptionUtils.getStackTrace(err);
-                Logger.getInstance().addLog(stack);
-                ErrorMsg.setText("There was an error while writing file, please check input file and output directory");
+                try {
+                    FileWriter writer = new FileWriter(file);
+                    writer.write(out);
+                    writer.close();
+                } catch (IOException err) {
+                    String stack = ExceptionUtils.getStackTrace(err);
+                    Logger.getInstance().addLog(stack);
+                    ErrorMsg.setText("There was an error while writing file, please check input file and output directory");
+                }
             }
+            else {
+                PowershellCode.setText(errors);
+                PowershellCode.setStyle("-fx-text-fill: red;");
+            }
+
         }
     }
 
@@ -113,8 +124,7 @@ public class Controller implements Initializable {
         if (file != null) {
             Output.setText(file.getAbsolutePath());
             ErrorMsg.setText("");
-        }
-        else ErrorMsg.setText("You didn't choose any directory");
+        } else ErrorMsg.setText("You didn't choose any directory");
     }
 
     @Override
@@ -128,15 +138,25 @@ public class Controller implements Initializable {
         BashCode.setText(new FullFileReader(Input.getText()).contents);
         BashCode.setEditable(false);
         PowershellCode.setEditable(false);
+        try {
+            Font.loadFont(getClass().getResource("\\JetBrainsMono-Light.ttf").openStream(),12);
+            BashCode.setFont(new Font("JetBrainsMono-Light", 12));
+            PowershellCode.setFont(new Font("JetBrainsMono-Light", 12));
+        } catch (IOException e) {
+            BashCode.setFont(new Font("Segoe UI", 12));
+            PowershellCode.setFont(new Font("Segoe UI", 12));
+            System.out.println("Custom font not loaded");
+        }
+
     }
 
     /*
      *Checks whether the give filename doesn't contain forbidden characters. Returns false if contains.
      */
-    private boolean checkNamePropriety(String name){
-        List<Character> forbiddenChars= Arrays.asList('#', '%', '&', '{', '}', '<', '>', '*', '?', '$', '!', '\'', '\"', '+', '=', '`', '@', '|');
-        for(var character:forbiddenChars)
-            if (name.lastIndexOf(character)>0) return false;
+    private boolean checkNamePropriety(String name) {
+        List<Character> forbiddenChars = Arrays.asList('#', '%', '&', '{', '}', '<', '>', '*', '?', '$', '!', '\'', '\"', '+', '=', '`', '@', '|');
+        for (var character : forbiddenChars)
+            if (name.lastIndexOf(character) > 0) return false;
 
         return true;
     }
