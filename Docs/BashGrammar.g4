@@ -1,9 +1,4 @@
 grammar BashGrammar;
-// !Note: Do not change production names or order unless you also change DashToPowershell class
-//TODO: (NA KOŃCU) Poprawić for, while, if ,itp żeby było jak w man bash -u
-// TODO: błędy w gramatyce: pipeline_list można usunąć, wprowadza niedeterminizm tworzenia drzewa, lepiej zrobić instriction -> pipeline
-// TODO: błędy w gramatyce: word to niby command+ więc komenda: ("asdasd" echo) jest parsowalna, trzeba sprawić, że pierwszy ciąg znaków to nie string
-
 
 program
     :	COMMENT instruction* EOF
@@ -19,10 +14,11 @@ instruction
     |   case_statement
     |   select
     |   coprocess
+    |   assign
     |	pipeline_list
 //    |   pipeline
-    |   assign
     |	splitter_end_command
+    |   expr_maker
     ;
 
 symbols
@@ -44,6 +40,7 @@ command
 	|	variable_from_command
 	|	argument
 	|	symbols
+	|   var
 	;
 
 pipe_symbol
@@ -51,8 +48,16 @@ pipe_symbol
 	|	PIPE AMPERSAN
 	;
 
+case_statement
+    : CASE_START (var | STRING | variable_from_command) LOOP_IN  splitter_end_command? single_case+ ( CASE_DEFAULT instruction*)? splitter_end_command? CASE_END splitter_end_command
+    ;
+
+single_case
+    :    ( ( ( alphanumeric+ | STRING ) ( PIPE ( alphanumeric+ | STRING ) )* )  ) R_PARENTH_ROUND NEW_LINE?  instruction* case_break splitter_end_command
+    ;
+
 pipeline
-	:	(TIME MINUSP?)? (BOOL_NEGATION)? word (pipe_symbol word)* (SINGLE_SEMICOLON|NEW_LINE)
+	:	(TIME MINUSP?)? (BOOL_NEGATION)? word (pipe_symbol word)* splitter_end_command?
     ;
 
 pipeline_list
@@ -60,28 +65,28 @@ pipeline_list
     ;
 
 assign
-    :   var EQ (pipeline|(number_float splitter_end_command))
+    :   var EQ (expr_maker|number_float|pipeline) splitter_end_command
     ;
 
 var
 //    :   DOLLAR_SIGN? ~(EQ | DOLLAR_SIGN | NEW_LINE | SINGLE_SEMICOLON | '#' | SPACE | DIGIT | CONDITION_RIGHT_SINGLE | CONDITION_LEFT_SINGLE) ~(EQ | DOLLAR_SIGN | NEW_LINE | SINGLE_SEMICOLON | '#' | SPACE | CONDITION_RIGHT_SINGLE | CONDITION_LEFT_SINGLE)*
-    : DOLLAR_SIGN? ALPHA alphanumeric+
-    ;
-
-case_statement
-    : CASE_START VARIABLE LOOP_IN  splitter_end_command? single_case+ ( CASE_DEFAULT instruction* BRAKE_ABSOLUTE)? splitter_end_command? CASE_END splitter_end_command
-    ;
-
-single_case
-    :    ( ( ( alphanumeric+ | STRING ) ( PIPE ( alphanumeric+ | STRING ) )* )  ) R_PARENTH_ROUND splitter_end_command? instruction* BRAKE_ABSOLUTE splitter_end_command?
+    : DOLLAR_SIGN? ALPHA (alphanumeric)*
     ;
 
 until_loop
-    :  UNTIL_LOOP_BEGIN (VARIABLE| variable_from_command expr_maker) splitter_end_command LOOP_MIDDLE instruction* LOOP_END splitter_end_command
+    :  UNTIL_LOOP_BEGIN expr_maker splitter_end_command LOOP_MIDDLE instruction* LOOP_END splitter_end_command
     ;
 
 if_statement
-	: IF_START expr_maker splitter_end_command IF_MIDDLE instruction* (ELSE_IF expr_maker splitter_end_command  IF_MIDDLE  instruction* )* (ELSE instruction* )? IF_END splitter_end_command
+	: IF_START expr_maker splitter_end_command IF_MIDDLE instruction* (if_elsif)* (if_else)? IF_END splitter_end_command
+    ;
+
+if_elsif
+    : ELSE_IF expr_maker splitter_end_command  IF_MIDDLE  instruction*
+    ;
+
+ if_else
+    : ELSE instruction*
     ;
 
 while_loop
@@ -93,15 +98,13 @@ for_loop
     ;
 
 for_loop_argument //argument pętli for znajdujący się między "for", a ""
-    : L_PARENTH_ROUND L_PARENTH_ROUND  /*TODO: expr*/  SINGLE_SEMICOLON  expr_maker  SINGLE_SEMICOLON  /*TODO: expr*/  R_PARENTH_ROUND R_PARENTH_ROUND splitter_end_command//(( i=0 ; i<10 ; i++ ))
-// TODO: (ocochodzi)    | alphanumeric+ (LOOP_IN (CHAR_CHAIN )+)* splitter_end_command // ???
+    : L_PARENTH_ROUND L_PARENTH_ROUND  expr  SINGLE_SEMICOLON  expr_maker  SINGLE_SEMICOLON  (expr|assign|d_round_expr)  R_PARENTH_ROUND R_PARENTH_ROUND splitter_end_command//(( i=0 ; i<10 ; i++ ))
     | alphanumeric+ LOOP_IN numbers_pipeline_list_for_loop splitter_end_command // {1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}
     | alphanumeric+ LOOP_IN variable_from_command splitter_end_command// $(command)
     ;
 
-numbers_pipeline_list_for_loop // {1..5} ALBO 1 2 3 4 5 ALBO 1 2 3 4 5 .. N ALBO {0..10..2}
-    : (signed_number)+ ('..' signed_number)?
-    | '{' signed_number '..' signed_number ('..' signed_number)?  '}'
+numbers_pipeline_list_for_loop // {1..5}
+    : '{' signed_number '..' signed_number '}'
     ;
 
 signed_number
@@ -109,7 +112,7 @@ signed_number
     ;
 
 number_float
-    : NUMBER (('.'|',') (NUMERIC)*)?
+    : NUMBER (('.'|',') NUMBER)?
     ;
 
 variable_from_command
@@ -122,11 +125,11 @@ splitter_end_command
     ;
 
 block
-    :	L_PARENTH_ROUND pipeline_list R_PARENTH_ROUND
-    |	L_PARENTH_CURLY pipeline_list R_PARENTH_CURLY
-    |   L_PARENTH_ROUND L_PARENTH_ROUND expr R_PARENTH_ROUND R_PARENTH_ROUND
-    |   CONDITION_LEFT_SINGLE  expr  CONDITION_RIGHT_SINGLE
-    |   CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE expr CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE
+    :	L_PARENTH_ROUND instruction* R_PARENTH_ROUND
+    |	L_PARENTH_CURLY NEW_LINE? instruction* R_PARENTH_CURLY
+//    |   L_PARENTH_ROUND L_PARENTH_ROUND  expr R_PARENTH_ROUND R_PARENTH_ROUND
+//    |   CONDITION_LEFT_SINGLE  expr  CONDITION_RIGHT_SINGLE
+//    |   CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE expr CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE
     ;
 
 expr_maker
@@ -134,19 +137,15 @@ expr_maker
 //    : L_PARENTH_ROUND expr_maker R_PARENTH_ROUND
     | TILDA expr  //bitwise negation
     | expr_maker (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) expr_maker // pipeline_list (|| albo | albo & albo &&) pipeline_list ;
-    | L_PARENTH_ROUND  d_round_expr_maker  R_PARENTH_ROUND // (()) condition - && == STRING arithmetic
-    | L_PARENTH_ROUND L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND R_PARENTH_ROUND
+    | DOLLAR_SIGN? L_PARENTH_ROUND  d_round_expr_maker  R_PARENTH_ROUND // (()) condition - && == STRING arithmetic
+    | DOLLAR_SIGN? L_PARENTH_ROUND L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND R_PARENTH_ROUND
     | CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE d_round_expr_maker CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE
     | CONDITION_LEFT_SINGLE d_round_expr_maker CONDITION_RIGHT_SINGLE
-//    | CONDITION_LEFT_SINGLE CONDITION_LEFT_SINGLE d_square_expr_maker  CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE// [[]] condition
-// TODO    | CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE s_square_expr CONDITION_RIGHT_SINGLE CONDITION_RIGHT_SINGLE//
-//    | /*TODO: pipeline_list*/
     ;
-
 
 d_round_expr_maker
     : d_round_expr (CONDITION_DOUBLE_AMPERSAND | CONDITION_DOUBLE_PIPE | PIPE | AMPERSAN) d_round_expr_maker
-    | L_PARENTH_ROUND d_round_expr_maker R_PARENTH_ROUND
+    | L_PARENTH_ROUND (d_round_expr_maker | expr) R_PARENTH_ROUND
     |d_round_expr
     ;
 
@@ -157,10 +156,11 @@ d_round_expr // single, atomic  epression returning bool
     | variable_or_number ( PLUS PLUS | MINUS MINUS ) //id++ id-- -- teoretycznie dziala w bashu dla id, zmiennej i liczby
     | ( PLUS PLUS | MINUS MINUS ) variable_or_number //++id --id
     | STRING EQ EQ? STRING
+    | '-e' (variable_from_command | STRING | var)
     ;
 
 variable_or_number /*zmienna, liczba*/
-    : VARIABLE
+    : var
     | id
     | signed_number
     ;
@@ -170,14 +170,15 @@ expr // boolowa wartość bez nawiasów / && / ||
     : expr (PLUS | MINUS | WILDCARD_OR_MULTIPLY | DIVIDE | MODULO | WILDCARD_OR_MULTIPLY WILDCARD_OR_MULTIPLY ) expr
     | L_PARENTH_ROUND expr R_PARENTH_ROUND
     | variable_or_number
+    | STRING
     ;
 
-function:   (alphanumeric)+ L_PARENTH_ROUND R_PARENTH_ROUND block /*(return_output)?*/
+function:   (alphanumeric)+ L_PARENTH_ROUND R_PARENTH_ROUND block   /*(return_output)?*/
     |   FUNCTION_START (alphanumeric)+ (L_PARENTH_ROUND R_PARENTH_ROUND)? block /*(return_output)?*/
     ;
 
 select
-	:	SELECT alphanumeric+ (LOOP_IN word)? splitter_end_command LOOP_MIDDLE pipeline_list LOOP_END
+	:	SELECT alphanumeric+ (LOOP_IN word)? splitter_end_command LOOP_MIDDLE instruction* LOOP_END
     ;
 
 coprocess
@@ -185,7 +186,9 @@ coprocess
 	;
 
 alphanumeric
-    :   (ALPHA | NUMERIC)
+    :   ALPHA
+    |   NUMBER
+    |   UNDERSCORE
     ;
 
 
@@ -206,6 +209,9 @@ id
     :	ALPHA alphanumeric*
     ;
 
+case_break
+    :   ';;'
+    ;
 
 STRING						:	["](~["]|' ')*["];
 CHARACTER_CHAIN				:	['](~[']|' ')*['];
@@ -230,7 +236,7 @@ CONDITION_NEQ               :   ('-ne'|'!=');
 CONDITION_GT                :   '-gt';
 CONDITION_GE                :   ('-ge'|'>=');
 CONDITION_LT                :   '-lt';
-CONDITION_LE                :   ('-le'|':');
+CONDITION_LE                :   ('-le'|'<=');
 MODULO                      :   '%';
 CONDITION_DOUBLE_AMPERSAND  :   '&&';
 CONDITION_DOUBLE_PIPE       :   '||';
@@ -238,12 +244,10 @@ ELSE                        :   'else';
 ELSE_IF                     :   'elif';
 CASE_START                  :   'case';
 CASE_DEFAULT                :   '*)';
-BRAKE_ABSOLUTE              :   ';;';
 BRAKE_CONTINUATION          :   ';&';
 BRAKE_WITH_NEXT_EXEC        :   ';;&';
 CASE_END                    :   'esac';
 DOLLAR_SIGN                 :   '$';
-VARIABLE                    :   '$'~[$#\n;0-9 ]~[$#\n; ]*;
 SCRIPT_ARGUMENT_NUMBER      :   '$#';
 SCRIPT_ARGUMENT             :   '$'[0-9];
 BOOL                        :   ('true'|'false');
@@ -275,9 +279,7 @@ LAST_FOLDER                 :   '..';
 THIS_FOLDER                 :   '.';
 NUMBER                      :   [1-9][0-9]*;
 ALPHA                       :   [A-Za-z];
-NUMERIC                     :   [0-9];
-//ALPHANUMERIC                :   [a-zA-Z0-9_];
-//NEW_VARIABLE                :   ~[$#\n;0-9 =]~[$#\n; =]*;
 MINUSP						:	'-p';
+UNDERSCORE                  :   '_';
 SPACE						:	' '->more;
-TAB							:	[\t]->skip;
+TAB							:	[\t]->more;

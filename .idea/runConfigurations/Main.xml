@@ -4,7 +4,7 @@
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="MAIN_CLASS_NAME" value="pl.edu.agh.kis.Main" />
     <module name="Main" />
-    <option name="PROGRAM_PARAMETERS" value="-i Main/src/test/input -o Docs/Examples/Output" />
+    <option name="PROGRAM_PARAMETERS" value="-i Main/src/test/input -o Docs/Examples/Output --GUI" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="pl.edu.agh.kis.translations.*" />
