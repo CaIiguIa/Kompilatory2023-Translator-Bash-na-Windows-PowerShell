@@ -32,8 +32,8 @@ public class App extends Application{
         scene = new Scene(root, 1600,900, Color.WHITE);
         PrimaryStage.setScene(scene);
 //        Image icon = new Image(Objects.requireNonNull(this.getClass().getResource("main/resources/btp.png")).toExternalForm());
-        Image icon = new Image(Objects.requireNonNull(getClass().getResource("\\btp.png")).openStream());
-        stage.getIcons().add(icon);
+        //Image icon = new Image(Objects.requireNonNull(getClass().getResource("\\btp.png")).openStream());
+        //stage.getIcons().add(icon);
 
 
         stage.show();

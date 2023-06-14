@@ -137,16 +137,8 @@ public class Controller implements Initializable {
         BashCode.setText(new FullFileReader(Input.getText()).contents);
         BashCode.setEditable(false);
         PowershellCode.setEditable(false);
-        try {
-            Font.loadFont(getClass().getResource("\\JetBrainsMono-Medium.ttf").openStream(),13);
-            BashCode.setFont(new Font("JetBrains Mono Medium", 13));
-            PowershellCode.setFont(new Font("JetBrains Mono Medium", 13));
-        } catch (IOException e) {
-            BashCode.setFont(new Font("Segoe UI", 12));
-            PowershellCode.setFont(new Font("Segoe UI", 12));
-            System.out.println("Custom font not loaded");
-        }
-
+        BashCode.setFont(new Font("Segoe UI", 12));
+        PowershellCode.setFont(new Font("Segoe UI", 12));
     }
 
     /*

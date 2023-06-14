@@ -3,7 +3,6 @@ package pl.edu.agh.kis.settings;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-import pl.edu.agh.kis.Main;
 import pl.edu.agh.kis.log.Logger;
 
 import java.io.File;
@@ -25,7 +24,7 @@ public class ProgramArgumentsParser {
     public static final int defaultMode            =   0b000000;
     public static final String defaultSuffix       =   "_out";
     public static final String defaultCustomDirectoryName = "";
-    public static String defaultOutputDirectory    =   Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+    public static String defaultOutputDirectory;
     public String customSuffix;
     public Queue<String> inputFiles;
     public String outputDirectory;
