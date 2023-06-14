@@ -1,6 +1,6 @@
 # Transpiler z Bash na WindowsPowerShell
 
-![example workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+![example workflow](https://github.com/CaIiguIa/Kompilatory2023-Translator-Bash-na-Windows-PowerShell/actions/workflows/main.yml/badge.svg)
 
 ---
 
@@ -22,7 +22,7 @@
 
 #### Cel projektu:
 
-
+Stworzyć translator skryptów napisanych w Bash-u (plik .bs) na ich ekwiwalenty napisane w Windows Power Shell (plik .ps1).
 
 #### Zastosowane technologie:
 
